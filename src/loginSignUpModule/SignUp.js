@@ -56,13 +56,7 @@ export default function SignUp(props) {
   const valueRef = useRef('')
   const passRef = useRef('')
   const [errorMessage,setErrorValue] = useState(" ")
-
-
-  const navigateTo=() =>{
-    console.log('history called');
-    props.history.push('/dashboard');
-
-  }    
+  
 
 
 	const sendValue = (event) => {
@@ -82,8 +76,7 @@ export default function SignUp(props) {
         props.history.push('/dashboard');    
 			})
 			.catch(error=>{
-        console.log(error);
-				setErrorValue("Please provide correct Information ")
+				setErrorValue(error.response.data.message)
 			})
 
   	}

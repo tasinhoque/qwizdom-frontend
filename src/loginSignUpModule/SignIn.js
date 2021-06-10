@@ -71,8 +71,7 @@ export default function SignIn(props) {
 
 			})
 			.catch(error=>{
-        console.log(error);
-				setErrorValue("Please provide correct Information ")
+				setErrorValue(error.response.data.message)
 			})
 
   	}
