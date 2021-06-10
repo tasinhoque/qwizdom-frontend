@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
 import axios from 'axios'
-import { CenterFocusStrong } from '@material-ui/icons'
+
 
 function Copyright() {
   return (
@@ -49,26 +49,37 @@ const useStyles = makeStyles(theme => ({
   }
 }))
 
-export default function SignIn(props) {
+export default function SignUp(props) {
 
   const classes = useStyles()
+  const userNameRef = useRef('')
   const valueRef = useRef('')
   const passRef = useRef('')
   const [errorMessage,setErrorValue] = useState(" ")
 
 
+  const navigateTo=() =>{
+    console.log('history called');
+    props.history.push('/dashboard');
+
+  }    
+
+
 	const sendValue = (event) => {
 		event.preventDefault();
-		const loginBody={
+		const registerBody={
+      "name":userNameRef.current.value,
 			"email": valueRef.current.value,
 			"password": passRef.current.value,
 		}
-		axios.post('http://localhost:4000/v1/auth/login',loginBody)
+    
+    console.log(registerBody);
+		axios.post('http://localhost:4000/v1/auth/register',registerBody)
 			.then(res =>{
         localStorage.setItem('accessToken',res.data.tokens.access.token)
         localStorage.setItem('refreshToken',res.data.tokens.refresh.token)
+				console.log(res);
         props.history.push('/dashboard');    
-
 			})
 			.catch(error=>{
         console.log(error);
@@ -76,6 +87,7 @@ export default function SignIn(props) {
 			})
 
   	}
+
 
   return (
     <Container component="main" maxWidth="xs">
@@ -85,9 +97,21 @@ export default function SignIn(props) {
           <LockOutlinedIcon />
         </Avatar>
         <Typography component="h1" variant="h5">
-          Sign in
+          Sign Up
         </Typography>
         <form className={classes.form} noValidate>
+        <TextField
+            variant="outlined"
+            margin="normal" 
+            required
+            fullWidth
+            id="name"
+            label="Username"
+            name="name"
+            autoComplete="name"
+            autoFocus
+            inputRef={userNameRef}
+          />
           <TextField
             variant="outlined"
             margin="normal" 
@@ -118,10 +142,10 @@ export default function SignIn(props) {
 			  	{errorMessage.toString()}
 			  </p>
 		  </div>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth
@@ -131,7 +155,7 @@ export default function SignIn(props) {
             onClick={sendValue}
 
           >
-            Sign In
+            Sign Up
           </Button>
           <Grid container>
             <Grid item xs>
@@ -140,7 +164,7 @@ export default function SignIn(props) {
               </Link>
             </Grid>
             <Grid item>
-              <Link href="/signUp" variant="body2">
+              <Link href="#" variant="body2">
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>

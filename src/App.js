@@ -6,6 +6,11 @@ import Link from '@material-ui/core/Link'
 import ProTip from './ProTip'
 import StyledButton from './StyledButton'
 import SignIn from './loginSignUpModule/SignIn'
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+import SignUp from './loginSignUpModule/SignUp'
+import dashboard from './dashboardModule/dashboard'
+
+
 
 function Copyright() {
   return (
@@ -39,6 +44,19 @@ function Copyright() {
 //   )
 // }
 
-const App = () => <SignIn />
+const App = () => 
+{
+  return(
+    <main>
+      <Switch>
+        <Route path="/" component={SignIn} exact />
+        <Route path="/signUp" component={SignUp} />
+        <Route path="/dashboard" component={dashboard} />
+
+      </Switch>
+    </main>
+  )
+}
+
 
 export default App
