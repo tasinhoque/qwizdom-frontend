@@ -5,7 +5,7 @@ import Box from '@material-ui/core/Box'
 import Link from '@material-ui/core/Link'
 import ProTip from './ProTip'
 import StyledButton from './StyledButton'
-import SignIn from './SignIn'
+import SignIn from './loginSignUpModule/SignIn'
 
 function Copyright() {
   return (
