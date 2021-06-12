@@ -1,16 +1,8 @@
-import * as React from 'react'
-import Container from '@material-ui/core/Container'
-import Typography from '@material-ui/core/Typography'
-import Box from '@material-ui/core/Box'
-import Link from '@material-ui/core/Link'
-import ProTip from './ProTip'
-import StyledButton from './StyledButton'
-import SignIn from './loginSignUpModule/SignIn'
-import { BrowserRouter, Route, Switch } from 'react-router-dom';
-import SignUp from './loginSignUpModule/SignUp'
-import dashboard from './dashboardModule/dashboard'
-
-
+import * as React from 'react';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
+import { SignIn, SignUp, Dashboard } from './pages';
+import { Route, Switch } from 'react-router-dom';
 
 function Copyright() {
   return (
@@ -22,7 +14,7 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  )
+  );
 }
 
 // export default function App() {
@@ -44,19 +36,16 @@ function Copyright() {
 //   )
 // }
 
-const App = () => 
-{
-  return(
+const App = () => {
+  return (
     <main>
       <Switch>
         <Route path="/" component={SignIn} exact />
         <Route path="/signUp" component={SignUp} />
-        <Route path="/dashboard" component={dashboard} />
-
+        <Route path="/dashboard" component={Dashboard} />
       </Switch>
     </main>
-  )
-}
+  );
+};
 
-
-export default App
+export default App;

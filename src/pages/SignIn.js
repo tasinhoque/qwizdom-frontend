@@ -1,16 +1,15 @@
-import React,{useRef, useState}from 'react'
-import { Avatar, Button, TextField, FormControlLabel } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import axios from 'axios'
-import { CenterFocusStrong } from '@material-ui/icons'
+import React, { useRef, useState } from 'react';
+import { Avatar, Button, TextField, FormControlLabel } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import axios from 'axios';
 
 function Copyright() {
   return (
@@ -22,10 +21,10 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  )
+  );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -44,37 +43,34 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
   },
   errorStyle: {
-	  display:	'flex',
-	  justifyContent:	'center'
-  }
-}))
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 export default function SignIn(props) {
+  const classes = useStyles();
+  const valueRef = useRef('');
+  const passRef = useRef('');
+  const [errorMessage, setErrorValue] = useState(' ');
 
-  const classes = useStyles()
-  const valueRef = useRef('')
-  const passRef = useRef('')
-  const [errorMessage,setErrorValue] = useState(" ")
-
-
-	const sendValue = (event) => {
-		event.preventDefault();
-		const loginBody={
-			"email": valueRef.current.value,
-			"password": passRef.current.value,
-		}
-		axios.post('http://localhost:4000/v1/auth/login',loginBody)
-			.then(res =>{
-        localStorage.setItem('accessToken',res.data.tokens.access.token)
-        localStorage.setItem('refreshToken',res.data.tokens.refresh.token)
-        props.history.push('/dashboard');    
-
-			})
-			.catch(error=>{
-				setErrorValue(error.response.data.message)
-			})
-
-  	}
+  const sendValue = (event) => {
+    event.preventDefault();
+    const loginBody = {
+      email: valueRef.current.value,
+      password: passRef.current.value,
+    };
+    axios
+      .post('http://localhost:4000/v1/auth/login', loginBody)
+      .then((res) => {
+        localStorage.setItem('accessToken', res.data.tokens.access.token);
+        localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
+        props.history.push('/dashboard');
+      })
+      .catch((error) => {
+        setErrorValue(error.response.data.message);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -89,7 +85,7 @@ export default function SignIn(props) {
         <form className={classes.form} noValidate>
           <TextField
             variant="outlined"
-            margin="normal" 
+            margin="normal"
             required
             fullWidth
             id="email"
@@ -110,13 +106,10 @@ export default function SignIn(props) {
             id="password"
             autoComplete="current-password"
             inputRef={passRef}
-
           />
-		  <div style={{ display:'flex', justifyContent: 'center'}}>
-			  <p style={{color: "red"}}>	
-			  	{errorMessage.toString()}
-			  </p>
-		  </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <p style={{ color: 'red' }}>{errorMessage.toString()}</p>
+          </div>
           <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -128,7 +121,6 @@ export default function SignIn(props) {
             color="primary"
             className={classes.submit}
             onClick={sendValue}
-
           >
             Sign In
           </Button>
@@ -150,5 +142,5 @@ export default function SignIn(props) {
         <Copyright />
       </Box>
     </Container>
-  )
+  );
 }
