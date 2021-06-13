@@ -1,5 +1,9 @@
 import React from 'react';
 
+import { Header } from '../components';
+
 export default function Dashboard() {
-  return <p> this is dashboard </p>;
+  return (
+    <Header/>
+  );
 }
