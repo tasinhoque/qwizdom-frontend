@@ -9,7 +9,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import Container from '@material-ui/core/Container'
-import axios from 'axios'
+import api from '../api'
 
 
 function Copyright() {
@@ -59,7 +59,7 @@ export default function SignUp(props) {
   
 
 
-	const sendValue = (event) => {
+	const sendValue = async (event) => {
 		event.preventDefault();
 		const registerBody={
       "name":userNameRef.current.value,
@@ -67,8 +67,7 @@ export default function SignUp(props) {
 			"password": passRef.current.value,
 		}
     
-    console.log(registerBody);
-		axios.post('http://localhost:4000/v1/auth/register',registerBody)
+		await api.signup(registerBody)
 			.then(res =>{
         localStorage.setItem('accessToken',res.data.tokens.access.token)
         localStorage.setItem('refreshToken',res.data.tokens.refresh.token)
