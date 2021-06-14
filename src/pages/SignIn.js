@@ -57,7 +57,7 @@ export default function SignIn(props) {
   useEffect(() => {
     const signedIn = localStorage.getItem('refreshToken');
     if (signedIn) {
-      props.history.push('/');
+      props.history.push('/dashboard');
     }
   }, []);
 
