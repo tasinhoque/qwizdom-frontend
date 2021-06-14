@@ -90,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Header(props) {
+export default withRouter(function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -249,5 +249,4 @@ function Header(props) {
       {renderMenu}
     </div>
   );
-}
-export default withRouter(Header);
+});

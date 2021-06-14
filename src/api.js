@@ -31,7 +31,7 @@ axios.interceptors.response.use(
   },
 
   function (error) {
-    console.log(error.config);
+    console.log(error);
     if (
       error.config.url.includes('login') ||
       error.config.url.includes('register') ||
