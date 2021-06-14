@@ -15,6 +15,7 @@ import AccountCircle from '@material-ui/icons/AccountCircle';
 import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -89,7 +90,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function Header() {
+function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
@@ -110,6 +111,11 @@ export default function Header() {
     handleMobileMenuClose();
   };
 
+  const handleLogOut = () => {
+    localStorage.clear();
+    props.history.push('/');
+  };
+
   const handleMobileMenuOpen = (event) => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
@@ -127,6 +133,7 @@ export default function Header() {
     >
       <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
+      <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
     </Menu>
   );
 
@@ -184,7 +191,7 @@ export default function Header() {
             <MenuIcon />
           </IconButton>
           <IconButton>
-            <img src="assets/images/logo.png" width='50' />
+            <img src="assets/images/logo.png" width="50" />
             <Typography className={classes.title} variant="h6" noWrap>
               Qwizdom
             </Typography>
@@ -243,3 +250,4 @@ export default function Header() {
     </div>
   );
 }
+export default withRouter(Header);

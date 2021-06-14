@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { Avatar, Button, TextField, FormControlLabel } from '@material-ui/core';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Checkbox from '@material-ui/core/Checkbox';
@@ -10,7 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import axios from 'axios';
-import api from  '../api'
+import api from '../api';
 
 function Copyright() {
   return (
@@ -54,6 +54,12 @@ export default function SignIn(props) {
   const valueRef = useRef('');
   const passRef = useRef('');
   const [errorMessage, setErrorValue] = useState(' ');
+  useEffect(() => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (signedIn) {
+      props.history.push('/');
+    }
+  }, []);
 
   const sendValue = async (event) => {
     let res;
@@ -63,31 +69,30 @@ export default function SignIn(props) {
       email: valueRef.current.value,
       password: passRef.current.value,
     };
-    res = await api.login(loginBody)
-    .then((res)=>{
-      
-      localStorage.setItem('accessToken',res.data.tokens.access.token)
-      localStorage.setItem('refreshToken',res.data.tokens.refresh.token)
-      console.log(res);
-      props.history.push('/dashboard');     
-    })
-    .catch((error)=>{
-      setErrorValue(error.response.data.message);
-      console.log(error.response.data.message);
-    });
-    
-   
+    res = await api
+      .login(loginBody)
+      .then((res) => {
+        localStorage.setItem('accessToken', res.data.tokens.access.token);
+        localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
+        console.log(res);
+        props.history.push('/dashboard');
+      })
+      .catch((error) => {
+        setErrorValue(error.response.data.message);
+        console.log(error.response.data.message);
+      });
+
     // axios
     //   .post('http://localhost:4000/v1/auth/login', loginBody)
-      // .then((res) => {
-      //   localStorage.setItem('accessToken', res.data.tokens.access.token);
-      //   localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
-      //   props.history.push('/dashboard');
-      // })
-      // .catch((error) => {
-      //   // setErrorValue(error.response.data.message);
-      //   console.log(error);
-      // });
+    // .then((res) => {
+    //   localStorage.setItem('accessToken', res.data.tokens.access.token);
+    //   localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
+    //   props.history.push('/dashboard');
+    // })
+    // .catch((error) => {
+    //   // setErrorValue(error.response.data.message);
+    //   console.log(error);
+    // });
   };
 
   return (

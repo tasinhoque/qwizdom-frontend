@@ -1,16 +1,15 @@
-import React,{useRef, useState}from 'react'
-import { Avatar, Button, TextField, FormControlLabel } from '@material-ui/core'
-import CssBaseline from '@material-ui/core/CssBaseline'
-import Checkbox from '@material-ui/core/Checkbox'
-import Link from '@material-ui/core/Link'
-import Grid from '@material-ui/core/Grid'
-import Box from '@material-ui/core/Box'
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
-import Typography from '@material-ui/core/Typography'
-import { makeStyles } from '@material-ui/core/styles'
-import Container from '@material-ui/core/Container'
-import api from '../api'
-
+import React, { useRef, useState, useEffect } from 'react';
+import { Avatar, Button, TextField, FormControlLabel } from '@material-ui/core';
+import CssBaseline from '@material-ui/core/CssBaseline';
+import Checkbox from '@material-ui/core/Checkbox';
+import Link from '@material-ui/core/Link';
+import Grid from '@material-ui/core/Grid';
+import Box from '@material-ui/core/Box';
+import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import api from '../api';
 
 function Copyright() {
   return (
@@ -22,10 +21,10 @@ function Copyright() {
       {new Date().getFullYear()}
       {'.'}
     </Typography>
-  )
+  );
 }
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -44,42 +43,44 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(3, 0, 2),
   },
   errorStyle: {
-	  display:	'flex',
-	  justifyContent:	'center'
-  }
-}))
+    display: 'flex',
+    justifyContent: 'center',
+  },
+}));
 
 export default function SignUp(props) {
+  const classes = useStyles();
+  const userNameRef = useRef('');
+  const valueRef = useRef('');
+  const passRef = useRef('');
+  const [errorMessage, setErrorValue] = useState(' ');
+  useEffect(() => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (signedIn) {
+      props.history.push('/dashboard');
+    }
+  }, []);
 
-  const classes = useStyles()
-  const userNameRef = useRef('')
-  const valueRef = useRef('')
-  const passRef = useRef('')
-  const [errorMessage,setErrorValue] = useState(" ")
-  
+  const sendValue = async (event) => {
+    event.preventDefault();
+    const registerBody = {
+      name: userNameRef.current.value,
+      email: valueRef.current.value,
+      password: passRef.current.value,
+    };
 
-
-	const sendValue = async (event) => {
-		event.preventDefault();
-		const registerBody={
-      "name":userNameRef.current.value,
-			"email": valueRef.current.value,
-			"password": passRef.current.value,
-		}
-    
-		await api.signup(registerBody)
-			.then(res =>{
-        localStorage.setItem('accessToken',res.data.tokens.access.token)
-        localStorage.setItem('refreshToken',res.data.tokens.refresh.token)
-				console.log(res);
-        props.history.push('/dashboard');    
-			})
-			.catch(error=>{
-				setErrorValue(error.response.data.message)
-			})
-
-  	}
-
+    await api
+      .signup(registerBody)
+      .then((res) => {
+        localStorage.setItem('accessToken', res.data.tokens.access.token);
+        localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
+        console.log(res);
+        props.history.push('/dashboard');
+      })
+      .catch((error) => {
+        setErrorValue(error.response.data.message);
+      });
+  };
 
   return (
     <Container component="main" maxWidth="xs">
@@ -92,9 +93,9 @@ export default function SignUp(props) {
           Sign Up
         </Typography>
         <form className={classes.form} noValidate>
-        <TextField
+          <TextField
             variant="outlined"
-            margin="normal" 
+            margin="normal"
             required
             fullWidth
             id="name"
@@ -106,7 +107,7 @@ export default function SignUp(props) {
           />
           <TextField
             variant="outlined"
-            margin="normal" 
+            margin="normal"
             required
             fullWidth
             id="email"
@@ -127,13 +128,10 @@ export default function SignUp(props) {
             id="password"
             autoComplete="current-password"
             inputRef={passRef}
-
           />
-		  <div style={{ display:'flex', justifyContent: 'center'}}>
-			  <p style={{color: "red"}}>	
-			  	{errorMessage.toString()}
-			  </p>
-		  </div>
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <p style={{ color: 'red' }}>{errorMessage.toString()}</p>
+          </div>
           {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
@@ -145,7 +143,6 @@ export default function SignUp(props) {
             color="primary"
             className={classes.submit}
             onClick={sendValue}
-
           >
             Sign Up
           </Button>
@@ -155,11 +152,6 @@ export default function SignUp(props) {
                 Forgot password?
               </Link>
             </Grid>
-            <Grid item>
-              <Link href="#" variant="body2">
-                {"Don't have an account? Sign Up"}
-              </Link>
-            </Grid>
           </Grid>
         </form>
       </div>
@@ -167,5 +159,5 @@ export default function SignUp(props) {
         <Copyright />
       </Box>
     </Container>
-  )
+  );
 }
