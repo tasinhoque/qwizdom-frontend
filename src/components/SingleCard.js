@@ -9,10 +9,21 @@ import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
+import { createMuiTheme } from '@material-ui/core/styles';
+
+const dummy = createMuiTheme({
+  breakpoints: {
+    values: {
+      tablet: 425,
+      laptop: 1200,
+      desktop: 1400,
+    },
+  },
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    maxWidth: 400,
+    maxWidth: 350,
     marginBottom: 30,
   },
   media: {
@@ -44,6 +55,16 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0.5),
     },
   },
+  [dummy.breakpoints.up('desktop')]: {
+    root: {
+      minWidth: '450px',
+    },
+  },
+  // [dummy.breakpoints.between('tablet', 'laptop')]: {
+  //   root: {
+  //     maxWidth: '300px',
+  //   },
+  // },
 }));
 
 export default function SingleCard() {

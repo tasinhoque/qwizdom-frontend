@@ -10,11 +10,11 @@ export default function Dashboard() {
     <>
       <Header />
       <Grid container>
-        <Grid item sm={3}>
+        <Grid item md={3}>
           <div> navbar space</div>
         </Grid>
 
-        <Grid item sm={8}>
+        <Grid item sm={12} md={9}>
           <DashboardBody />
         </Grid>
       </Grid>

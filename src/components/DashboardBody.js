@@ -30,7 +30,13 @@ export default withRouter(function DashboardBody(props) {
   return (
     <>
       <div></div>
-      <div style={{ padding: '10px' }}>
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'center',
+          padding: '10px 10px 20px 10px',
+        }}
+      >
         <Typography variant="h4">Quizzes</Typography>
       </div>
       <div
@@ -38,7 +44,7 @@ export default withRouter(function DashboardBody(props) {
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          justifyContent: 'space-between',
+          justifyContent: 'space-around',
         }}
       >
         {array1.map((i) => {
