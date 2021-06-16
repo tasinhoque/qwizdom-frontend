@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Typography from '@material-ui/core/Typography';
 import Link from '@material-ui/core/Link';
-import { SignIn, SignUp, Dashboard } from './pages';
+import { SignIn, SignUp, Dashboard, QuizHome } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
 function Copyright() {
@@ -41,8 +41,9 @@ const App = () => {
     <main>
       <Switch>
         <Route path="/" component={SignIn} exact />
-        <Route path="/signUp" component={SignUp} />
+        <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
+        <Route path="/quizhome" component={QuizHome} />
       </Switch>
     </main>
   );

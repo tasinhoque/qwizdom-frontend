@@ -16,20 +16,23 @@ import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { withRouter } from 'react-router-dom';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   title: {
-    display: 'none',
-    [theme.breakpoints.up('sm')]: {
-      display: 'block',
-    },
-    color: theme.palette.common.white,
+    display: 'block',
+    color: theme.palette.common.gray,
+    fontFamily: 'Rammetto One',
+    marginLeft: theme.spacing(2),
+  },
+  logo: {
+    padding: theme.spacing(2),
   },
   search: {
     position: 'relative',
@@ -180,7 +183,10 @@ export default withRouter(function Header(props) {
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static" style={{ background: '#2E3B55' }}>
+      <AppBar
+        position="static"
+        style={{ background: '#2E3B55', color: '#f5f5f5' }}
+      >
         <Toolbar>
           <IconButton
             edge="start"
@@ -190,12 +196,10 @@ export default withRouter(function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <IconButton>
-            <img src="assets/images/logo.png" width="50" />
-            <Typography className={classes.title} variant="h6" noWrap>
-              Qwizdom
-            </Typography>
-          </IconButton>
+          <img src="assets/images/logo.png" width="50" />
+          <Typography className={classes.title} variant="h5" noWrap>
+            Qwizdom
+          </Typography>
           {/* <div className={classes.search}> */}
           {/*   <div className={classes.searchIcon}> */}
           {/*     <SearchIcon /> */}
@@ -221,6 +225,7 @@ export default withRouter(function Header(props) {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <IconButton></IconButton>
             <IconButton
               edge="end"
               aria-label="account of current user"
