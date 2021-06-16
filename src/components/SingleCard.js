@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
       margin: theme.spacing(0.5),
     },
   },
-  [dummy.breakpoints.up('desktop')]: {
+  [dummy.breakpoints.up('laptop')]: {
     root: {
       minWidth: '450px',
     },

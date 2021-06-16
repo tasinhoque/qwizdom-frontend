@@ -14,7 +14,7 @@ export default withRouter(function DashboardBody(props) {
       props.history.push('/');
     }
   }, []);
-  const array1 = [1, 2, 3, 4];
+  const array1 = [1, 2, 3, 4, 5, 6];
 
   const handleClick = async () => {
     api
@@ -29,22 +29,23 @@ export default withRouter(function DashboardBody(props) {
 
   return (
     <>
-      <div></div>
       <div
         style={{
-          display: 'flex',
-          justifyContent: 'center',
-          padding: '10px 10px 20px 10px',
+          // display: 'flex',
+          // justifyContent: 'center',
+          padding: '10px 0px 35px 0px',
         }}
       >
-        <Typography variant="h4">Quizzes</Typography>
+        <Typography style={{ borderBottom: '2px solid black' }} variant="h4">
+          Quizzes
+        </Typography>
       </div>
       <div
         style={{
           display: 'flex',
           flexDirection: 'row',
           flexWrap: 'wrap',
-          justifyContent: 'space-around',
+          justifyContent: 'space-evenly',
         }}
       >
         {array1.map((i) => {
