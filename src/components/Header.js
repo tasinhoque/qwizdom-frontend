@@ -196,7 +196,7 @@ export default withRouter(function Header(props) {
           >
             <MenuIcon />
           </IconButton>
-          <img src="assets/images/logo.png" width="50" />
+          <img src="/assets/images/logo.png" width="50" />
           <Typography className={classes.title} variant="h5" noWrap>
             Qwizdom
           </Typography>

@@ -11,6 +11,8 @@ import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import { createMuiTheme } from '@material-ui/core/styles';
 import { CardActionArea } from '@material-ui/core';
+import { QuizHome } from '../pages';
+import { withRouter } from 'react-router-dom';
 
 const dummy = createMuiTheme({
   breakpoints: {
@@ -68,15 +70,17 @@ const useStyles = makeStyles((theme) => ({
   // },
 }));
 
-export default function SingleCard(props) {
+export default withRouter(function SingleCard(props) {
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
   console.log();
+  const rerouteQuiz = () => {
+    props.history.push(`/quizhome/${props.id}`);
+  };
   return (
     <Card className={classes.root}>
-      {/* <CardActionArea component={RouterLink} to="/questions"> */}
-      <CardActionArea>
+      <CardActionArea onClick={rerouteQuiz}>
         <CardMedia
           component="img"
           className={classes.media}
@@ -125,4 +129,4 @@ export default function SingleCard(props) {
       </div>
     </Card>
   );
-}
+});

@@ -17,6 +17,8 @@ import { Header } from '../components';
 import { QuizReviewCard } from '../components';
 import { SingleCard } from '../components';
 import { Grid } from '@material-ui/core';
+import { useParams } from 'react-router';
+
 import { DashboardBody } from '../components';
 
 const useStyles = makeStyles((theme) => ({
@@ -89,10 +91,12 @@ export default function QuizHome(props) {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [quiz, setquiz] = useState('');
+  const { id } = useParams();
+
   useEffect((async) => {
     setLoading(true);
     api
-      .getQuiz('60c8b649b1163904e4f9d6da')
+      .getQuiz(id)
       .then((res) => {
         console.log(res.data);
         setquiz(res.data);
@@ -104,16 +108,14 @@ export default function QuizHome(props) {
   if (loading) {
     return (
       <>
+        <Header />
         <div
           style={{
-            padding: '10px 0px 35px 0px',
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '20px',
           }}
         >
-          <Typography style={{ borderBottom: '2px solid black' }} variant="h4">
-            Quiz
-          </Typography>
-        </div>
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
           <CircularProgress color="secondary" />
         </div>
       </>

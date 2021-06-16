@@ -57,7 +57,7 @@ export default function QuizReviewCard() {
         <CardHeader
           avatar={
             <Avatar
-              src="assets/images/marcos.png"
+              src="/assets/images/marcos.png"
               className={classes.avatar}
             ></Avatar>
           }
@@ -84,7 +84,6 @@ export default function QuizReviewCard() {
           euismod libero erat, vitae finibus dui viverra eu.
         </Typography>
       </div>
-
     </Card>
   );
 }
