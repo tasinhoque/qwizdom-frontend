@@ -10,6 +10,7 @@ import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import Chip from '@material-ui/core/Chip';
 import { createMuiTheme } from '@material-ui/core/styles';
+import { CardActionArea } from '@material-ui/core';
 
 const dummy = createMuiTheme({
   breakpoints: {
@@ -74,12 +75,16 @@ export default function SingleCard(props) {
   console.log();
   return (
     <Card className={classes.root}>
-      <CardMedia
-        component="img"
-        className={classes.media}
-        image={props.coverImage}
-        // image="assets/images/quiz1.jpeg"
-      />
+      {/* <CardActionArea component={RouterLink} to="/questions"> */}
+      <CardActionArea>
+        <CardMedia
+          component="img"
+          className={classes.media}
+          image={props.coverImage}
+          // image="assets/images/quiz1.jpeg"
+        />
+      </CardActionArea>
+
       <div style={{ padding: '5px' }}>
         <Typography variant="h6" component="p">
           {props.name}
@@ -100,7 +105,7 @@ export default function SingleCard(props) {
               className={classes.avatar}
             ></Avatar>
           }
-          title="Marcos Marshal"
+          title={props.creator.name}
           // subheader="September 14, 2016"
         />
 
