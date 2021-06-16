@@ -52,6 +52,7 @@ axios.interceptors.response.use(
         .then((res) => {
           if (res.status === 200) {
             localStorage.setItem('accessToken', res.data.access.token);
+            localStorage.setItem('refreshToken', res.data.refresh.token);
             console.log('Access token refreshed!');
             return axios(originalRequest);
           }
