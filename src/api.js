@@ -13,7 +13,7 @@ axios.interceptors.request.use(
     } else {
       let accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
-        config.headers['Authorization'] = 'Bearer ' + 'sfasfsfsd';
+        config.headers['Authorization'] = 'Bearer ' + accessToken;
         config.headers['Accept'] = 'application/json';
         console.log(config);
         return config;
@@ -77,8 +77,8 @@ const api = {
   getAllUsers: () => {
     return axios.get(`${baseUrl}/users?page=1&limit=5`);
   },
-  getQuizzes: () => {
-    return axios.get(`${baseUrl}/quizzes`);
+  getQuizzes: (pageNum, limit) => {
+    return axios.get(`${baseUrl}/quizzes?page=${pageNum}&limit=${limit}`);
   },
   getThreadComments: () => {
     return axios.get(
