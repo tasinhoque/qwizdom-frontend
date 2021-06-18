@@ -1,38 +1,36 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { SingleCard } from '../components';
 import Pagination from '@material-ui/lab/Pagination';
-import { Grid } from '@material-ui/core';
 import Typography from '@material-ui/core/Typography';
 import api from '../api';
 import { withRouter } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
-export default withRouter(function DashboardBody(props) {
+function DashboardBody(props) {
   const [loading, setLoading] = useState(true);
   const [pageNum, setPageNum] = useState(1);
-  const [totalPage, setTotalpage] = useState(0);
+  const [totalPage, setTotalPage] = useState(0);
   const [quizArray, setQuizArray] = useState([]);
-  useEffect(
-    (async) => {
-      const signedIn = localStorage.getItem('refreshToken');
-      if (!signedIn) {
-        props.history.push('/');
-      }
-      setLoading(true);
-      api
-        .getQuizzes(pageNum, 4)
-        .then((res) => {
-          setTotalpage(res.data.totalPages);
-          setQuizArray(res.data.results);
-          console.log(res);
-          setLoading(false);
-        })
-        .catch((e) => {});
-    },
-    [pageNum]
-  );
-  const pageChange = async (event, num) => {
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (!signedIn) {
+      props.history.push('/');
+    }
+    setLoading(true);
+    api
+      .getQuizzes(pageNum, 4)
+      .then((res) => {
+        setTotalPage(res.data.totalPages);
+        setQuizArray(res.data.results);
+        console.log(res);
+        setLoading(false);
+      })
+      .catch((e) => {});
+  }, [pageNum]);
+
+  const pageChange = async (_event, num) => {
     setPageNum(num);
     console.log('changed num is ', num);
   };
@@ -97,4 +95,6 @@ export default withRouter(function DashboardBody(props) {
       </>
     );
   }
-});
+}
+
+export default withRouter(DashboardBody);
