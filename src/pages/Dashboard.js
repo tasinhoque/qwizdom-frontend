@@ -1,9 +1,7 @@
 import React from 'react';
-import api from '../api';
-
-import { Header } from '../components';
 import { Grid } from '@material-ui/core';
-import { DashboardBody } from '../components';
+
+import { Header, DashboardBody } from '../components';
 
 export default function Dashboard() {
   return (

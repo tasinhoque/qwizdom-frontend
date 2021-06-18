@@ -1,25 +1,17 @@
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import api from '../api';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import CardMedia from '@material-ui/core/CardMedia';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
-import Box from '@material-ui/core/Box';
-import Chip from '@material-ui/core/Chip';
-import { useEffect } from 'react';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
-import { SingleCard } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams } from 'react-router';
-
-import { DashboardBody } from '../components';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -90,16 +82,16 @@ const useStyles = makeStyles((theme) => ({
 export default function QuizHome(props) {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
-  const [quiz, setquiz] = useState('');
+  const [quiz, setQuiz] = useState('');
   const { id } = useParams();
 
-  useEffect((async) => {
+  useEffect(async () => {
     setLoading(true);
     api
       .getQuiz(id)
       .then((res) => {
         console.log(res.data);
-        setquiz(res.data);
+        setQuiz(res.data);
         setLoading(false);
       })
       .catch((e) => {});
