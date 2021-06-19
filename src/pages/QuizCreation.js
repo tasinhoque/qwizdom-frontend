@@ -1,6 +1,5 @@
 import React from 'react';
 import { Header } from '../components';
-import { stage } from '../models/stage';
 import QuizStage from '../components/QuizStage';
 import { StageProvider } from '../contexts/stageContext';
 import { QuizCreationBody } from '../components';

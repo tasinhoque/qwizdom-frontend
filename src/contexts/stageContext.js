@@ -4,35 +4,24 @@ import { QuizCreationBody, QuizStage } from '../components';
 export const stageContext = createContext();
 export const StageProvider = (props) => {
   const [stage, setStage] = useState([
-    [
-      {
-        stageId: 1,
-        questions: [
-          {
-            questionId: '1',
-            questionName: 'this is the question',
-          },
-          { questionId: '2', questionName: 'web development' },
-        ],
-      },
-    ],
-    [
-      {
-        stageId: 2,
-        questions: [
-          {
-            questionId: '1',
-            questionName: 'this is the question',
-          },
-          { questionId: '2', questionName: 'web development' },
-        ],
-      },
-    ],
+    {
+      stageId: 1,
+      questions: [
+        {
+          questionId: 1,
+          questionName: 'stage 1, question 1',
+        },
+        {
+          questionId: 2,
+          questionName: 'stage 1, question 2',
+        },
+      ],
+    },
   ]);
 
   return (
     <stageContext.Provider value={[stage, setStage]}>
-      <QuizStage />
+      {/* <QuizStage /> */}
       <QuizCreationBody />
     </stageContext.Provider>
   );
