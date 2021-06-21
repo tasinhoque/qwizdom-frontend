@@ -24,7 +24,7 @@ const dummy = createMuiTheme({
   },
 });
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     maxWidth: 350,
     marginBottom: 30,

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { SingleCard } from '../components';
 import Pagination from '@material-ui/lab/Pagination';
-import Typography from '@material-ui/core/Typography';
+import { Typography, TextField, Grid } from '@material-ui/core';
 import api from '../api';
 import { withRouter } from 'react-router-dom';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -21,13 +21,13 @@ function DashboardBody(props) {
     setLoading(true);
     api
       .getQuizzes(pageNum, 4)
-      .then((res) => {
+      .then(res => {
         setTotalPage(res.data.totalPages);
         setQuizArray(res.data.results);
         console.log(res);
         setLoading(false);
       })
-      .catch((e) => {});
+      .catch(e => {});
   }, [pageNum]);
 
   const pageChange = async (_event, num) => {
@@ -40,12 +40,16 @@ function DashboardBody(props) {
       <>
         <div
           style={{
-            padding: '10px 0px 35px 0px',
+            padding: '20px 0px 35px 0px',
           }}
         >
-          <Typography style={{ borderBottom: '2px solid black' }} variant="h4">
+          <Typography style={{ display: 'inline' }} variant="h4">
             Quizzes
           </Typography>
+          <TextField
+            variant="outlined"
+            style={{ position: 'absolute', right: '100px' }}
+          />
         </div>
         <div style={{ display: 'flex', justifyContent: 'center' }}>
           <CircularProgress color="secondary" />
@@ -59,22 +63,28 @@ function DashboardBody(props) {
           style={{
             // display: 'flex',
             // justifyContent: 'center',
-            padding: '10px 0px 35px 0px',
+            padding: '20px 0px 35px 0px',
+            position: 'relative',
           }}
         >
-          <Typography style={{ borderBottom: '2px solid black' }} variant="h4">
+          <Typography style={{ display: 'inline' }} variant="h4">
             Quizzes
           </Typography>
+          <TextField
+            variant="outlined"
+            style={{ position: 'absolute', right: '100px' }}
+          />
         </div>
         <div
           style={{
             display: 'flex',
             flexDirection: 'row',
             flexWrap: 'wrap',
-            justifyContent: 'space-evenly',
+            justifyContent: 'space-between',
+            marginRight: '100px',
           }}
         >
-          {quizArray.map((q) => {
+          {quizArray.map(q => {
             return <SingleCard {...q} key={q.id} />;
           })}
         </div>
@@ -82,7 +92,7 @@ function DashboardBody(props) {
           style={{
             marginTop: '20px',
             display: 'flex',
-            justifyContent: 'center',
+            justifyContent: 'flex-start',
           }}
         >
           <Pagination
