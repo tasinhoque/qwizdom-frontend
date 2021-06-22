@@ -39,20 +39,20 @@ export default function QuizCreationBody() {
   ]);
 
   const allFunctions = {
-    handleBodyChange: (message) => {
-      setQuizBody((presentState) => {
+    handleBodyChange: message => {
+      setQuizBody(presentState => {
         const body = [...presentState];
         body.push(message);
         return body;
       });
     },
 
-    addStage: (message) => {
-      setQuizBody((presentState) => {
+    addStage: message => {
+      setQuizBody(presentState => {
         const body = [...presentState];
-        const temp = store.current.map((x) => x.stageId);
+        const temp = store.current.map(x => x.stageId);
         const newId = Math.max(...temp) + 1;
-        const pos = store.current.findIndex((i) => i.stageId == message);
+        const pos = store.current.findIndex(i => i.stageId == message);
 
         const newStage = {
           stageId: newId,
@@ -69,27 +69,27 @@ export default function QuizCreationBody() {
         return body;
       });
     },
-    deleteStage: (stageId) => {
-      setQuizBody((presentState) => {
+    deleteStage: stageId => {
+      setQuizBody(presentState => {
         const body = [...presentState];
-        const pos = store.current.findIndex((i) => i.stageId == stageId);
+        const pos = store.current.findIndex(i => i.stageId == stageId);
         body.splice(pos, 1);
         store.current.splice(pos, 1);
         return body;
       });
     },
 
-    questionChange: (message) => {
-      const pos = store.current.findIndex((i) => i.stageId == message.stageId);
+    questionChange: message => {
+      const pos = store.current.findIndex(i => i.stageId == message.stageId);
       store.current[pos].questions[message.questionId] = message;
 
       console.log(store.current);
     },
-    addQuestion: (message) => {
-      const pos = store.current.findIndex((i) => i.stageId == message.stageId);
+    addQuestion: message => {
+      const pos = store.current.findIndex(i => i.stageId == message.stageId);
 
       store.current[pos].questions.push(message);
-      setQuizBody((presentState) => {
+      setQuizBody(presentState => {
         const body = [...presentState];
         return body;
       });
@@ -101,7 +101,7 @@ export default function QuizCreationBody() {
       <div>
         <button onClick={handleSubmit}> submit full page</button>
 
-        {store.current.map((stage) => {
+        {store.current.map(stage => {
           return (
             <QuizStage
               submitChecker={submitVal}
