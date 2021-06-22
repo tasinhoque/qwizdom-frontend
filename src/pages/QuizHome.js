@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../api';
 import { makeStyles } from '@material-ui/core/styles';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -13,7 +13,7 @@ import { QuizReviewCard } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams } from 'react-router';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {},
   quizAbout: {
     flex: '1',
@@ -89,12 +89,12 @@ export default function QuizHome(props) {
     setLoading(true);
     api
       .getQuiz(id)
-      .then((res) => {
+      .then(res => {
         console.log(res.data);
         setQuiz(res.data);
         setLoading(false);
       })
-      .catch((e) => {});
+      .catch(e => {});
   }, []);
 
   if (loading) {
