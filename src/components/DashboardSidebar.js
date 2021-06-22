@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Chip, Avatar, Grid, Typography } from '@material-ui/core';
 import { Done as DoneIcon } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -16,7 +15,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const ClickableChip = ({ selected, setSelected, label, classes }) => (
+const ClickableChip = ({
+  selected,
+  setSelected,
+  label,
+  classes,
+  secondChipSelected,
+  setSecondChipSelected,
+}) => (
   <Chip
     className={classes.chip}
     avatar={
@@ -31,7 +37,16 @@ const ClickableChip = ({ selected, setSelected, label, classes }) => (
     label={label}
     clickable
     color="primary"
-    onClick={() => setSelected(prev => !prev)}
+    onClick={() => {
+      if (selected) {
+        setSelected(false);
+      } else {
+        if (secondChipSelected) {
+          setSecondChipSelected(false);
+        }
+        setSelected(true);
+      }
+    }}
   />
 );
 
@@ -54,29 +69,44 @@ const ChipGroup = ({
       selected={firstChipSelected}
       setSelected={setFirstChipSelected}
       label={firstChipText}
+      secondChipSelected={secondChipSelected}
+      setSecondChipSelected={setSecondChipSelected}
     />
     <ClickableChip
       classes={classes}
       selected={secondChipSelected}
       setSelected={setSecondChipSelected}
       label={secondChipText}
+      secondChipSelected={firstChipSelected}
+      setSecondChipSelected={setFirstChipSelected}
     />
   </Grid>
 );
 
-const DashboardSidebar = () => {
-  const [subscribedSelected, setSubscribedSelected] = useState(false);
-  const [unsubscribedSelected, setUnsubscribedSelected] = useState(false);
-
-  const [scheduledSelected, setScheduledSelected] = useState(false);
-  const [unscheduledSelected, setUnscheduledSelected] = useState(false);
-
-  const [timeBoundSelected, setTimeBoundSelected] = useState(false);
-  const [notTimeBoundSelected, setNotTimeBoundSelected] = useState(false);
-
-  const [testSelected, setTestSelected] = useState(false);
-  const [surveySelected, setSurveySelected] = useState(false);
-
+const DashboardSidebar = ({
+  subscribedSelected,
+  setSubscribedSelected,
+  unsubscribedSelected,
+  setUnsubscribedSelected,
+  scheduledSelected,
+  setScheduledSelected,
+  unscheduledSelected,
+  setUnscheduledSelected,
+  timeBoundSelected,
+  setTimeBoundSelected,
+  notTimeBoundSelected,
+  setNotTimeBoundSelected,
+  testSelected,
+  setTestSelected,
+  surveySelected,
+  setSurveySelected,
+  loading,
+  setLoading,
+  totalPages,
+  setTotalPages,
+  quizzes,
+  setQuizzes,
+}) => {
   const classes = useStyles();
 
   return (

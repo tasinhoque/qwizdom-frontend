@@ -3,7 +3,7 @@ const baseUrl = 'http://localhost:4000/v1';
 // axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
 
 axios.interceptors.request.use(
-  (config) => {
+  config => {
     if (
       config.url.includes('login') ||
       config.url.includes('register') ||
@@ -20,13 +20,13 @@ axios.interceptors.request.use(
       }
     }
   },
-  (error) => {
+  error => {
     Promise.reject(error);
   }
 );
 
 axios.interceptors.response.use(
-  (response) => {
+  response => {
     return response;
   },
 
@@ -49,7 +49,7 @@ axios.interceptors.response.use(
       originalRequest._retry = true;
       return axios
         .post(`${baseUrl}/auth/refresh-tokens`, { refreshToken: refreshToken })
-        .then((res) => {
+        .then(res => {
           if (res.status === 200) {
             localStorage.setItem('accessToken', res.data.access.token);
             localStorage.setItem('refreshToken', res.data.refresh.token);
@@ -63,25 +63,25 @@ axios.interceptors.response.use(
 );
 
 const api = {
-  signup: (body) => {
+  signup: body => {
     return axios.post(`${baseUrl}/auth/register`, body);
   },
-  login: (body) => {
+  login: body => {
     return axios.post(`${baseUrl}/auth/login`, body);
   },
-  refreshToken: (body) => {
+  refreshToken: body => {
     return axios.post(`${baseUrl}/auth/refresh-tokens`, body);
   },
-  logout: (body) => {
+  logout: body => {
     return axios.delete(`${baseUrl}/auth/logout`, body);
   },
   getAllUsers: () => {
     return axios.get(`${baseUrl}/users?page=1&limit=5`);
   },
-  getQuizzes: (pageNum, limit) => {
-    return axios.get(`${baseUrl}/quizzes?page=${pageNum}&limit=${limit}`);
+  getQuizzes: query => {
+    return axios.get(`${baseUrl}/quizzes?${query}`);
   },
-  getQuiz: (id) => {
+  getQuiz: id => {
     return axios.get(`${baseUrl}/quizzes/${id}`);
   },
   getThreadComments: () => {
@@ -90,4 +90,5 @@ const api = {
     );
   },
 };
+
 export default api;
