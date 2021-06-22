@@ -89,6 +89,7 @@ const api = {
       `${baseUrl}/discussion-threads/60bdae891bcc9948e077bfdf/comments`
     );
   },
+  getCategories: () => axios.get(`${baseUrl}/categories`),
 };
 
 export default api;

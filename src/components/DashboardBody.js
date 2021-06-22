@@ -76,7 +76,7 @@ function DashboardBody({
             style={{
               marginTop: '20px',
               display: 'flex',
-              justifyContent: 'flex-start',
+              justifyContent: 'center',
             }}
           >
             <Pagination

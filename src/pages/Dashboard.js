@@ -5,9 +5,6 @@ import api from '../api';
 import { Header, DashboardBody, DashboardSidebar } from '../components';
 
 export default function Dashboard() {
-  const [subscribedSelected, setSubscribedSelected] = useState(false);
-  const [unsubscribedSelected, setUnsubscribedSelected] = useState(false);
-
   const [scheduledSelected, setScheduledSelected] = useState(false);
   const [unscheduledSelected, setUnscheduledSelected] = useState(false);
 
@@ -22,6 +19,7 @@ export default function Dashboard() {
   const [quizzes, setQuizzes] = useState([]);
   const [page, setPage] = useState(1);
   const [name, setName] = useState('');
+  const [categoryIds, setCategoryIds] = useState([]);
 
   const [queryString, setQueryString] = useState('');
 
@@ -36,10 +34,6 @@ export default function Dashboard() {
   };
 
   const dashboardSidebarProps = {
-    subscribedSelected,
-    setSubscribedSelected,
-    unsubscribedSelected,
-    setUnsubscribedSelected,
     scheduledSelected,
     setScheduledSelected,
     unscheduledSelected,
@@ -52,6 +46,7 @@ export default function Dashboard() {
     setTestSelected,
     surveySelected,
     setSurveySelected,
+    setCategoryIds,
   };
 
   const updateQueryString = () => {
@@ -73,6 +68,16 @@ export default function Dashboard() {
       str += '&isScheduled=true';
     } else if (unscheduledSelected) {
       str += '&isScheduled=false';
+    }
+
+    if (name !== '') {
+      str += `&name=${name}`;
+    }
+
+    if (categoryIds.length > 0) {
+      categoryIds.forEach(id => {
+        str += `&categories=${id}`;
+      });
     }
 
     setQueryString(str);
@@ -121,6 +126,7 @@ export default function Dashboard() {
     notTimeBoundSelected,
     page,
     name,
+    categoryIds,
   ]);
 
   return (
