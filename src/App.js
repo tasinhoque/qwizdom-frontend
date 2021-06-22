@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { SignIn, SignUp, Dashboard, QuizHome } from './pages';
+import { SignIn, SignUp, Dashboard, QuizHome, QuizCreation } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
 const App = () => {
@@ -10,6 +10,7 @@ const App = () => {
         <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/quizhome/:id" component={QuizHome} />
+        <Route path="/creation" component={QuizCreation} />
       </Switch>
     </main>
   );
