@@ -19,50 +19,46 @@ const useStyles = makeStyles((theme) => ({
 
 export default function QuizStage(props) {
   const classes = useStyles();
-  const [value, setValue] = useContext(stageContext);
 
-  console.log(props);
+  // console.log(props);
   const deleteStage = () => {
-    const dummy = JSON.parse(JSON.stringify(value));
-    const pos = dummy.findIndex((i) => i.stageId == props.stageId);
-    dummy.splice(pos, 1);
-    setValue(dummy);
+    // const dummy = JSON.parse(JSON.stringify(value));
+    // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
+    // dummy.splice(pos, 1);
+    // setValue(dummy);
+
+    props.bodySetter.deleteStage(props.stageId);
   };
 
   const addStage = (e) => {
-    const dummy = JSON.parse(JSON.stringify(value));
-    // let dummy = value;
-    // const newId = value.length + 1;
-    const temp = dummy.map((x) => x.stageId);
-    const newId = Math.max(...temp) + 1;
-    const newStage = {
-      stageId: newId,
-      questions: [],
-    };
-    const pos = dummy.findIndex((i) => i.stageId == props.stageId);
-    dummy.splice(pos + 1, 0, newStage);
-    setValue(dummy);
+    // const dummy = JSON.parse(JSON.stringify(value));
+    // const temp = dummy.map((x) => x.stageId);
+    // const newId = Math.max(...temp) + 1;
+    // const newStage = {
+    //   stageId: newId,
+    //   questions: [],
+    // };
+    // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
+    // dummy.splice(pos + 1, 0, newStage);
+    // setValue(dummy);
+
+    console.log('add stage called');
+    props.bodySetter.addStage(props.stageId);
   };
 
   const addQuestion = (e) => {
-    const dummy = JSON.parse(JSON.stringify(value));
-    const pos = dummy.findIndex((i) => i.stageId == props.stageId);
+    // const dummy = JSON.parse(JSON.stringify(value));
+    // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
 
-    const temp = dummy[pos].questions.map((x) => x.questionId);
+    const temp = props.questions.map((x) => x.questionId);
     const newId = Math.max(...temp) + 1;
 
-    e.preventDefault();
     const newQuestion = {
+      stageId: props.stageId,
       questionId: newId,
-      questionName: 'new one',
+      questionLabel: 'new one',
     };
-    console.log(dummy[pos]);
-    dummy[pos].questions.push(newQuestion);
-    setValue(dummy);
-  };
-
-  const dataModifier = (data) => {
-    console.log(data);
+    props.bodySetter.addQuestion(newQuestion);
   };
 
   if (props.questions != undefined) {
@@ -79,9 +75,10 @@ export default function QuizStage(props) {
               return (
                 <QuestionComponent
                   {...q}
-                  // submit={props.submit}
+                  submitChecker={props.submitChecker}
                   stageId={props.stageId}
-                  key={Math.random()}
+                  questionChange={props.bodySetter.questionChange}
+                  key={q.questionId}
                 />
               );
             })}
