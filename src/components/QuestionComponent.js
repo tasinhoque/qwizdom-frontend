@@ -7,11 +7,19 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Portal from '@material-ui/core/Portal';
+import FormGroup from '@material-ui/core/FormGroup';
+import { IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
+  root: {},
+  question: {
+    minWidth: theme.spacing(4),
+  },
   formControl: {
     margin: theme.spacing(1),
     minWidth: 120,
@@ -35,37 +43,40 @@ export default function QuestionComponent(props) {
   const updatedVal = useRef('');
 
   //MCQ Hooks
-  const [radio, setRadio] = useState('');
-  const [radioArray, setRadioArray] = useState([]);
+  const [option, setOption] = useState('');
+  const [optionArray, setOptionArray] = useState([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
 
-  const inputChange = (e) => {
+  // const addOptionRef = useRef('');
+  // const placeholderRef = useRef('Add option');
+
+  const inputChange = e => {
     e.preventDefault();
     updatedVal.current = e.target.value;
     setValue(e.target.value);
     questionBody.current.questionLabel = e.target.value;
     props.questionChange(questionBody.current);
   };
-  const handleSelect = (e) => {
+  const handleSelect = e => {
     setType(e.target.value);
     questionBody.current.questionType = e.target.value;
     props.questionChange(questionBody.current);
   };
 
   const mcqBuilder = () => {
-    const handleRadio = (e) => {
-      setRadio(e.target.value);
+    const handleOption = e => {
+      setOption(e.target.value);
     };
-    const addOption = (e) => {
+    const addOption = e => {
       e.preventDefault();
       let opt = addOptionRef.current.value;
       if (opt == '') return;
-      if (radioArray.includes(opt)) {
+      if (optionArray.includes(opt)) {
         placeholderRef.current = 'Please add a different option';
       }
-      setRadioArray((present) => {
-        const body = [...radioArray, opt];
+      setOptionArray(present => {
+        const body = [...optionArray, opt];
         questionBody.current.options = body;
         props.questionChange(questionBody.current);
         return body;
@@ -73,7 +84,19 @@ export default function QuestionComponent(props) {
       addOptionRef.current.value = '';
     };
 
-    const keyPress = (e) => {
+    const removeOption = e => {
+      console.log(e);
+      // console.log(optionArray.indexOf(e));
+      setOptionArray(present => {
+        const body = [...optionArray];
+        body.splice(body.indexOf(e), 1);
+        questionBody.current.options = body;
+        props.questionChange(questionBody.current);
+        return body;
+      });
+    };
+
+    const keyPress = e => {
       if (e.keyCode == 13) {
         addOption(e);
       }
@@ -84,29 +107,120 @@ export default function QuestionComponent(props) {
         <RadioGroup
           aria-label="gender"
           name="gender1"
-          value={radio}
-          onChange={handleRadio}
+          value={option}
+          onChange={handleOption}
         >
-          {radioArray.map((r) => {
+          {optionArray.map(r => {
             return (
-              <FormControlLabel
-                value={r}
-                control={<Radio />}
-                label={r}
-                key={r}
-              />
+              <div>
+                <FormControlLabel
+                  value={r}
+                  control={<Radio />}
+                  label={r}
+                  key={r}
+                />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    removeOption(r);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
             );
           })}
-          <TextField
-            style={{ width: '60%', margin: '8px' }}
-            variant="filled"
-            required
-            onKeyDown={keyPress}
-            placeholder={placeholderRef.current}
-            inputRef={addOptionRef}
-            onBlur={addOption}
-          />
         </RadioGroup>
+        <TextField
+          style={{ width: '60%', margin: '8px' }}
+          variant="filled"
+          required
+          onKeyDown={keyPress}
+          placeholder={placeholderRef.current}
+          inputRef={addOptionRef}
+          onBlur={addOption}
+        />
+      </div>
+    );
+  };
+
+  const checkboxBuilder = () => {
+    const handleOption = e => {
+      setOption(e.target.value);
+    };
+    const addOption = e => {
+      e.preventDefault();
+      let opt = addOptionRef.current.value;
+      if (opt == '') return;
+      if (optionArray.includes(opt)) {
+        placeholderRef.current = 'Please add a different option';
+      }
+      setOptionArray(present => {
+        const body = [...optionArray, opt];
+        questionBody.current.options = body;
+        props.questionChange(questionBody.current);
+        return body;
+      });
+      addOptionRef.current.value = '';
+    };
+
+    const removeOption = e => {
+      console.log(e);
+      // console.log(optionArray.indexOf(e));
+      setOptionArray(present => {
+        const body = [...optionArray];
+        body.splice(body.indexOf(e), 1);
+        questionBody.current.options = body;
+        props.questionChange(questionBody.current);
+        return body;
+      });
+    };
+
+    const keyPress = e => {
+      if (e.keyCode == 13) {
+        addOption(e);
+      }
+    };
+    return (
+      <div>
+        <p> this is Checkbox sector </p>
+        <FormGroup
+          aria-label="gender"
+          name="gender1"
+          value={option}
+          onChange={handleOption}
+        >
+          {optionArray.map(r => {
+            return (
+              <div>
+                <FormControlLabel
+                  value={r}
+                  control={<Checkbox />}
+                  label={r}
+                  key={r}
+                />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    removeOption(r);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            );
+          })}
+        </FormGroup>
+        <TextField
+          style={{ width: '60%', margin: '8px' }}
+          variant="filled"
+          required
+          onKeyDown={keyPress}
+          placeholder={placeholderRef.current}
+          inputRef={addOptionRef}
+          onBlur={addOption}
+        />
+        {/* <IconButton aria-label="delete" onClick={()=>{removeOption(i, j)}}> */}
       </div>
     );
   };
@@ -140,7 +254,7 @@ export default function QuestionComponent(props) {
   return (
     <div>
       <form
-        onSubmit={(e) => {
+        onSubmit={e => {
           e.preventDefault();
         }}
       >
@@ -212,11 +326,7 @@ export default function QuestionComponent(props) {
           </div>
         )}
 
-        {selectType == 'Checkbox' && (
-          <div>
-            <p> this is Checkbox sector </p>
-          </div>
-        )}
+        {selectType == 'Checkbox' && checkboxBuilder()}
       </form>
       {/* <p> {props.questionName}</p> */}
       {/* <p> props stage is {props.stageId}</p> */}
