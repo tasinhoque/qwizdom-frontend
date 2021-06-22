@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
 import { SingleCard } from '../components';
 import Pagination from '@material-ui/lab/Pagination';
-import { Typography, TextField } from '@material-ui/core';
+import { Typography, TextField, InputAdornment } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
+import SearchIcon from '@material-ui/icons/Search';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 function DashboardBody({
@@ -39,10 +40,17 @@ function DashboardBody({
         </Typography>
         <TextField
           variant="outlined"
-          style={{ position: 'absolute', right: '100px' }}
+          style={{ position: 'absolute', minWidth: '300px', right: '100px' }}
           value={tempName}
           onKeyDown={keyPress}
           onChange={e => setTempName(e.target.value)}
+          InputProps={{
+            startAdornment: (
+              <InputAdornment position="start">
+                <SearchIcon style={{ fill: 'gray' }} />
+              </InputAdornment>
+            ),
+          }}
         />
       </div>
       {loading ? (
