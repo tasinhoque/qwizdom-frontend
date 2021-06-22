@@ -46,7 +46,6 @@ export default function Dashboard() {
     setTestSelected,
     surveySelected,
     setSurveySelected,
-    ...dashboardBodyProps,
   };
 
   // useEffect(async () => {

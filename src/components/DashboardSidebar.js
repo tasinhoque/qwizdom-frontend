@@ -100,12 +100,6 @@ const DashboardSidebar = ({
   setTestSelected,
   surveySelected,
   setSurveySelected,
-  loading,
-  setLoading,
-  totalPages,
-  setTotalPages,
-  quizzes,
-  setQuizzes,
 }) => {
   const classes = useStyles();
 
