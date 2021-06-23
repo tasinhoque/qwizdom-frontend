@@ -15,6 +15,11 @@ import FormGroup from '@material-ui/core/FormGroup';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
 
+import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import { findLastIndex } from 'lodash';
+import { CenterFocusStrong } from '@material-ui/icons';
+
 const useStyles = makeStyles(theme => ({
   root: {},
   question: {
@@ -26,6 +31,18 @@ const useStyles = makeStyles(theme => ({
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
+  },
+  menuButton: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignContent: 'center',
+  },
+  selectStyle: {
+    display: 'flex',
+  },
+  textFieldStyle: {
+    width: '60%',
+    margin: '8px',
   },
 }));
 
@@ -45,11 +62,11 @@ export default function QuestionComponent(props) {
   //MCQ Hooks
   const [option, setOption] = useState('');
   const [optionArray, setOptionArray] = useState([]);
+
+  const radioVal = useRef([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
-
-  // const addOptionRef = useRef('');
-  // const placeholderRef = useRef('Add option');
+  // const allValueRef = useRef([]);
 
   const inputChange = e => {
     e.preventDefault();
@@ -77,23 +94,33 @@ export default function QuestionComponent(props) {
       }
       setOptionArray(present => {
         const body = [...optionArray, opt];
-        questionBody.current.options = body;
+        radioVal.current.push(opt);
+        // allValueRef.current.push('holder');
+        questionBody.current.options = radioVal.current;
         props.questionChange(questionBody.current);
         return body;
       });
+
       addOptionRef.current.value = '';
     };
-
-    const removeOption = e => {
-      console.log(e);
+    const removeOption = i => {
       // console.log(optionArray.indexOf(e));
       setOptionArray(present => {
         const body = [...optionArray];
-        body.splice(body.indexOf(e), 1);
-        questionBody.current.options = body;
+        radioVal.current.splice(i, 1);
+        body.splice(i, 1);
+        questionBody.current.options = radioVal.current;
         props.questionChange(questionBody.current);
         return body;
       });
+    };
+    const editOption = (e, index) => {
+      // console.log(e.target.value);
+      console.log(allValueRef.current[index].value);
+      radioVal.current[index] = e.target.value;
+      console.log(radioVal.current);
+      questionBody.current.options = radioVal.current;
+      props.questionChange(questionBody.current);
     };
 
     const keyPress = e => {
@@ -110,19 +137,25 @@ export default function QuestionComponent(props) {
           value={option}
           onChange={handleOption}
         >
-          {optionArray.map(r => {
+          {optionArray.map((r, i) => {
             return (
-              <div>
-                <FormControlLabel
-                  value={r}
-                  control={<Radio />}
-                  label={r}
-                  key={r}
+              <div key={i}>
+                <FormControlLabel value={r} control={<Radio />} />
+
+                <TextField
+                  onChange={e => {
+                    editOption(e, i);
+                  }}
+                  className={classes.textFieldStyle}
+                  defaultValue={r}
+                  // inputRef={el => {
+                  //   allValueRef.current[i] = el;
+                  // }}
                 />
                 <IconButton
                   aria-label="delete"
                   onClick={() => {
-                    removeOption(r);
+                    removeOption(i);
                   }}
                 >
                   <CloseIcon />
@@ -130,16 +163,20 @@ export default function QuestionComponent(props) {
               </div>
             );
           })}
+          <div style={{ display: 'flex' }}>
+            <FormControlLabel value={'s'} control={<Radio />} />
+
+            <TextField
+              style={{ width: '60%', margin: '8px' }}
+              variant="filled"
+              required
+              onKeyDown={keyPress}
+              placeholder={placeholderRef.current}
+              inputRef={addOptionRef}
+              onBlur={addOption}
+            />
+          </div>
         </RadioGroup>
-        <TextField
-          style={{ width: '60%', margin: '8px' }}
-          variant="filled"
-          required
-          onKeyDown={keyPress}
-          placeholder={placeholderRef.current}
-          inputRef={addOptionRef}
-          onBlur={addOption}
-        />
       </div>
     );
   };
@@ -275,50 +312,26 @@ export default function QuestionComponent(props) {
         <FormControl variant="filled" className={classes.formControl}>
           <InputLabel id="demo-simple-select-filled-label">Type</InputLabel>
           <Select
-            labelId="demo-simple-select-filled-label"
-            id="demo-simple-select-filled"
+            classes={{
+              selectMenu: classes.selectStyle,
+            }}
             value={selectType}
             onChange={handleSelect}
           >
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={'Mcq'}>Mcq</MenuItem>
+            <MenuItem value={'Mcq'}>
+              {' '}
+              <RadioButtonCheckedIcon /> Mcq
+            </MenuItem>
             <MenuItem value={'True/False'}>True/false</MenuItem>
-            <MenuItem value={'Checkbox'}>Checkbox</MenuItem>
+            <MenuItem value={'Checkbox'}>
+              <CheckBoxIcon /> Checkbox{' '}
+            </MenuItem>
           </Select>
         </FormControl>
         {selectType == 'Mcq' && mcqBuilder()}
-
-        {/* {selectType == 'Mcq' && (
-          <div>
-            <p> this is MCQ sector </p>
-            <RadioGroup
-              aria-label="gender"
-              name="gender1"
-              value={value}
-              onChange={handleChange}
-            >
-              <FormControlLabel
-                value="female"
-                control={<Radio />}
-                label="Female"
-              />
-              <FormControlLabel value="male" control={<Radio />} label="Male" />
-              <FormControlLabel
-                value="other"
-                control={<Radio />}
-                label="Other"
-              />
-              <FormControlLabel
-                value="disabled"
-                disabled
-                control={<Radio />}
-                label="(Disabled option)"
-              />
-            </RadioGroup>
-          </div>
-        )} */}
 
         {selectType == 'True/False' && (
           <div>
