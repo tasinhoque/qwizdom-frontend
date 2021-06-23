@@ -7,9 +7,13 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormLabel from '@material-ui/core/FormLabel';
 import Portal from '@material-ui/core/Portal';
+import FormGroup from '@material-ui/core/FormGroup';
+import { IconButton } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -17,9 +21,13 @@ import { findLastIndex } from 'lodash';
 import { CenterFocusStrong } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
+  root: {},
+  question: {
+    minWidth: theme.spacing(4),
+  },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 150,
+    minWidth: 120,
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -52,8 +60,8 @@ export default function QuestionComponent(props) {
   const updatedVal = useRef('');
 
   //MCQ Hooks
-  const [radio, setRadio] = useState('');
-  const [radioArray, setRadioArray] = useState([]);
+  const [option, setOption] = useState('');
+  const [optionArray, setOptionArray] = useState([]);
 
   const radioVal = useRef([]);
   const addOptionRef = useRef('');
@@ -74,18 +82,18 @@ export default function QuestionComponent(props) {
   };
 
   const mcqBuilder = () => {
-    const handleRadio = e => {
-      setRadio(e.target.value);
+    const handleOption = e => {
+      setOption(e.target.value);
     };
     const addOption = e => {
       e.preventDefault();
       let opt = addOptionRef.current.value;
       if (opt == '') return;
-      if (radioArray.includes(opt)) {
+      if (optionArray.includes(opt)) {
         placeholderRef.current = 'Please add a different option';
       }
-      setRadioArray(present => {
-        const body = [...radioArray, opt];
+      setOptionArray(present => {
+        const body = [...optionArray, opt];
         radioVal.current.push(opt);
         // allValueRef.current.push('holder');
         questionBody.current.options = radioVal.current;
@@ -94,6 +102,17 @@ export default function QuestionComponent(props) {
       });
 
       addOptionRef.current.value = '';
+    };
+    const removeOption = i => {
+      // console.log(optionArray.indexOf(e));
+      setOptionArray(present => {
+        const body = [...optionArray];
+        radioVal.current.splice(i, 1);
+        body.splice(i, 1);
+        questionBody.current.options = radioVal.current;
+        props.questionChange(questionBody.current);
+        return body;
+      });
     };
     const editOption = (e, index) => {
       // console.log(e.target.value);
@@ -115,10 +134,10 @@ export default function QuestionComponent(props) {
         <RadioGroup
           aria-label="gender"
           name="gender1"
-          value={radio}
-          onChange={handleRadio}
+          value={option}
+          onChange={handleOption}
         >
-          {radioArray.map((r, i) => {
+          {optionArray.map((r, i) => {
             return (
               <div key={i}>
                 <FormControlLabel value={r} control={<Radio />} />
@@ -133,6 +152,14 @@ export default function QuestionComponent(props) {
                   //   allValueRef.current[i] = el;
                   // }}
                 />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    removeOption(i);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
               </div>
             );
           })}
