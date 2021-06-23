@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   },
   selectStyle: {
     display: 'flex',
+    alignItems: 'center',
   },
   textFieldStyle: {
     width: '60%',
@@ -116,7 +117,6 @@ export default function QuestionComponent(props) {
     };
     const editOption = (e, index) => {
       // console.log(e.target.value);
-      console.log(allValueRef.current[index].value);
       radioVal.current[index] = e.target.value;
       console.log(radioVal.current);
       questionBody.current.options = radioVal.current;
@@ -164,7 +164,7 @@ export default function QuestionComponent(props) {
             );
           })}
           <div style={{ display: 'flex' }}>
-            <FormControlLabel value={'s'} control={<Radio />} />
+            <FormControlLabel value={'s'} disabled control={<Radio />} />
 
             <TextField
               style={{ width: '60%', margin: '8px' }}
