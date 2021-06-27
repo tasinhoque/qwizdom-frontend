@@ -90,6 +90,9 @@ const api = {
     );
   },
   getCategories: () => axios.get(`${baseUrl}/categories`),
+  subscribeQuiz: quizId => {
+    return axios.post(`${baseUrl}/quizzes/${quizId}/subscription/flip`);
+  },
 };
 
 export default api;

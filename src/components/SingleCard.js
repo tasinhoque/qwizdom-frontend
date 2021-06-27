@@ -1,4 +1,6 @@
+import api from '../api';
 import React, { useState, useRef, useEffect } from 'react';
+import Button from '@material-ui/core/Button';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -32,6 +34,26 @@ const useStyles = makeStyles(theme => ({
   media: {
     height: 140,
     // paddingTop: '56.25%', // 16:9
+  },
+  container: {
+    position: 'relative',
+    width: '100%',
+  },
+  quizImage: {
+    width: '100%',
+    height: 'auto',
+  },
+  subscribe: {
+    position: 'absolute',
+    top: '2%',
+    left: '2%',
+    backgroundColor: '#555',
+    color: 'white',
+    fontSize: '12px',
+    padding: '8px 12px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
   },
   expand: {
     transform: 'rotate(0deg)',
@@ -78,16 +100,40 @@ export default withRouter(function SingleCard(props) {
   const rerouteQuiz = () => {
     props.history.push(`/quizhome/${props.id}`);
   };
+
+  const subscribe = async e => {
+    let res = await api
+      .subscribeQuiz(props.id)
+
+      .then(res => {
+        console.log(res);
+        // console.log(props.id);
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+      });
+  };
+
   return (
     <Card className={classes.root}>
-      <CardActionArea onClick={rerouteQuiz}>
-        <CardMedia
-          component="img"
-          className={classes.media}
-          image={props.coverImage}
-          // image="assets/images/quiz1.jpeg"
-        />
-      </CardActionArea>
+      <div className={classes.container}>
+        <CardActionArea onClick={rerouteQuiz}>
+          <CardMedia
+            component="img"
+            className={classes.media}
+            image={props.coverImage}
+          />
+        </CardActionArea>
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          className={classes.subscribe}
+          onClick={subscribe}
+        >
+          Subscribe
+        </Button>
+      </div>
 
       <div style={{ padding: '5px' }}>
         <Typography variant="h6" component="p">

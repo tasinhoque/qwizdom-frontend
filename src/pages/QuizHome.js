@@ -3,6 +3,7 @@ import api from '../api';
 import { makeStyles } from '@material-ui/core/styles';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
@@ -77,6 +78,32 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(2),
     // paddingRight: theme.spacing(3),
   },
+  imgBtnContainer: {
+    position: 'relative',
+    width: '100%',
+  },
+  quizImage: {
+    width: '100%',
+    height: 'auto',
+  },
+  subscribeBtn: {
+    position: 'absolute',
+    top: '2%',
+    left: '2%',
+    backgroundColor: '#555',
+    color: 'white',
+    fontSize: '12px',
+    padding: '8px 12px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+  },
+  buttons: {
+    justifyContent: 'center',
+    fontSize: '12px',
+    width: '85%',
+    // paddingLeft: theme.spacing(3),
+  },
 }));
 
 export default function QuizHome(props) {
@@ -96,6 +123,19 @@ export default function QuizHome(props) {
       })
       .catch(e => {});
   }, []);
+
+  const subscribe = async e => {
+    let res = await api
+      .subscribeQuiz(id)
+
+      .then(res => {
+        console.log(res);
+        // console.log(id);
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+      });
+  };
 
   if (loading) {
     return (
@@ -128,9 +168,67 @@ export default function QuizHome(props) {
             spacing={3}
             className={classes.quizContainer}
           >
-            <Grid item md={6} xs={12}>
-              <img src={quiz.coverImage} className={classes.quizImg} />
-              {/* <img src="assets/images/quiz.png" className={classes.quizImg} /> */}
+            <Grid container item md={6} xs={12}>
+              <Grid item md={12} xs={12}>
+                <div className={classes.imgBtnContainer}>
+                  <img src={quiz.coverImage} className={classes.quizImage} />
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.subscribeBtn}
+                    onClick={subscribe}
+                  >
+                    Subscribe
+                  </Button>
+                </div>
+              </Grid>
+              <Grid container item md={12} xs={12} spacing={0}>
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={subscribe}
+                  >
+                    Start Quiz
+                  </Button>
+                </Grid>
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={subscribe}
+                  >
+                    Leaderboard
+                  </Button>
+                </Grid>
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={subscribe}
+                  >
+                    My Submission
+                  </Button>
+                </Grid>
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={subscribe}
+                  >
+                    Forum
+                  </Button>
+                </Grid>
+              </Grid>
             </Grid>
 
             <Grid conainer item md={6} xs={12}>
@@ -174,7 +272,7 @@ export default function QuizHome(props) {
               </Grid>
               <Grid container spacing={3} item>
                 <Typography className={classes.quizDescription} component="p">
-                  <p>{quiz.description}</p>
+                  {quiz.description}
                 </Typography>
               </Grid>
             </Grid>
