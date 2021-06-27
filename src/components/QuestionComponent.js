@@ -113,7 +113,7 @@ export default function QuestionComponent(props) {
     // console.log(optionArray.indexOf(e));
     setOptionArray(present => {
       const body = [...optionArray];
-      optionHolder.current.splice(i, 1);
+      optionHolder.current.splice(e, 1);
       body.splice(i, 1);
       questionBody.current.options = optionHolder.current;
       props.questionChange(questionBody.current);
