@@ -17,8 +17,10 @@ import CloseIcon from '@material-ui/icons/Close';
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
+import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 import { findLastIndex } from 'lodash';
 import { CenterFocusStrong } from '@material-ui/icons';
+import Switch from '@material-ui/core/Switch';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -40,6 +42,7 @@ const useStyles = makeStyles(theme => ({
   selectStyle: {
     display: 'flex',
     alignItems: 'center',
+    justifyItems: 'space-between',
   },
   textFieldStyle: {
     width: '60%',
@@ -64,7 +67,7 @@ export default function QuestionComponent(props) {
   const [option, setOption] = useState('');
   const [optionArray, setOptionArray] = useState([]);
 
-  const radioVal = useRef([]);
+  const optionHolder = useRef([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
   // const allValueRef = useRef([]);
@@ -78,55 +81,61 @@ export default function QuestionComponent(props) {
   };
   const handleSelect = e => {
     setType(e.target.value);
+
+    if (
+      questionBody.current.questionType &&
+      questionBody.current.questionType != e.target.value
+    ) {
+      setOptionArray([]);
+    }
     questionBody.current.questionType = e.target.value;
     props.questionChange(questionBody.current);
+  };
+  const addOption = e => {
+    e.preventDefault();
+    let opt = addOptionRef.current.value;
+    if (opt == '') return;
+    if (optionArray.includes(opt)) {
+      placeholderRef.current = 'Please add a different option';
+    }
+    setOptionArray(present => {
+      const body = [...optionArray, opt];
+      optionHolder.current.push(opt);
+      // allValueRef.current.push('holder');
+      questionBody.current.options = optionHolder.current;
+      props.questionChange(questionBody.current);
+      return body;
+    });
+
+    addOptionRef.current.value = '';
+  };
+  const removeOption = e => {
+    // console.log(optionArray.indexOf(e));
+    setOptionArray(present => {
+      const body = [...optionArray];
+      optionHolder.current.splice(i, 1);
+      body.splice(i, 1);
+      questionBody.current.options = optionHolder.current;
+      props.questionChange(questionBody.current);
+      return body;
+    });
+  };
+  const editOption = (e, index) => {
+    // console.log(e.target.value);
+    optionHolder.current[index] = e.target.value;
+    console.log(optionHolder.current);
+    questionBody.current.options = optionHolder.current;
+    props.questionChange(questionBody.current);
+  };
+  const keyPress = e => {
+    if (e.keyCode == 13) {
+      addOption(e);
+    }
   };
 
   const mcqBuilder = () => {
     const handleOption = e => {
       setOption(e.target.value);
-    };
-    const addOption = e => {
-      e.preventDefault();
-      let opt = addOptionRef.current.value;
-      if (opt == '') return;
-      if (optionArray.includes(opt)) {
-        placeholderRef.current = 'Please add a different option';
-      }
-      setOptionArray(present => {
-        const body = [...optionArray, opt];
-        radioVal.current.push(opt);
-        // allValueRef.current.push('holder');
-        questionBody.current.options = radioVal.current;
-        props.questionChange(questionBody.current);
-        return body;
-      });
-
-      addOptionRef.current.value = '';
-    };
-    const removeOption = i => {
-      // console.log(optionArray.indexOf(e));
-      setOptionArray(present => {
-        const body = [...optionArray];
-        radioVal.current.splice(i, 1);
-        body.splice(i, 1);
-        questionBody.current.options = radioVal.current;
-        props.questionChange(questionBody.current);
-        return body;
-      });
-    };
-    const editOption = (e, index) => {
-      // console.log(e.target.value);
-      radioVal.current[index] = e.target.value;
-      console.log(radioVal.current);
-      questionBody.current.options = radioVal.current;
-      props.questionChange(questionBody.current);
-    };
-
-    const keyPress = e => {
-      if (e.keyCode == 13) {
-        addOption(e);
-      }
     };
     return (
       <div>
@@ -185,39 +194,6 @@ export default function QuestionComponent(props) {
     const handleOption = e => {
       setOption(e.target.value);
     };
-    const addOption = e => {
-      e.preventDefault();
-      let opt = addOptionRef.current.value;
-      if (opt == '') return;
-      if (optionArray.includes(opt)) {
-        placeholderRef.current = 'Please add a different option';
-      }
-      setOptionArray(present => {
-        const body = [...optionArray, opt];
-        questionBody.current.options = body;
-        props.questionChange(questionBody.current);
-        return body;
-      });
-      addOptionRef.current.value = '';
-    };
-
-    const removeOption = e => {
-      console.log(e);
-      // console.log(optionArray.indexOf(e));
-      setOptionArray(present => {
-        const body = [...optionArray];
-        body.splice(body.indexOf(e), 1);
-        questionBody.current.options = body;
-        props.questionChange(questionBody.current);
-        return body;
-      });
-    };
-
-    const keyPress = e => {
-      if (e.keyCode == 13) {
-        addOption(e);
-      }
-    };
     return (
       <div>
         <p> this is Checkbox sector </p>
@@ -227,19 +203,24 @@ export default function QuestionComponent(props) {
           value={option}
           onChange={handleOption}
         >
-          {optionArray.map(r => {
+          {optionArray.map((r, i) => {
             return (
-              <div>
-                <FormControlLabel
-                  value={r}
-                  control={<Checkbox />}
-                  label={r}
-                  key={r}
+              <div key={i}>
+                <FormControlLabel value={r} control={<Checkbox />} />
+                <TextField
+                  onChange={e => {
+                    editOption(e, i);
+                  }}
+                  className={classes.textFieldStyle}
+                  defaultValue={r}
+                  // inputRef={el => {
+                  //   allValueRef.current[i] = el;
+                  // }}
                 />
                 <IconButton
                   aria-label="delete"
                   onClick={() => {
-                    removeOption(r);
+                    removeOption(i);
                   }}
                 >
                   <CloseIcon />
@@ -248,15 +229,70 @@ export default function QuestionComponent(props) {
             );
           })}
         </FormGroup>
-        <TextField
-          style={{ width: '60%', margin: '8px' }}
-          variant="filled"
-          required
-          onKeyDown={keyPress}
-          placeholder={placeholderRef.current}
-          inputRef={addOptionRef}
-          onBlur={addOption}
-        />
+        <div style={{ display: 'flex' }}>
+          <FormControlLabel value={'s'} disabled control={<Checkbox />} />
+
+          <TextField
+            style={{ width: '60%', margin: '8px' }}
+            variant="filled"
+            required
+            onKeyDown={keyPress}
+            placeholder={placeholderRef.current}
+            inputRef={addOptionRef}
+            onBlur={addOption}
+          />
+        </div>
+        {/* <IconButton aria-label="delete" onClick={()=>{removeOption(i, j)}}> */}
+      </div>
+    );
+  };
+
+  const tfBuilder = () => {
+    return (
+      <div>
+        <p> this is true/false sector </p>
+        <FormGroup>
+          {optionArray.map((r, i) => {
+            return (
+              <div key={i}>
+                <FormControlLabel
+                  control={<Switch checked={false} name="on" />}
+                />
+                <TextField
+                  onChange={e => {
+                    editOption(e, i);
+                  }}
+                  className={classes.textFieldStyle}
+                  defaultValue={r}
+                  // inputRef={el => {
+                  //   allValueRef.current[i] = el;
+                  // }}
+                />
+                <IconButton
+                  aria-label="delete"
+                  onClick={() => {
+                    removeOption(i);
+                  }}
+                >
+                  <CloseIcon />
+                </IconButton>
+              </div>
+            );
+          })}
+        </FormGroup>
+        <div style={{ display: 'flex' }}>
+          <FormControlLabel value={'s'} disabled control={<Switch />} />
+
+          <TextField
+            style={{ width: '60%', margin: '8px' }}
+            variant="filled"
+            required
+            onKeyDown={keyPress}
+            placeholder={placeholderRef.current}
+            inputRef={addOptionRef}
+            onBlur={addOption}
+          />
+        </div>
         {/* <IconButton aria-label="delete" onClick={()=>{removeOption(i, j)}}> */}
       </div>
     );
@@ -325,7 +361,10 @@ export default function QuestionComponent(props) {
               {' '}
               <RadioButtonCheckedIcon /> Mcq
             </MenuItem>
-            <MenuItem value={'True/False'}>True/false</MenuItem>
+            <MenuItem value={'True/False'}>
+              {' '}
+              <ToggleOffIcon fontSize="large" /> True/false
+            </MenuItem>
             <MenuItem value={'Checkbox'}>
               <CheckBoxIcon /> Checkbox{' '}
             </MenuItem>
@@ -333,11 +372,7 @@ export default function QuestionComponent(props) {
         </FormControl>
         {selectType == 'Mcq' && mcqBuilder()}
 
-        {selectType == 'True/False' && (
-          <div>
-            <p> this is True/False </p>
-          </div>
-        )}
+        {selectType == 'True/False' && tfBuilder()}
 
         {selectType == 'Checkbox' && checkboxBuilder()}
       </form>
