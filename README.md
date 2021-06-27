@@ -21,11 +21,11 @@ This example demonstrates how you can use [Create React App](https://github.com/
  - Categories
  - Test type 
    - survey/test
-     - if test check auto/manual 
-                        -> if manual -> current features + paragraph 
-                        -> check if time bound or not
-                        -> date 
-                        -> Point system
+     - if test : check auto/manual 
+        - if manual : current features + paragraph 
+        - check if time bound or not
+        - date 
+        - Point system
 ## Quiz Creation tasks
 - Image upload feature
 - perfecting the json file
