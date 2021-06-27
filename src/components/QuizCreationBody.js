@@ -25,7 +25,7 @@ export default function QuizCreationBody() {
       questions: [
         {
           questionId: 0,
-          questionLabel: 'first question',
+          title: 'first question',
         },
       ],
     },
@@ -59,7 +59,7 @@ export default function QuizCreationBody() {
           questions: [
             {
               questionId: 0,
-              questionLabel: 'new one',
+              title: 'new one',
             },
           ],
         };

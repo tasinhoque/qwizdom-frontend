@@ -14,6 +14,7 @@ import Portal from '@material-ui/core/Portal';
 import FormGroup from '@material-ui/core/FormGroup';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import ImageIcon from '@material-ui/icons/Image';
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -60,7 +61,7 @@ export default function QuestionComponent(props) {
 
   console.log(props);
 
-  const [value, setValue] = useState(props.questionLabel || '');
+  const [value, setValue] = useState(props.title || '');
   const updatedVal = useRef('');
 
   //MCQ Hooks
@@ -76,7 +77,7 @@ export default function QuestionComponent(props) {
     e.preventDefault();
     updatedVal.current = e.target.value;
     setValue(e.target.value);
-    questionBody.current.questionLabel = e.target.value;
+    questionBody.current.title = e.target.value;
     props.questionChange(questionBody.current);
   };
   const handleSelect = e => {
@@ -87,17 +88,37 @@ export default function QuestionComponent(props) {
       questionBody.current.questionType != e.target.value
     ) {
       setOptionArray([]);
+      optionHolder.current = [];
     }
     questionBody.current.questionType = e.target.value;
     props.questionChange(questionBody.current);
   };
+  const handleOption = (e, i) => {
+    if (selectType != 'mcq') {
+      questionBody.current.options[i].isAnswer =
+        !questionBody.current.options[i].isAnswer;
+      setOption(e.target.value + Math.random());
+    } else {
+      questionBody.current.options.map((element, i) => {
+        if (element.text == e.target.value) {
+          questionBody.current.options[i].isAnswer = true;
+        } else {
+          questionBody.current.options[i].isAnswer = false;
+        }
+        setOption(e.target.value);
+      });
+    }
+  };
   const addOption = e => {
     e.preventDefault();
-    let opt = addOptionRef.current.value;
-    if (opt == '') return;
-    if (optionArray.includes(opt)) {
-      placeholderRef.current = 'Please add a different option';
-    }
+    let opt = {
+      text: addOptionRef.current.value,
+      isAnswer: false,
+    };
+    if (opt.text == '') return;
+    // if (optionArray.includes(opt)) {
+    //   placeholderRef.current = 'Please add a different option';
+    // }
     setOptionArray(present => {
       const body = [...optionArray, opt];
       optionHolder.current.push(opt);
@@ -114,7 +135,7 @@ export default function QuestionComponent(props) {
     setOptionArray(present => {
       const body = [...optionArray];
       optionHolder.current.splice(e, 1);
-      body.splice(i, 1);
+      body.splice(e, 1);
       questionBody.current.options = optionHolder.current;
       props.questionChange(questionBody.current);
       return body;
@@ -122,7 +143,7 @@ export default function QuestionComponent(props) {
   };
   const editOption = (e, index) => {
     // console.log(e.target.value);
-    optionHolder.current[index] = e.target.value;
+    optionHolder.current[index].text = e.target.value;
     console.log(optionHolder.current);
     questionBody.current.options = optionHolder.current;
     props.questionChange(questionBody.current);
@@ -134,9 +155,9 @@ export default function QuestionComponent(props) {
   };
 
   const mcqBuilder = () => {
-    const handleOption = e => {
-      setOption(e.target.value);
-    };
+    // const handleOption = e => {
+    //   setOption(e.target.value);
+    // };
     return (
       <div>
         <p> this is MCQ sector </p>
@@ -149,14 +170,14 @@ export default function QuestionComponent(props) {
           {optionArray.map((r, i) => {
             return (
               <div key={i}>
-                <FormControlLabel value={r} control={<Radio />} />
+                <FormControlLabel value={r.text} control={<Radio />} />
 
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -191,28 +212,30 @@ export default function QuestionComponent(props) {
   };
 
   const checkboxBuilder = () => {
-    const handleOption = e => {
-      setOption(e.target.value);
-    };
     return (
       <div>
         <p> this is Checkbox sector </p>
-        <FormGroup
-          aria-label="gender"
-          name="gender1"
-          value={option}
-          onChange={handleOption}
-        >
+        <FormGroup value={option}>
           {optionArray.map((r, i) => {
             return (
               <div key={i}>
-                <FormControlLabel value={r} control={<Checkbox />} />
+                <FormControlLabel
+                  value={r.text}
+                  control={
+                    <Checkbox
+                      checked={r.isAnswer}
+                      onChange={e => {
+                        handleOption(e, i);
+                      }}
+                    />
+                  }
+                />
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -256,14 +279,22 @@ export default function QuestionComponent(props) {
             return (
               <div key={i}>
                 <FormControlLabel
-                  control={<Switch checked={false} name="on" />}
+                  value={r.text}
+                  control={
+                    <Switch
+                      checked={r.isAnswer}
+                      onChange={e => {
+                        handleOption(e, i);
+                      }}
+                    />
+                  }
                 />
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -319,7 +350,7 @@ export default function QuestionComponent(props) {
   //     let message = {
   //       stageId: props.stageId,
   //       questionId: props.questionId,
-  //       questionLabel: updatedVal.current,
+  //       title: updatedVal.current,
   //     };
   //     props.questionChange(message);
   //   }
@@ -357,24 +388,24 @@ export default function QuestionComponent(props) {
             <MenuItem value="">
               <em>None</em>
             </MenuItem>
-            <MenuItem value={'Mcq'}>
+            <MenuItem value={'mcq'}>
               {' '}
               <RadioButtonCheckedIcon /> Mcq
             </MenuItem>
-            <MenuItem value={'True/False'}>
+            <MenuItem value={'trueOrFalse'}>
               {' '}
               <ToggleOffIcon fontSize="large" /> True/false
             </MenuItem>
-            <MenuItem value={'Checkbox'}>
+            <MenuItem value={'checkbox'}>
               <CheckBoxIcon /> Checkbox{' '}
             </MenuItem>
           </Select>
         </FormControl>
-        {selectType == 'Mcq' && mcqBuilder()}
+        {selectType == 'mcq' && mcqBuilder()}
 
-        {selectType == 'True/False' && tfBuilder()}
+        {selectType == 'trueOrFalse' && tfBuilder()}
 
-        {selectType == 'Checkbox' && checkboxBuilder()}
+        {selectType == 'checkbox' && checkboxBuilder()}
       </form>
       {/* <p> {props.questionName}</p> */}
       {/* <p> props stage is {props.stageId}</p> */}

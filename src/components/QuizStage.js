@@ -5,7 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import { stageContext } from '../contexts/stageContext';
 import QuestionComponent from './QuestionComponent';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
@@ -30,7 +30,7 @@ export default function QuizStage(props) {
     props.bodySetter.deleteStage(props.stageId);
   };
 
-  const addStage = (e) => {
+  const addStage = e => {
     // const dummy = JSON.parse(JSON.stringify(value));
     // const temp = dummy.map((x) => x.stageId);
     // const newId = Math.max(...temp) + 1;
@@ -46,17 +46,17 @@ export default function QuizStage(props) {
     props.bodySetter.addStage(props.stageId);
   };
 
-  const addQuestion = (e) => {
+  const addQuestion = e => {
     // const dummy = JSON.parse(JSON.stringify(value));
     // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
 
-    const temp = props.questions.map((x) => x.questionId);
+    const temp = props.questions.map(x => x.questionId);
     const newId = Math.max(...temp) + 1;
 
     const newQuestion = {
       stageId: props.stageId,
       questionId: newId,
-      questionLabel: 'new one',
+      title: 'new one',
     };
     props.bodySetter.addQuestion(newQuestion);
   };
@@ -71,7 +71,7 @@ export default function QuizStage(props) {
             <button onClick={deleteStage}> delete stage</button>
             <button onClick={addQuestion}>add question</button>
 
-            {props.questions.map((q) => {
+            {props.questions.map(q => {
               return (
                 <QuestionComponent
                   {...q}
