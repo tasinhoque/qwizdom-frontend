@@ -18,7 +18,7 @@ import MoreIcon from '@material-ui/icons/MoreVert';
 import { withRouter } from 'react-router-dom';
 import { Grid } from '@material-ui/core';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
@@ -101,7 +101,7 @@ export default withRouter(function Header(props) {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event) => {
+  const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -119,8 +119,12 @@ export default withRouter(function Header(props) {
     props.history.push('/');
   };
 
-  const handleMobileMenuOpen = (event) => {
+  const handleMobileMenuOpen = event => {
     setMobileMoreAnchorEl(event.currentTarget);
+  };
+
+  const gotoProfile = event => {
+    props.history.push('/profile');
   };
 
   const menuId = 'primary-search-account-menu';
@@ -134,7 +138,7 @@ export default withRouter(function Header(props) {
       open={isMenuOpen}
       onClose={handleMenuClose}
     >
-      <MenuItem onClick={handleMenuClose}>Profile</MenuItem>
+      <MenuItem onClick={gotoProfile}>Profile</MenuItem>
       <MenuItem onClick={handleMenuClose}>My account</MenuItem>
       <MenuItem onClick={handleLogOut}>Log Out</MenuItem>
     </Menu>
@@ -234,7 +238,7 @@ export default withRouter(function Header(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar alt="Remy Sharp" src="assets/images/user.png" />
+              <Avatar alt="Remy Sharp" src="/assets/images/user.png" />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
