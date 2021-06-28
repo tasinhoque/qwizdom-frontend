@@ -155,126 +155,123 @@ export default function QuizHome(props) {
   } else {
     return (
       <Grid container className={classes.root} spacing={0}>
-        <Grid container item md={12} xs={12}>
-          <Grid item md={12} xs={12}>
-            <Header />
+        <Grid item md={12} xs={12}>
+          <Header />
+        </Grid>
+        <Grid
+          container
+          item
+          md={12}
+          xs={12}
+          spacing={3}
+          className={classes.quizContainer}
+        >
+          <Grid container item md={6} xs={12}>
+            <Grid item md={12} xs={12}>
+              <div className={classes.imgBtnContainer}>
+                <img src={quiz.coverImage} className={classes.quizImage} />
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.subscribeBtn}
+                  onClick={subscribe}
+                >
+                  Subscribe
+                </Button>
+              </div>
+            </Grid>
+            <Grid container item md={12} xs={12} spacing={0}>
+              <Grid container item md={3} xs={3} className={classes.buttons}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttons}
+                  onClick={subscribe}
+                >
+                  Start Quiz
+                </Button>
+              </Grid>
+              <Grid container item md={3} xs={3} className={classes.buttons}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttons}
+                  onClick={subscribe}
+                >
+                  Leaderboard
+                </Button>
+              </Grid>
+              <Grid container item md={3} xs={3} className={classes.buttons}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttons}
+                  onClick={subscribe}
+                >
+                  My Submission
+                </Button>
+              </Grid>
+              <Grid container item md={3} xs={3} className={classes.buttons}>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.buttons}
+                  onClick={subscribe}
+                >
+                  Forum
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
 
-          <Grid
-            container
-            item
-            md={12}
-            xs={12}
-            spacing={3}
-            className={classes.quizContainer}
-          >
-            <Grid container item md={6} xs={12}>
-              <Grid item md={12} xs={12}>
-                <div className={classes.imgBtnContainer}>
-                  <img src={quiz.coverImage} className={classes.quizImage} />
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.subscribeBtn}
-                    onClick={subscribe}
-                  >
-                    Subscribe
-                  </Button>
-                </div>
-              </Grid>
-              <Grid container item md={12} xs={12} spacing={0}>
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={subscribe}
-                  >
-                    Start Quiz
-                  </Button>
+          <Grid conainer item md={6} xs={12}>
+            <Grid container spacing={3} item>
+              <Typography
+                variant="h4"
+                style={{ margin: '0px 0px 20px 20px' }}
+                component="p"
+              >
+                {quiz.name}
+              </Typography>
+              <Grid container item md={12} xs={12} spacing={3}>
+                <Grid item md={6} xs={12}>
+                  <CardHeader
+                    avatar={
+                      <Avatar
+                        src={quiz.creator.avatar}
+                        // src="assets/images/marcos.png"
+                        // className={classes.avatar}
+                      ></Avatar>
+                    }
+                    title="Marcos Marshal"
+                    titleTypographyProps={{ variant: 'h5' }}
+                    // subheader="September 14, 2016"
+                  />
                 </Grid>
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={subscribe}
-                  >
-                    Leaderboard
-                  </Button>
-                </Grid>
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={subscribe}
-                  >
-                    My Submission
-                  </Button>
-                </Grid>
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={subscribe}
-                  >
-                    Forum
-                  </Button>
+                <Grid container item md={6} xs={12} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                    <Typography
+                      style={{
+                        color: 'gray',
+                        textAlign: 'right',
+                      }}
+                      component="p"
+                    >
+                      1 month ago
+                    </Typography>
+                  </Grid>
                 </Grid>
               </Grid>
             </Grid>
-
-            <Grid conainer item md={6} xs={12}>
-              <Grid container spacing={3} item>
-                <Typography
-                  variant="h4"
-                  style={{ margin: '0px 0px 20px 20px' }}
-                  component="p"
-                >
-                  {quiz.name}
-                </Typography>
-                <Grid container item md={12} xs={12} spacing={3}>
-                  <Grid item md={6} xs={12}>
-                    <CardHeader
-                      avatar={
-                        <Avatar
-                          src={quiz.creator.avatar}
-                          // src="assets/images/marcos.png"
-                          // className={classes.avatar}
-                        ></Avatar>
-                      }
-                      title="Marcos Marshal"
-                      titleTypographyProps={{ variant: 'h5' }}
-                      // subheader="September 14, 2016"
-                    />
-                  </Grid>
-                  <Grid container item md={6} xs={12} alignItems="center">
-                    <Grid item md={12} xs={12}>
-                      <Typography
-                        style={{
-                          color: 'gray',
-                          textAlign: 'right',
-                        }}
-                        component="p"
-                      >
-                        1 month ago
-                      </Typography>
-                    </Grid>
-                  </Grid>
-                </Grid>
-              </Grid>
-              <Grid container spacing={3} item>
-                <Typography className={classes.quizDescription} component="p">
-                  {quiz.description}
-                </Typography>
-              </Grid>
+            <Grid item md={12} xs={12}>
+              <Typography className={classes.quizDescription} component="p">
+                {quiz.description}
+              </Typography>
             </Grid>
           </Grid>
         </Grid>
