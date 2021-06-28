@@ -22,6 +22,7 @@ import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 import { findLastIndex } from 'lodash';
 import { CenterFocusStrong } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
+import Paper from '@material-ui/core/Paper';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -48,6 +49,10 @@ const useStyles = makeStyles(theme => ({
   textFieldStyle: {
     width: '60%',
     margin: '8px',
+  },
+  questionStyle: {
+    margin: theme.spacing(2),
+    minHeight: theme.spacing(25),
   },
 }));
 
@@ -356,7 +361,7 @@ export default function QuestionComponent(props) {
   //   }
   // }, [props]);
   return (
-    <div>
+    <Paper className={classes.questionStyle} elevation={7}>
       <form
         onSubmit={e => {
           e.preventDefault();
@@ -409,6 +414,6 @@ export default function QuestionComponent(props) {
       </form>
       {/* <p> {props.questionName}</p> */}
       {/* <p> props stage is {props.stageId}</p> */}
-    </div>
+    </Paper>
   );
 }
