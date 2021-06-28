@@ -25,15 +25,11 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     flexWrap: 'wrap',
     width: '95%',
-    '& > *': {
-      margin: theme.spacing(1),
-      width: theme.spacing(150),
-      minHeight: theme.spacing(2),
-    },
   },
   paperStyle: {
     backgroundColor: 'aliceBlue',
     margin: '20px 0px 40px 0px',
+    width: '100%',
   },
   iconStyle: {
     cursor: 'pointer',
@@ -42,6 +38,7 @@ const useStyles = makeStyles(theme => ({
   iconContainer: {
     position: 'absolute',
     top: '-18px',
+    right: '-0.01 px',
     width: '100%',
     display: 'flex',
     justifyContent: 'flex-end',
@@ -85,7 +82,7 @@ export default function QuizStage(props) {
               <p> stage id is {props.stageId}</p>
               {/* <button onClick={addStage}> New stage</button>
             <button onClick={deleteStage}> delete stage</button> */}
-              <button onClick={addQuestion}>add question</button>
+              {/* <button onClick={addQuestion}>add question</button> */}
 
               {props.questions.map((q, i) => {
                 return (
@@ -94,6 +91,7 @@ export default function QuizStage(props) {
                     submitChecker={props.submitChecker}
                     stageId={props.stageId}
                     questionChange={props.bodySetter.questionChange}
+                    bodySetter={props.bodySetter}
                     key={i}
                   />
                 );

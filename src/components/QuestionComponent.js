@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { Container, TextField } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -23,6 +23,11 @@ import { findLastIndex } from 'lodash';
 import { CenterFocusStrong } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
+import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
+import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
+import Grid from '@material-ui/core/Grid';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import Fab from '@material-ui/core/Fab';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -47,12 +52,38 @@ const useStyles = makeStyles(theme => ({
     justifyItems: 'space-between',
   },
   textFieldStyle: {
-    width: '60%',
     margin: '8px',
   },
   questionStyle: {
     margin: theme.spacing(2),
     minHeight: theme.spacing(25),
+    position: 'relative',
+  },
+  container: {
+    marginBottom: '50px',
+  },
+  iconStyle: {
+    cursor: 'pointer',
+  },
+  input: {
+    display: 'none',
+  },
+
+  iconContainer: {
+    position: 'absolute',
+    top: '-30px',
+    right: '-10px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  imageContainer: {
+    display: 'flex',
+    alignContent: 'flex-start',
+  },
+  imageStyle: {
+    height: '200px',
+    width: '50%',
   },
 }));
 
@@ -72,11 +103,30 @@ export default function QuestionComponent(props) {
   //MCQ Hooks
   const [option, setOption] = useState('');
   const [optionArray, setOptionArray] = useState([]);
-
   const optionHolder = useRef([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
+
+  //image upload Hooks
+  const [img, setImg] = useState(null);
+
+  //jodit hook
+  const editor = useRef(null);
+  const [content, setContent] = useState('');
+
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+  };
+
   // const allValueRef = useRef([]);
+
+  const addQuestion = () => {
+    props.bodySetter.addQuestion(props.stageId, props.questionId);
+  };
+
+  const deleteQuestion = i => {
+    props.bodySetter.deleteQuestion(props.stageId, props.questionId);
+  };
 
   const inputChange = e => {
     e.preventDefault();
@@ -114,6 +164,14 @@ export default function QuestionComponent(props) {
       });
     }
   };
+  const handleImage = e => {
+    if (e.target.files.length !== 0) {
+      setImg(URL.createObjectURL(e.target.files[0]));
+      questionBody.current.image = e.target.files[0];
+      props.questionChange(questionBody.current);
+    }
+  };
+
   const addOption = e => {
     e.preventDefault();
     let opt = {
@@ -333,87 +391,119 @@ export default function QuestionComponent(props) {
       </div>
     );
   };
-  // useEffect(() => {
-  //   console.log('submit called');
-  //   // const dummy = JSON.parse(JSON.stringify(value));
-  //   const dummy = value;
-  //   console.log(valueRef.current.value);
-  //   dummy[props.stageId - 1].questions[props.questionId - 1].questionName =
-  //     valueRef.current.value;
-  //   if (submit) {
-  //     console.log(props.stageId - 1);
-  //     console.log(props.questionId - 1);
-  //     localStorage.setItem('dummy', JSON.stringify(dummy));
-  //   }
-  // }, [submit]);
 
-  // useEffect(() => {
-  //   console.log(props);
-  //   if (props.submitChecker.current == 'submit') {
-  //     console.log('submit checker called');
-
-  //     let message = {
-  //       stageId: props.stageId,
-  //       questionId: props.questionId,
-  //       title: updatedVal.current,
-  //     };
-  //     props.questionChange(message);
-  //   }
-  // }, [props]);
   return (
-    <Paper className={classes.questionStyle} elevation={7}>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-        }}
-      >
-        <TextField
-          style={{ width: '60%', margin: '8px' }}
-          variant="filled"
-          required
-          fullWidth
-          // id="email"
-          label="Question Text"
-          name="email"
-          // autoComplete="email"
-          // autoFocus
-          value={value}
-          onChange={inputChange}
-        />
+    <div className={classes.container}>
+      <Paper className={classes.questionStyle} elevation={7}>
+        <div className={classes.iconContainer}>
+          <span>
+            {' '}
+            <AddCircleOutlineTwoToneIcon
+              className={classes.iconStyle}
+              onClick={addQuestion}
+              fontSize="large"
+            />
+            <DeleteOutlineTwoToneIcon
+              className={classes.iconStyle}
+              onClick={deleteQuestion}
+              fontSize="large"
+            />
+          </span>
+        </div>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item sm={8}>
+              {/* <JoditEditor
+                ref={editor}
+                value={content}
+                config={config}
+                tabIndex={1} // tabIndex of textarea
+                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                onChange={newContent => {}}
+              /> */}
+              <TextField
+                className={classes.textFieldStyle}
+                variant="filled"
+                required
+                fullWidth
+                multiline
+                // id="email"
+                label="Question Text"
+                name="email"
+                // autoComplete="email"
+                // autoFocus
+                value={value}
+                onChange={inputChange}
+              />
+            </Grid>
+            <Grid item sm={3}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-filled-label">
+                  Type
+                </InputLabel>
+                <Select
+                  classes={{
+                    selectMenu: classes.selectStyle,
+                  }}
+                  placeholder="Type"
+                  value={selectType}
+                  onChange={handleSelect}
+                >
+                  <MenuItem value={'mcq'}>
+                    {' '}
+                    <RadioButtonCheckedIcon
+                      style={{ fontSize: '1.7rem' }}
+                    />{' '}
+                    Mcq
+                  </MenuItem>
+                  <MenuItem value={'trueOrFalse'}>
+                    {' '}
+                    <ToggleOffIcon style={{ fontSize: '1.7rem' }} /> True/false
+                  </MenuItem>
+                  <MenuItem value={'checkbox'}>
+                    <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-        <FormControl variant="filled" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-filled-label">Type</InputLabel>
-          <Select
-            classes={{
-              selectMenu: classes.selectStyle,
-            }}
-            value={selectType}
-            onChange={handleSelect}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={'mcq'}>
-              {' '}
-              <RadioButtonCheckedIcon /> Mcq
-            </MenuItem>
-            <MenuItem value={'trueOrFalse'}>
-              {' '}
-              <ToggleOffIcon fontSize="large" /> True/false
-            </MenuItem>
-            <MenuItem value={'checkbox'}>
-              <CheckBoxIcon /> Checkbox{' '}
-            </MenuItem>
-          </Select>
-        </FormControl>
-        {selectType == 'mcq' && mcqBuilder()}
+          <div className={classes.imageContainer}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleImage}
+            />
+            <div>
+              <label htmlFor="contained-button-file">
+                <Fab component="span" className={classes.button}>
+                  <AddPhotoAlternateIcon />
+                </Fab>
+              </label>
+            </div>
+            {img && (
+              <span>
+                <img className={classes.imageStyle} src={img} />
+              </span>
+            )}
+          </div>
+          {selectType == 'mcq' && mcqBuilder()}
 
-        {selectType == 'trueOrFalse' && tfBuilder()}
+          {selectType == 'trueOrFalse' && tfBuilder()}
 
-        {selectType == 'checkbox' && checkboxBuilder()}
-      </form>
-      {/* <p> {props.questionName}</p> */}
-      {/* <p> props stage is {props.stageId}</p> */}
-    </Paper>
+          {selectType == 'checkbox' && checkboxBuilder()}
+        </form>
+
+        {/* <p> {props.questionName}</p> */}
+        {/* <p> props stage is {props.stageId}</p> */}
+      </Paper>
+    </div>
   );
 }

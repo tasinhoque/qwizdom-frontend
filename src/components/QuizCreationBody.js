@@ -78,6 +78,25 @@ export default function QuizCreationBody() {
         return body;
       });
     },
+    addQuestion: (stageId, questionId) => {
+      setQuizBody(presentState => {
+        const body = [...presentState];
+        console.log(body);
+        body[stageId].questions.splice(questionId, 1);
+        store.current[stageId].questions.splice(questionId, 1);
+        return body;
+      });
+    },
+    deleteQuestion: (stageId, questionId) => {
+      console.log(stageId, questionId);
+      setQuizBody(presentState => {
+        const body = [...presentState];
+        console.log(body);
+        body[stageId].questions.splice(questionId, 1);
+        store.current[stageId].questions.splice(questionId, 1);
+        return body;
+      });
+    },
 
     questionChange: message => {
       const pos = store.current.findIndex(i => i.stageId == message.stageId);
@@ -85,12 +104,23 @@ export default function QuizCreationBody() {
 
       console.log(store.current);
     },
-    addQuestion: message => {
-      const pos = store.current.findIndex(i => i.stageId == message.stageId);
+    addQuestion: (stageId, questionId) => {
+      const pos = store.current.findIndex(i => i.stageId == stageId);
+      const temp = store.current[pos].questions.map(x => x.questionId);
+      const newId = Math.max(...temp) + 1;
 
-      store.current[pos].questions.push(message);
+      const newQuestion = {
+        stageId: stageId,
+        questionId: newId,
+        title: 'new one',
+      };
+
+      // store.current[pos].questions.push(message);
       setQuizBody(presentState => {
         const body = [...presentState];
+        store.current[stageId].questions.splice(pos + 1, 0, newQuestion);
+        body[pos].questions.splice(pos + 1, 0, 'holder');
+
         return body;
       });
     },
