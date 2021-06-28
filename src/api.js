@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:4000/v1';
+const baseUrl = 'http://localhost:4000';
 // axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
 
 axios.interceptors.request.use(
@@ -92,6 +92,9 @@ const api = {
   getCategories: () => axios.get(`${baseUrl}/categories`),
   subscribeQuiz: quizId => {
     return axios.post(`${baseUrl}/quizzes/${quizId}/subscription/flip`);
+  },
+  editProfile: body => {
+    return axios.patch(`${baseUrl}/users/60c9ffc9a285bb50f2aca139`, body);
   },
 };
 

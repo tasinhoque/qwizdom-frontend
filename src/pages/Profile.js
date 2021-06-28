@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
@@ -42,7 +42,29 @@ const useStyles = makeStyles(theme => ({
 
 export default function Profile() {
   const classes = useStyles();
+  const nameRef = useRef('');
+  const emailRef = useRef('');
   const [formEnabled, enableForm] = useState(!false);
+
+  const saveProfile = async event => {
+    let res;
+    enableForm(true);
+
+    event.preventDefault();
+    const profileBody = {
+      name: nameRef.current.value,
+      email: emailRef.current.value,
+    };
+    res = await api
+      .editProfile(profileBody)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(error => {
+        // setErrorValue(error.response.data.message);
+        console.log(error.response.data.message);
+      });
+  };
 
   return (
     <>
@@ -68,6 +90,7 @@ export default function Profile() {
                   min: 0,
                   style: { textAlign: 'center' },
                 }}
+                inputRef={nameRef}
               ></TextField>
             </Grid>
             <Grid item md={12} xs={12}>
@@ -77,6 +100,7 @@ export default function Profile() {
                 disabled={formEnabled}
                 className={classes.textField}
                 inputProps={{ min: 0, style: { textAlign: 'center' } }}
+                inputRef={emailRef}
               ></TextField>
             </Grid>
             <Grid item md={12} xs={12}>
@@ -105,7 +129,7 @@ export default function Profile() {
             variant="contained"
             color="primary"
             className={classes.editButton}
-            onClick={() => enableForm(true)}
+            onClick={saveProfile}
           >
             Save
           </Button>

@@ -25,7 +25,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -61,7 +61,7 @@ export default function SignIn(props) {
     }
   }, []);
 
-  const sendValue = async (event) => {
+  const sendValue = async event => {
     let res;
 
     event.preventDefault();
@@ -71,28 +71,16 @@ export default function SignIn(props) {
     };
     res = await api
       .login(loginBody)
-      .then((res) => {
+      .then(res => {
         localStorage.setItem('accessToken', res.data.tokens.access.token);
         localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
         console.log(res);
         props.history.push('/dashboard');
       })
-      .catch((error) => {
+      .catch(error => {
         setErrorValue(error.response.data.message);
         console.log(error.response.data.message);
       });
-
-    // axios
-    //   .post('http://localhost:4000/v1/auth/login', loginBody)
-    // .then((res) => {
-    //   localStorage.setItem('accessToken', res.data.tokens.access.token);
-    //   localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
-    //   props.history.push('/dashboard');
-    // })
-    // .catch((error) => {
-    //   // setErrorValue(error.response.data.message);
-    //   console.log(error);
-    // });
   };
 
   return (
