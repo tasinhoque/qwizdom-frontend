@@ -67,8 +67,10 @@ export default function Profile() {
   const [formDisabled, disableForm] = useState(!false);
   const [img, setImg] = useState(null);
   const [errMsg, setErrMsg] = useState(' ');
+  const [userName, setUserName] = useState(' ');
 
   const user = JSON.parse(localStorage.getItem('user'));
+  // setUserName(user.name);
 
   // console.log(user);
   // console.log(user.name);
@@ -92,7 +94,8 @@ export default function Profile() {
         localStorage.setItem('user', JSON.stringify(user));
       })
       .catch(error => {
-        // setErrorValue(error.response.data.message);
+        disableForm(false);
+        setErrMsg(error.response.data.message);
         console.log(error.response.data.message);
       });
 
@@ -110,16 +113,23 @@ export default function Profile() {
           localStorage.setItem('user', JSON.stringify(user));
         })
         .catch(error => {
-          // setErrorValue(error.response.data.message);
+          setErrMsg(error.response.data.message);
           console.log(error.response.data.message);
         });
     }
   };
 
+  // const handleTextField = e => {
+  //   setUserName(e.target.value);
+  // };
+
   const cancelEdit = async event => {
     let res;
     disableForm(true);
     setImg(null);
+    nameRef.current = user.name;
+    emailRef.current = user.email;
+    refreshPage();
   };
 
   const handleImage = e => {
@@ -130,6 +140,10 @@ export default function Profile() {
       console.log('image added', e.target.files[0]);
     }
   };
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   return (
     <>
@@ -173,10 +187,7 @@ export default function Profile() {
               disabled={formDisabled}
               label="Name"
               className={classes.textField}
-              inputProps={{
-                min: 0,
-                style: { textAlign: 'center' },
-              }}
+              inputProps={{ min: 0, style: { textAlign: 'center' } }}
               inputRef={nameRef}
             ></TextField>
           </Grid>
@@ -189,6 +200,9 @@ export default function Profile() {
               inputProps={{ min: 0, style: { textAlign: 'center' } }}
               inputRef={emailRef}
             ></TextField>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <p style={{ color: 'red' }}>{errMsg.toString()}</p>
+            </div>
           </Grid>
         </Grid>
         <Grid container justify="center">
