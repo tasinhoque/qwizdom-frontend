@@ -2,13 +2,61 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import { stageContext } from '../contexts/stageContext';
 import { QuizStage } from '.';
 import QuestionComponent from './QuestionComponent';
-import { isUndefined } from 'lodash';
+import { isUndefined, cloneDeep } from 'lodash';
+import { ContactSupportOutlined, LocalGasStation } from '@material-ui/icons';
+import api from '../api';
 
 export default function QuizCreationBody() {
   const [submitVal, setSubmit] = useState('halt');
-  const handleSubmit = () => {
-    setSubmit('submit');
-    console.log(store.current);
+  const fileStorage = [];
+  const handleSubmit = async () => {
+    var postBody = {
+      quizId: '60c8b649b1163904e4f9d6da',
+      stages: _.cloneDeep(store.current),
+    };
+    postBody.stages.map((item, i) => {
+      postBody.stages[i].questions.map((q, j) => {
+        if (q.hasOwnProperty('stageId'))
+          delete postBody.stages[i].questions[j].stageId;
+        if (q.hasOwnProperty('image')) {
+          fileStorage.push({
+            stageId: i,
+            questionId: j,
+            image: q.image,
+          });
+          delete postBody.stages[i].questions[j].image;
+        }
+      });
+    });
+
+    await api
+      .postCompleteQuiz(postBody)
+      .then(res => {
+        const responseQuiz = res.data;
+        fileStorage.map((element, index) => {
+          let formData = new FormData();
+          formData.append('image', element.image);
+          formData.append('fileUpload', true);
+          const id =
+            responseQuiz.stages[element.stageId].questions[element.questionId]
+              .id;
+
+          fileUpload(id, formData);
+        });
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+  const fileUpload = async (id, formData) => {
+    await api
+      .uploadQuestionImage(id, formData)
+      .then(res => {
+        // console.log(res);
+      })
+      .catch(error => {
+        // console.log(error);
+      });
   };
 
   // 'store useref' is the storage for all stages and quizzes.
@@ -102,7 +150,7 @@ export default function QuizCreationBody() {
       const pos = store.current.findIndex(i => i.stageId == message.stageId);
       store.current[pos].questions[message.questionId] = message;
 
-      console.log(store.current);
+      // console.log(store.current);
     },
     addQuestion: (stageId, questionId) => {
       const pos = store.current.findIndex(i => i.stageId == stageId);
@@ -119,11 +167,19 @@ export default function QuizCreationBody() {
       setQuizBody(presentState => {
         const body = [...presentState];
         store.current[stageId].questions.splice(pos + 1, 0, newQuestion);
-        body[pos].questions.splice(pos + 1, 0, 'holder');
+        body[pos].questions.splice(pos + 1, 0, 'h');
 
         return body;
       });
     },
+    addTofileStorage: (stageId, questionId, imgFile) => {
+      fileStorage.push({
+        stageid: stageId,
+        questionId: questionId,
+        img: imgFile,
+      });
+    },
+    removeFromFileStorage: (stageId, questionId) => {},
   };
 
   if (store.current) {

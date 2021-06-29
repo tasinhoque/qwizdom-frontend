@@ -28,6 +28,7 @@ import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
 import Grid from '@material-ui/core/Grid';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import Fab from '@material-ui/core/Fab';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -80,10 +81,22 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     alignContent: 'flex-start',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
   },
   imageStyle: {
     height: '200px',
-    width: '50%',
+    width: '100%',
+    marginRight: theme.spacing(1),
+  },
+  questionContainer: {
+    paddingLeft: theme.spacing(2),
+  },
+  floatingButton: {
+    height: '50px',
+    width: '50px',
+    minHeight: '20px',
   },
 }));
 
@@ -94,8 +107,6 @@ export default function QuestionComponent(props) {
     stageId: props.stageId,
     questionId: props.questionId,
   });
-
-  console.log(props);
 
   const [value, setValue] = useState(props.title || '');
   const updatedVal = useRef('');
@@ -171,6 +182,11 @@ export default function QuestionComponent(props) {
       props.questionChange(questionBody.current);
     }
   };
+  const imageDelete = e => {
+    setImg(null);
+    delete questionBody.current.image;
+    props.questionChange(questionBody.current);
+  };
 
   const addOption = e => {
     e.preventDefault();
@@ -223,7 +239,6 @@ export default function QuestionComponent(props) {
     // };
     return (
       <div>
-        <p> this is MCQ sector </p>
         <RadioGroup
           aria-label="gender"
           name="gender1"
@@ -277,7 +292,6 @@ export default function QuestionComponent(props) {
   const checkboxBuilder = () => {
     return (
       <div>
-        <p> this is Checkbox sector </p>
         <FormGroup value={option}>
           {optionArray.map((r, i) => {
             return (
@@ -336,7 +350,6 @@ export default function QuestionComponent(props) {
   const tfBuilder = () => {
     return (
       <div>
-        <p> this is true/false sector </p>
         <FormGroup>
           {optionArray.map((r, i) => {
             return (
@@ -481,24 +494,43 @@ export default function QuestionComponent(props) {
               type="file"
               onChange={handleImage}
             />
-            <div>
-              <label htmlFor="contained-button-file">
-                <Fab component="span" className={classes.button}>
-                  <AddPhotoAlternateIcon />
-                </Fab>
-              </label>
-            </div>
+            {!img && (
+              <div>
+                <label htmlFor="contained-button-file">
+                  <Fab
+                    component="span"
+                    classes={{ root: classes.floatingButton }}
+                  >
+                    <AddPhotoAlternateIcon />
+                  </Fab>
+                </label>
+              </div>
+            )}
+
             {img && (
-              <span>
-                <img className={classes.imageStyle} src={img} />
-              </span>
+              <>
+                <div>
+                  <Fab
+                    component="span"
+                    classes={{ root: classes.floatingButton }}
+                    onClick={imageDelete}
+                  >
+                    <CloseIcon fontSize="large" />
+                  </Fab>
+                </div>
+                <span>
+                  <img className={classes.imageStyle} src={img} />
+                </span>
+              </>
             )}
           </div>
-          {selectType == 'mcq' && mcqBuilder()}
+          <div className={classes.questionContainer}>
+            {selectType == 'mcq' && mcqBuilder()}
 
-          {selectType == 'trueOrFalse' && tfBuilder()}
+            {selectType == 'trueOrFalse' && tfBuilder()}
 
-          {selectType == 'checkbox' && checkboxBuilder()}
+            {selectType == 'checkbox' && checkboxBuilder()}
+          </div>
         </form>
 
         {/* <p> {props.questionName}</p> */}
