@@ -103,15 +103,6 @@ export default function Profile() {
                 inputRef={emailRef}
               ></TextField>
             </Grid>
-            <Grid item md={12} xs={12}>
-              <TextField
-                label="Phone"
-                defaultValue="01202828392919"
-                disabled={formEnabled}
-                className={classes.textField}
-                inputProps={{ min: 0, style: { textAlign: 'center' } }}
-              ></TextField>
-            </Grid>
           </form>
         </Grid>
         <Grid container justify="center">

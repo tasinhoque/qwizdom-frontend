@@ -229,7 +229,7 @@ export default function QuizHome(props) {
             </Grid>
           </Grid>
 
-          <Grid conainer item md={6} xs={12}>
+          <Grid container item md={6} xs={12}>
             <Grid container spacing={3} item>
               <Typography
                 variant="h4"
