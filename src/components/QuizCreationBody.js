@@ -3,16 +3,27 @@ import { stageContext } from '../contexts/stageContext';
 import { QuizStage } from '.';
 import QuestionComponent from './QuestionComponent';
 import { isUndefined, cloneDeep } from 'lodash';
-import { ContactSupportOutlined, LocalGasStation } from '@material-ui/icons';
+import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
+import Button from '@material-ui/core/Button';
+const useStyles = makeStyles(theme => ({
+  buttonStyle: {
+    color: 'white',
+    'background-color': '#333f46',
+  },
+}));
 
 export default function QuizCreationBody() {
+  const classes = useStyles();
+
   const [submitVal, setSubmit] = useState('halt');
   const fileStorage = [];
-  const handleSubmit = async () => {
+
+  const handleSubmit = async isPublished => {
     var postBody = {
-      quizId: '60c8b649b1163904e4f9d6da',
+      quizId: '60db39f401176c4f08da0be5',
       stages: _.cloneDeep(store.current),
+      isPublished: isPublished,
     };
     postBody.stages.map((item, i) => {
       postBody.stages[i].questions.map((q, j) => {
@@ -28,6 +39,7 @@ export default function QuizCreationBody() {
         }
       });
     });
+    console.log('postbody is ', postBody);
 
     await api
       .postCompleteQuiz(postBody)
@@ -53,7 +65,7 @@ export default function QuizCreationBody() {
     await api
       .uploadQuestionImage(id, formData)
       .then(res => {
-        // console.log(res);
+        console.log(res);
       })
       .catch(error => {
         // console.log(error);
@@ -198,6 +210,27 @@ export default function QuizCreationBody() {
             />
           );
         })}
+
+        <div>
+          <Button
+            variant="contained"
+            classes={{
+              contained: classes.buttonStyle,
+            }}
+            onClick={e => handleSubmit(true)}
+          >
+            submit now
+          </Button>
+          <Button
+            variant="contained"
+            classes={{
+              containedPrimary: classes.buttonStyle,
+            }}
+            onClick={e => handleSubmit('false')}
+          >
+            save as draft
+          </Button>
+        </div>
       </div>
     );
   } else {

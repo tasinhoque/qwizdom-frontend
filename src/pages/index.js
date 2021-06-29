@@ -5,3 +5,4 @@ export { default as QuizHome } from './QuizHome';
 export { default as QuizCreation } from './QuizCreation';
 export { default as Profile } from './Profile';
 export { default as QuizCreationBasic } from './QuizCreationBasic';
+export { default as QuizPlay } from './QuizPlay';
