@@ -15,6 +15,7 @@ axios.interceptors.request.use(
       if (accessToken) {
         config.headers['Authorization'] = 'Bearer ' + accessToken;
         if (config.data && config.data.hasOwnProperty('fileUpload')) {
+          console.log(config);
           config.headers['Content-Type'] = 'multipart/form-data';
         } else {
           config.headers['Accept'] = 'application/json';
@@ -103,7 +104,10 @@ const api = {
     return axios.post(`${baseUrl}/quizzes/${quizId}/subscription/flip`);
   },
   editProfile: body => {
-    return axios.patch(`${baseUrl}/users/60c9ffc9a285bb50f2aca139`, body);
+    return axios.patch(`${baseUrl}/users`, body);
+  },
+  editAvatar: body => {
+    return axios.patch(`${baseUrl}/users/avatar`, body);
   },
 };
 

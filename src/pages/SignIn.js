@@ -74,7 +74,7 @@ export default function SignIn(props) {
       .then(res => {
         localStorage.setItem('accessToken', res.data.tokens.access.token);
         localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
-        localStorage.setItem('user', res.data.user);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
         console.log(res);
         props.history.push('/dashboard');
       })
