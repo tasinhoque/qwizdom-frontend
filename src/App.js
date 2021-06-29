@@ -6,6 +6,7 @@ import {
   QuizHome,
   QuizCreation,
   Profile,
+  QuizCreationBasic,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -16,9 +17,10 @@ const App = () => {
         <Route path="/" component={SignIn} exact />
         <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
-        <Route path="/quizhome/:id" component={QuizHome} />
+        <Route path="/quiz-home/:id" component={QuizHome} />
         <Route path="/creation" component={QuizCreation} />
         <Route path="/profile" component={Profile} />
+        <Route path="/creation-basic" component={QuizCreationBasic} />
       </Switch>
     </main>
   );

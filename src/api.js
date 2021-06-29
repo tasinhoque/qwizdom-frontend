@@ -100,6 +100,7 @@ const api = {
     return axios.patch(`${baseUrl}/questions/${id}/image`, body);
   },
   getCategories: () => axios.get(`${baseUrl}/categories`),
+  postQuiz: requestBody => axios.post(`${baseUrl}/quizzes`, requestBody),
   subscribeQuiz: quizId => {
     return axios.post(`${baseUrl}/quizzes/${quizId}/subscription/flip`);
   },
