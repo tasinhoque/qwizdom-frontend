@@ -1,4 +1,5 @@
 import React from 'react';
+import { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -100,6 +101,8 @@ export default withRouter(function Header(props) {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  let user = JSON.parse(localStorage.getItem('user'));
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -238,7 +241,7 @@ export default withRouter(function Header(props) {
               onClick={handleProfileMenuOpen}
               color="inherit"
             >
-              <Avatar alt="Remy Sharp" src="/assets/images/user.png" />
+              <Avatar alt={user.name} src={user.avatar} />
             </IconButton>
           </div>
           <div className={classes.sectionMobile}>
