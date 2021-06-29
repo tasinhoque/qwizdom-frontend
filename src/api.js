@@ -1,5 +1,5 @@
 import axios from 'axios';
-const baseUrl = 'http://localhost:4000/v1';
+const baseUrl = 'http://localhost:4000';
 // axios.defaults.headers.common = {'Authorization': `bearer ${token}`}
 
 axios.interceptors.request.use(
@@ -14,8 +14,11 @@ axios.interceptors.request.use(
       let accessToken = localStorage.getItem('accessToken');
       if (accessToken) {
         config.headers['Authorization'] = 'Bearer ' + accessToken;
-        config.headers['Accept'] = 'application/json';
-        console.log(config);
+        if (config.data && config.data.hasOwnProperty('fileUpload')) {
+          config.headers['Content-Type'] = 'multipart/form-data';
+        } else {
+          config.headers['Accept'] = 'application/json';
+        }
         return config;
       }
     }
@@ -88,6 +91,12 @@ const api = {
     return axios.get(
       `${baseUrl}/discussion-threads/60bdae891bcc9948e077bfdf/comments`
     );
+  },
+  postCompleteQuiz: quizBody => {
+    return axios.post(`${baseUrl}/quizzes/complete`, quizBody);
+  },
+  uploadQuestionImage: (id, body) => {
+    return axios.patch(`${baseUrl}/questions/${id}/image`, body);
   },
   getCategories: () => axios.get(`${baseUrl}/categories`),
   subscribeQuiz: quizId => {

@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { TextField } from '@material-ui/core';
+import { Container, TextField } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -14,6 +14,7 @@ import Portal from '@material-ui/core/Portal';
 import FormGroup from '@material-ui/core/FormGroup';
 import { IconButton } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
+import ImageIcon from '@material-ui/icons/Image';
 
 import CheckBoxIcon from '@material-ui/icons/CheckBox';
 import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
@@ -21,6 +22,13 @@ import ToggleOffIcon from '@material-ui/icons/ToggleOff';
 import { findLastIndex } from 'lodash';
 import { CenterFocusStrong } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
+import Paper from '@material-ui/core/Paper';
+import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
+import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
+import Grid from '@material-ui/core/Grid';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
+import Fab from '@material-ui/core/Fab';
+import HighlightOffIcon from '@material-ui/icons/HighlightOff';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -45,8 +53,50 @@ const useStyles = makeStyles(theme => ({
     justifyItems: 'space-between',
   },
   textFieldStyle: {
-    width: '60%',
     margin: '8px',
+  },
+  questionStyle: {
+    margin: theme.spacing(2),
+    minHeight: theme.spacing(25),
+    position: 'relative',
+  },
+  container: {
+    marginBottom: '50px',
+  },
+  iconStyle: {
+    cursor: 'pointer',
+  },
+  input: {
+    display: 'none',
+  },
+
+  iconContainer: {
+    position: 'absolute',
+    top: '-30px',
+    right: '-10px',
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'flex-end',
+  },
+  imageContainer: {
+    display: 'flex',
+    alignContent: 'flex-start',
+    '& > *': {
+      margin: theme.spacing(1),
+    },
+  },
+  imageStyle: {
+    height: '200px',
+    width: '100%',
+    marginRight: theme.spacing(1),
+  },
+  questionContainer: {
+    paddingLeft: theme.spacing(2),
+  },
+  floatingButton: {
+    height: '50px',
+    width: '50px',
+    minHeight: '20px',
   },
 }));
 
@@ -58,25 +108,42 @@ export default function QuestionComponent(props) {
     questionId: props.questionId,
   });
 
-  console.log(props);
-
-  const [value, setValue] = useState(props.questionLabel || '');
+  const [value, setValue] = useState(props.title || '');
   const updatedVal = useRef('');
 
   //MCQ Hooks
   const [option, setOption] = useState('');
   const [optionArray, setOptionArray] = useState([]);
-
   const optionHolder = useRef([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
+
+  //image upload Hooks
+  const [img, setImg] = useState(null);
+
+  //jodit hook
+  const editor = useRef(null);
+  const [content, setContent] = useState('');
+
+  const config = {
+    readonly: false, // all options from https://xdsoft.net/jodit/doc/
+  };
+
   // const allValueRef = useRef([]);
+
+  const addQuestion = () => {
+    props.bodySetter.addQuestion(props.stageId, props.questionId);
+  };
+
+  const deleteQuestion = i => {
+    props.bodySetter.deleteQuestion(props.stageId, props.questionId);
+  };
 
   const inputChange = e => {
     e.preventDefault();
     updatedVal.current = e.target.value;
     setValue(e.target.value);
-    questionBody.current.questionLabel = e.target.value;
+    questionBody.current.title = e.target.value;
     props.questionChange(questionBody.current);
   };
   const handleSelect = e => {
@@ -87,17 +154,50 @@ export default function QuestionComponent(props) {
       questionBody.current.questionType != e.target.value
     ) {
       setOptionArray([]);
+      optionHolder.current = [];
     }
     questionBody.current.questionType = e.target.value;
     props.questionChange(questionBody.current);
   };
+  const handleOption = (e, i) => {
+    if (selectType != 'mcq') {
+      questionBody.current.options[i].isAnswer =
+        !questionBody.current.options[i].isAnswer;
+      setOption(e.target.value + Math.random());
+    } else {
+      questionBody.current.options.map((element, i) => {
+        if (element.text == e.target.value) {
+          questionBody.current.options[i].isAnswer = true;
+        } else {
+          questionBody.current.options[i].isAnswer = false;
+        }
+        setOption(e.target.value);
+      });
+    }
+  };
+  const handleImage = e => {
+    if (e.target.files.length !== 0) {
+      setImg(URL.createObjectURL(e.target.files[0]));
+      questionBody.current.image = e.target.files[0];
+      props.questionChange(questionBody.current);
+    }
+  };
+  const imageDelete = e => {
+    setImg(null);
+    delete questionBody.current.image;
+    props.questionChange(questionBody.current);
+  };
+
   const addOption = e => {
     e.preventDefault();
-    let opt = addOptionRef.current.value;
-    if (opt == '') return;
-    if (optionArray.includes(opt)) {
-      placeholderRef.current = 'Please add a different option';
-    }
+    let opt = {
+      text: addOptionRef.current.value,
+      isAnswer: false,
+    };
+    if (opt.text == '') return;
+    // if (optionArray.includes(opt)) {
+    //   placeholderRef.current = 'Please add a different option';
+    // }
     setOptionArray(present => {
       const body = [...optionArray, opt];
       optionHolder.current.push(opt);
@@ -114,7 +214,7 @@ export default function QuestionComponent(props) {
     setOptionArray(present => {
       const body = [...optionArray];
       optionHolder.current.splice(e, 1);
-      body.splice(i, 1);
+      body.splice(e, 1);
       questionBody.current.options = optionHolder.current;
       props.questionChange(questionBody.current);
       return body;
@@ -122,7 +222,7 @@ export default function QuestionComponent(props) {
   };
   const editOption = (e, index) => {
     // console.log(e.target.value);
-    optionHolder.current[index] = e.target.value;
+    optionHolder.current[index].text = e.target.value;
     console.log(optionHolder.current);
     questionBody.current.options = optionHolder.current;
     props.questionChange(questionBody.current);
@@ -134,12 +234,11 @@ export default function QuestionComponent(props) {
   };
 
   const mcqBuilder = () => {
-    const handleOption = e => {
-      setOption(e.target.value);
-    };
+    // const handleOption = e => {
+    //   setOption(e.target.value);
+    // };
     return (
       <div>
-        <p> this is MCQ sector </p>
         <RadioGroup
           aria-label="gender"
           name="gender1"
@@ -149,14 +248,14 @@ export default function QuestionComponent(props) {
           {optionArray.map((r, i) => {
             return (
               <div key={i}>
-                <FormControlLabel value={r} control={<Radio />} />
+                <FormControlLabel value={r.text} control={<Radio />} />
 
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -191,28 +290,29 @@ export default function QuestionComponent(props) {
   };
 
   const checkboxBuilder = () => {
-    const handleOption = e => {
-      setOption(e.target.value);
-    };
     return (
       <div>
-        <p> this is Checkbox sector </p>
-        <FormGroup
-          aria-label="gender"
-          name="gender1"
-          value={option}
-          onChange={handleOption}
-        >
+        <FormGroup value={option}>
           {optionArray.map((r, i) => {
             return (
               <div key={i}>
-                <FormControlLabel value={r} control={<Checkbox />} />
+                <FormControlLabel
+                  value={r.text}
+                  control={
+                    <Checkbox
+                      checked={r.isAnswer}
+                      onChange={e => {
+                        handleOption(e, i);
+                      }}
+                    />
+                  }
+                />
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -250,20 +350,27 @@ export default function QuestionComponent(props) {
   const tfBuilder = () => {
     return (
       <div>
-        <p> this is true/false sector </p>
         <FormGroup>
           {optionArray.map((r, i) => {
             return (
               <div key={i}>
                 <FormControlLabel
-                  control={<Switch checked={false} name="on" />}
+                  value={r.text}
+                  control={
+                    <Switch
+                      checked={r.isAnswer}
+                      onChange={e => {
+                        handleOption(e, i);
+                      }}
+                    />
+                  }
                 />
                 <TextField
                   onChange={e => {
                     editOption(e, i);
                   }}
                   className={classes.textFieldStyle}
-                  defaultValue={r}
+                  defaultValue={r.text}
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -297,87 +404,138 @@ export default function QuestionComponent(props) {
       </div>
     );
   };
-  // useEffect(() => {
-  //   console.log('submit called');
-  //   // const dummy = JSON.parse(JSON.stringify(value));
-  //   const dummy = value;
-  //   console.log(valueRef.current.value);
-  //   dummy[props.stageId - 1].questions[props.questionId - 1].questionName =
-  //     valueRef.current.value;
-  //   if (submit) {
-  //     console.log(props.stageId - 1);
-  //     console.log(props.questionId - 1);
-  //     localStorage.setItem('dummy', JSON.stringify(dummy));
-  //   }
-  // }, [submit]);
 
-  // useEffect(() => {
-  //   console.log(props);
-  //   if (props.submitChecker.current == 'submit') {
-  //     console.log('submit checker called');
-
-  //     let message = {
-  //       stageId: props.stageId,
-  //       questionId: props.questionId,
-  //       questionLabel: updatedVal.current,
-  //     };
-  //     props.questionChange(message);
-  //   }
-  // }, [props]);
   return (
-    <div>
-      <form
-        onSubmit={e => {
-          e.preventDefault();
-        }}
-      >
-        <TextField
-          style={{ width: '60%', margin: '8px' }}
-          variant="filled"
-          required
-          fullWidth
-          // id="email"
-          label="Question Text"
-          name="email"
-          // autoComplete="email"
-          // autoFocus
-          value={value}
-          onChange={inputChange}
-        />
+    <div className={classes.container}>
+      <Paper className={classes.questionStyle} elevation={7}>
+        <div className={classes.iconContainer}>
+          <span>
+            {' '}
+            <AddCircleOutlineTwoToneIcon
+              className={classes.iconStyle}
+              onClick={addQuestion}
+              fontSize="large"
+            />
+            <DeleteOutlineTwoToneIcon
+              className={classes.iconStyle}
+              onClick={deleteQuestion}
+              fontSize="large"
+            />
+          </span>
+        </div>
+        <form
+          onSubmit={e => {
+            e.preventDefault();
+          }}
+        >
+          <Grid container spacing={2}>
+            <Grid item sm={8}>
+              {/* <JoditEditor
+                ref={editor}
+                value={content}
+                config={config}
+                tabIndex={1} // tabIndex of textarea
+                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
+                onChange={newContent => {}}
+              /> */}
+              <TextField
+                className={classes.textFieldStyle}
+                variant="filled"
+                required
+                fullWidth
+                multiline
+                // id="email"
+                label="Question Text"
+                name="email"
+                // autoComplete="email"
+                // autoFocus
+                value={value}
+                onChange={inputChange}
+              />
+            </Grid>
+            <Grid item sm={3}>
+              <FormControl className={classes.formControl}>
+                <InputLabel id="demo-simple-select-filled-label">
+                  Type
+                </InputLabel>
+                <Select
+                  classes={{
+                    selectMenu: classes.selectStyle,
+                  }}
+                  placeholder="Type"
+                  value={selectType}
+                  onChange={handleSelect}
+                >
+                  <MenuItem value={'mcq'}>
+                    {' '}
+                    <RadioButtonCheckedIcon
+                      style={{ fontSize: '1.7rem' }}
+                    />{' '}
+                    Mcq
+                  </MenuItem>
+                  <MenuItem value={'trueOrFalse'}>
+                    {' '}
+                    <ToggleOffIcon style={{ fontSize: '1.7rem' }} /> True/false
+                  </MenuItem>
+                  <MenuItem value={'checkbox'}>
+                    <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
+                  </MenuItem>
+                </Select>
+              </FormControl>
+            </Grid>
+          </Grid>
 
-        <FormControl variant="filled" className={classes.formControl}>
-          <InputLabel id="demo-simple-select-filled-label">Type</InputLabel>
-          <Select
-            classes={{
-              selectMenu: classes.selectStyle,
-            }}
-            value={selectType}
-            onChange={handleSelect}
-          >
-            <MenuItem value="">
-              <em>None</em>
-            </MenuItem>
-            <MenuItem value={'Mcq'}>
-              {' '}
-              <RadioButtonCheckedIcon /> Mcq
-            </MenuItem>
-            <MenuItem value={'True/False'}>
-              {' '}
-              <ToggleOffIcon fontSize="large" /> True/false
-            </MenuItem>
-            <MenuItem value={'Checkbox'}>
-              <CheckBoxIcon /> Checkbox{' '}
-            </MenuItem>
-          </Select>
-        </FormControl>
-        {selectType == 'Mcq' && mcqBuilder()}
+          <div className={classes.imageContainer}>
+            <input
+              accept="image/*"
+              className={classes.input}
+              id="contained-button-file"
+              multiple
+              type="file"
+              onChange={handleImage}
+            />
+            {!img && (
+              <div>
+                <label htmlFor="contained-button-file">
+                  <Fab
+                    component="span"
+                    classes={{ root: classes.floatingButton }}
+                  >
+                    <AddPhotoAlternateIcon />
+                  </Fab>
+                </label>
+              </div>
+            )}
 
-        {selectType == 'True/False' && tfBuilder()}
+            {img && (
+              <>
+                <div>
+                  <Fab
+                    component="span"
+                    classes={{ root: classes.floatingButton }}
+                    onClick={imageDelete}
+                  >
+                    <CloseIcon fontSize="large" />
+                  </Fab>
+                </div>
+                <span>
+                  <img className={classes.imageStyle} src={img} />
+                </span>
+              </>
+            )}
+          </div>
+          <div className={classes.questionContainer}>
+            {selectType == 'mcq' && mcqBuilder()}
 
-        {selectType == 'Checkbox' && checkboxBuilder()}
-      </form>
-      {/* <p> {props.questionName}</p> */}
-      {/* <p> props stage is {props.stageId}</p> */}
+            {selectType == 'trueOrFalse' && tfBuilder()}
+
+            {selectType == 'checkbox' && checkboxBuilder()}
+          </div>
+        </form>
+
+        {/* <p> {props.questionName}</p> */}
+        {/* <p> props stage is {props.stageId}</p> */}
+      </Paper>
     </div>
   );
 }
