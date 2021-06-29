@@ -120,6 +120,7 @@ export default function QuestionComponent(props) {
 
   //image upload Hooks
   const [img, setImg] = useState(null);
+  const imageInputId = 'sid-' + props.stageId + 'qid-' + props.questionId;
 
   //jodit hook
   const editor = useRef(null);
@@ -176,8 +177,10 @@ export default function QuestionComponent(props) {
     }
   };
   const handleImage = e => {
+    console.log(e);
     if (e.target.files.length !== 0) {
       setImg(URL.createObjectURL(e.target.files[0]));
+      console.log('image added', e.target.files[0]);
       questionBody.current.image = e.target.files[0];
       props.questionChange(questionBody.current);
     }
@@ -489,14 +492,14 @@ export default function QuestionComponent(props) {
             <input
               accept="image/*"
               className={classes.input}
-              id="contained-button-file"
+              id={imageInputId}
               multiple
               type="file"
               onChange={handleImage}
             />
             {!img && (
               <div>
-                <label htmlFor="contained-button-file">
+                <label htmlFor={imageInputId}>
                   <Fab
                     component="span"
                     classes={{ root: classes.floatingButton }}

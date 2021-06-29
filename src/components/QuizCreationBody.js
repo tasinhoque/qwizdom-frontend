@@ -32,6 +32,7 @@ export default function QuizCreationBody() {
     await api
       .postCompleteQuiz(postBody)
       .then(res => {
+        console.log(res);
         const responseQuiz = res.data;
         fileStorage.map((element, index) => {
           let formData = new FormData();
