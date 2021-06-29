@@ -151,13 +151,13 @@ export default function QuestionComponent(props) {
     setType(e.target.value);
 
     if (
-      questionBody.current.questionType &&
-      questionBody.current.questionType != e.target.value
+      questionBody.current.type &&
+      questionBody.current.type != e.target.value
     ) {
       setOptionArray([]);
       optionHolder.current = [];
     }
-    questionBody.current.questionType = e.target.value;
+    questionBody.current.type = e.target.value;
     props.questionChange(questionBody.current);
   };
   const handleOption = (e, i) => {

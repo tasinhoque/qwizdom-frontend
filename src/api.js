@@ -102,6 +102,10 @@ const api = {
   subscribeQuiz: quizId => {
     return axios.post(`${baseUrl}/quizzes/${quizId}/subscription/flip`);
   },
+  //QuizPlayApi
+  getCompleteQuiz: qId => {
+    return axios.get(`${baseUrl}/quizzes/${qId}/complete`);
+  },
 };
 
 export default api;
