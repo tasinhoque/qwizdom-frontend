@@ -1,19 +1,106 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
-import store from '../components/Quiz Play/store';
+import Pagination from '@material-ui/lab/Pagination';
+import CircularProgress from '@material-ui/core/CircularProgress';
+import { Header } from '../components';
+import PlayQuestion from '../components/QuizPlay/PlayQuestion';
+
+import store from '../components/QuizPlay/store';
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
     'background-color': '#333f46',
   },
+  questionContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+  questionStyle: {
+    width: '70%',
+  },
 }));
 export default function QuizPlay() {
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
+  const [totalPages, setTotalPages] = useState(0);
 
-  console.log(store);
+  const fullQuiz = useRef(null);
+  const [currentPageNum, setCurrentPageNum] = useState(0);
+  // const [currentStage, setCurrentStage] = useState(null);
+  const currentStage = useRef('');
 
+  const id = '60dc04d501176c4f08da0dc6';
+  const pageChange = (_event, num) => {
+    setCurrentPageNum(num - 1);
+    console.log(fullQuiz.current.stages[num - 1]);
+  };
+  const allFunctions = {
+    questionChange: (qId, message) => {
+      // const pos = store.current.findIndex(i => i.stageId == message.stageId);
+      fullQuiz.current.stages[currentPageNum].questions[qId] = message;
+    },
+  };
   useEffect(async () => {
-    api.getCompleteQuiz();
+    api
+      .getCompleteQuiz(id)
+      .then(res => {
+        res.data.stages.map((e, i) => {
+          e.questions.map((q, j) => {
+            if (q.options) {
+              q.options.map((o, k) => {
+                res.data.stages[i].questions[j].options[k].isAnswer = false;
+              });
+            }
+          });
+        });
+        console.log(res.data.stages);
+
+        fullQuiz.current = res.data;
+        currentStage.current = res.data.stages[0];
+        setTotalPages(res.data.stages.length);
+
+        console.log(fullQuiz.current.stages[currentPageNum].questions);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   }, []);
+
+  return (
+    <>
+      <Header />
+      <div>
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress color="secondary" />
+          </div>
+        ) : (
+          <div>
+            {fullQuiz.current.stages[currentPageNum].questions.map(
+              (element, index) => {
+                return (
+                  <PlayQuestion
+                    key={`StageId ${currentPageNum}index${index}`}
+                    allFunctions={allFunctions}
+                    qId={index}
+                    question={element}
+                  />
+                );
+              }
+            )}
+            <Pagination
+              style={{ display: 'flex', justifyContent: 'center' }}
+              count={totalPages}
+              onChange={pageChange}
+              page={currentPageNum + 1}
+              color="secondary"
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
 }

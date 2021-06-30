@@ -92,7 +92,7 @@ export default function QuizStage(props) {
                     stageId={props.stageId}
                     questionChange={props.bodySetter.questionChange}
                     bodySetter={props.bodySetter}
-                    key={i}
+                    key={`qID ${i} sId ${props.stageId} `}
                   />
                 );
               })}
