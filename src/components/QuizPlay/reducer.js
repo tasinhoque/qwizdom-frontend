@@ -7,4 +7,9 @@ export default function reducer(state = [], action) {
       },
     ];
   }
+  if (action.type == 'setFullBody') {
+    return {
+      stages: action.payload,
+    };
+  }
 }
