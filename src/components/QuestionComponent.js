@@ -162,8 +162,9 @@ export default function QuestionComponent(props) {
   };
   const handleOption = (e, i) => {
     if (selectType != 'mcq') {
-      questionBody.current.options[i].isAnswer =
-        !questionBody.current.options[i].isAnswer;
+      questionBody.current.options[i].isAnswer = !questionBody.current.options[
+        i
+      ].isAnswer;
       setOption(e.target.value + Math.random());
     } else {
       questionBody.current.options.map((element, i) => {
@@ -418,11 +419,13 @@ export default function QuestionComponent(props) {
               className={classes.iconStyle}
               onClick={addQuestion}
               fontSize="large"
+              style={{ color: 'gray' }}
             />
             <DeleteOutlineTwoToneIcon
               className={classes.iconStyle}
               onClick={deleteQuestion}
               fontSize="large"
+              style={{ color: 'gray' }}
             />
           </span>
         </div>

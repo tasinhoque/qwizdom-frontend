@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
+import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams } from 'react-router';
 
@@ -75,7 +76,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   quizDescription: {
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(5),
+    marginLeft: theme.spacing(2),
     // paddingRight: theme.spacing(3),
   },
   imgBtnContainer: {
@@ -110,18 +112,51 @@ export default function QuizHome(props) {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState('');
+  const [subbed, setSubbed] = useState(false);
   const { id } = useParams();
+  const [quizzes, setQuizzes] = useState([]);
+  const [queryString, setQueryString] = useState(
+    'isTimeBound=true&isScheduled=true&isTest=false'
+  );
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(async () => {
     setLoading(true);
     api
       .getQuiz(id)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setQuiz(res.data);
         setLoading(false);
       })
       .catch(e => {});
+  }, []);
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (!signedIn) {
+      props.history.push('/');
+    }
+
+    try {
+      setLoading(true);
+      // updateQueryString();
+      const response = await api.getQuizzes(queryString);
+      // console.log(response.data.results[0]['id']);
+
+      setQuizzes(response.data.results);
+      // setTotalPages(response.data.totalPages);
+      response.data.results.map((e, i) => {
+        if (e.id === id) {
+          setSubbed(true);
+          // console.log(e.id);
+        }
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const subscribe = async e => {
@@ -177,7 +212,7 @@ export default function QuizHome(props) {
                   className={classes.subscribeBtn}
                   onClick={subscribe}
                 >
-                  Subscribe
+                  {subbed ? 'Unsubscribe' : 'Subscribe'}
                 </Button>
               </div>
             </Grid>
@@ -229,8 +264,8 @@ export default function QuizHome(props) {
             </Grid>
           </Grid>
 
-          <Grid container item md={6} xs={12}>
-            <Grid container spacing={3} item>
+          <Grid container item md={6} xs={12} direction="column">
+            <Grid item>
               <Typography
                 variant="h4"
                 style={{ margin: '0px 0px 20px 20px' }}
@@ -238,37 +273,30 @@ export default function QuizHome(props) {
               >
                 {quiz.name}
               </Typography>
-              <Grid container item md={12} xs={12} spacing={3}>
-                <Grid item md={6} xs={12}>
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        src={quiz.creator.avatar}
-                        // src="assets/images/marcos.png"
-                        // className={classes.avatar}
-                      ></Avatar>
-                    }
-                    title="Marcos Marshal"
-                    titleTypographyProps={{ variant: 'h5' }}
-                    // subheader="September 14, 2016"
-                  />
-                </Grid>
-                <Grid container item md={6} xs={12} alignItems="center">
-                  <Grid item md={12} xs={12}>
-                    <Typography
-                      style={{
-                        color: 'gray',
-                        textAlign: 'right',
-                      }}
-                      component="p"
-                    >
-                      1 month ago
-                    </Typography>
-                  </Grid>
+            </Grid>
+            <Grid container item>
+              <Grid item md={6} xs={12}>
+                <CardHeader
+                  avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
+                  title="Marcos Marshal"
+                  titleTypographyProps={{ variant: 'h5' }}
+                />
+              </Grid>
+              <Grid container item md={6} xs={12} alignItems="center">
+                <Grid item md={12} xs={12}>
+                  <Typography
+                    style={{
+                      color: 'gray',
+                      textAlign: 'right',
+                    }}
+                    component="p"
+                  >
+                    1 month ago
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item md={12} xs={12}>
+            <Grid item>
               <Typography className={classes.quizDescription} component="p">
                 {quiz.description}
               </Typography>
@@ -313,6 +341,11 @@ export default function QuizHome(props) {
           <Grid item md={6} xs={12}>
             <QuizReviewCard />
           </Grid>
+        </Grid>
+        <Grid container justify="center">
+          <div style={{ width: '1000px' }}>
+            <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} />
+          </div>
         </Grid>
       </Grid>
     );
