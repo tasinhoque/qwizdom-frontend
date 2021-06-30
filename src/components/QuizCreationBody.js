@@ -6,6 +6,8 @@ import { isUndefined, cloneDeep } from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import Button from '@material-ui/core/Button';
+import { useParams } from 'react-router';
+
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -17,11 +19,12 @@ export default function QuizCreationBody() {
   const classes = useStyles();
 
   const [submitVal, setSubmit] = useState('halt');
+  const { id } = useParams();
   const fileStorage = [];
 
   const handleSubmit = async isPublished => {
     var postBody = {
-      quizId: '60db39f401176c4f08da0be5',
+      quizId: id,
       stages: _.cloneDeep(store.current),
       isPublished: isPublished,
     };
