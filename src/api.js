@@ -110,6 +110,10 @@ const api = {
   editAvatar: body => {
     return axios.patch(`${baseUrl}/users/avatar`, body);
   },
+  //QuizPlayApi
+  getCompleteQuiz: qId => {
+    return axios.get(`${baseUrl}/quizzes/${qId}/complete`);
+  },
 };
 
 export default api;

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 import {
   Grid,
   TextField,
@@ -30,6 +31,7 @@ const QuizCreationBasic = () => {
   const [title, setTitle] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
+  const history = useHistory();
 
   const handleTypeChange = ({ target: { value } }) => {
     setTest(value === 'test');
@@ -50,6 +52,7 @@ const QuizCreationBasic = () => {
       };
 
       const quiz = await api.postQuiz(requestBody);
+      history.push(`/creation/${quiz.data.id}`);
       console.log(quiz.data);
     } catch (error) {
       console.log('App crashed, error:', error);

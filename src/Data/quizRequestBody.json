@@ -6,11 +6,11 @@
             "questions" :[
                 {
                     "questionId": 0,
-                    "questionType": "Mcq"
+                    "type": "Mcq"
                 },
                 {
                     "questionId": 1,
-                    "questionType":"Checkbox"
+                    "type":"Checkbox"
                 }
             ]
 
