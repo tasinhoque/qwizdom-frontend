@@ -28,7 +28,7 @@ const QuizCreationBasic = () => {
   const classes = useStyles();
   const [isTest, setTest] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const history = useHistory();
@@ -46,7 +46,7 @@ const QuizCreationBasic = () => {
       const requestBody = {
         isTest,
         hasAutoEvaluation,
-        title,
+        name,
         description,
         duration,
       };
@@ -90,9 +90,9 @@ const QuizCreationBasic = () => {
             <Grid item>
               <TextField
                 variant="outlined"
-                label="title"
-                value={title}
-                onChange={e => setTitle(e.target.value)}
+                label="name"
+                value={name}
+                onChange={e => setName(e.target.value)}
               />
             </Grid>
             <Grid item>
