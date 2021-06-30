@@ -88,6 +88,7 @@ export default function QuizCreationBody() {
       stageId: 0,
       questions: [
         {
+          stageId: 0,
           questionId: 0,
           title: 'first question',
         },
@@ -142,29 +143,25 @@ export default function QuizCreationBody() {
         return body;
       });
     },
-    addQuestion: (stageId, questionId) => {
-      setQuizBody(presentState => {
-        const body = [...presentState];
-        console.log(body);
-        body[stageId].questions.splice(questionId, 1);
-        store.current[stageId].questions.splice(questionId, 1);
-        return body;
-      });
-    },
     deleteQuestion: (stageId, questionId) => {
-      console.log(stageId, questionId);
+      const pos = store.current.findIndex(i => i.stageId == stageId);
+      const quesPos = store.current[pos].questions.findIndex(
+        i => i.questionId == questionId
+      );
       setQuizBody(presentState => {
         const body = [...presentState];
-        console.log(body);
-        body[stageId].questions.splice(questionId, 1);
-        store.current[stageId].questions.splice(questionId, 1);
+        body[pos].questions.splice(quesPos, 1);
+        store.current[pos].questions.splice(quesPos, 1);
         return body;
       });
     },
 
     questionChange: message => {
       const pos = store.current.findIndex(i => i.stageId == message.stageId);
-      store.current[pos].questions[message.questionId] = message;
+      const quesPos = store.current[pos].questions.findIndex(
+        i => i.questionId == message.questionId
+      );
+      store.current[pos].questions[quesPos] = message;
 
       // console.log(store.current);
     },
@@ -172,6 +169,9 @@ export default function QuizCreationBody() {
       const pos = store.current.findIndex(i => i.stageId == stageId);
       const temp = store.current[pos].questions.map(x => x.questionId);
       const newId = Math.max(...temp) + 1;
+      const quesPos = store.current[pos].questions.findIndex(
+        i => i.questionId == questionId
+      );
 
       const newQuestion = {
         stageId: stageId,
@@ -182,8 +182,9 @@ export default function QuizCreationBody() {
       // store.current[pos].questions.push(message);
       setQuizBody(presentState => {
         const body = [...presentState];
-        store.current[stageId].questions.splice(pos + 1, 0, newQuestion);
-        body[pos].questions.splice(pos + 1, 0, 'h');
+        store.current[pos].questions.splice(quesPos + 1, 0, newQuestion);
+
+        body[pos].questions.splice(quesPos + 1, 0, 'h');
 
         return body;
       });
