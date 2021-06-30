@@ -98,7 +98,7 @@ export default withRouter(function SingleCard(props) {
   const classes = useStyles();
   console.log();
   const rerouteQuiz = () => {
-    props.history.push(`/quizhome/${props.id}`);
+    props.history.push(`/quiz-home/${props.id}`);
   };
 
   const subscribe = async e => {
