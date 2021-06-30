@@ -7,11 +7,19 @@ import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
+  root: {
+    marginTop: theme.spacing(5),
+  },
   buttonStyle: {
-    color: 'white',
-    'background-color': '#333f46',
+    marginLeft: theme.spacing(2),
+    marginRight: theme.spacing(2),
+    '&:hover': {
+      color: 'white',
+      'background-color': '#333f46',
+    },
   },
 }));
 
@@ -200,41 +208,55 @@ export default function QuizCreationBody() {
 
   if (store.current) {
     return (
-      <div>
-        <button onClick={handleSubmit}> submit full page</button>
+      <Grid container className={classes.root}>
+        {/* <button onClick={handleSubmit}> submit full page</button> */}
 
-        {store.current.map(stage => {
-          return (
-            <QuizStage
-              submitChecker={submitVal}
-              {...stage}
-              bodySetter={allFunctions}
-              key={stage.stageId}
-            />
-          );
-        })}
+        <Grid
+          container
+          spacing={0}
+          // direction="column"
+          alignItems="center"
+          justify="center"
+          style={{ minHeight: '100vh' }}
+        >
+          {store.current.map(stage => {
+            return (
+              <Grid item key={stage.stageId} md={12}>
+                <QuizStage
+                  submitChecker={submitVal}
+                  {...stage}
+                  bodySetter={allFunctions}
+                />
+              </Grid>
+            );
+          })}
+        </Grid>
 
-        <div>
-          <Button
-            variant="contained"
-            classes={{
-              contained: classes.buttonStyle,
-            }}
-            onClick={e => handleSubmit(true)}
-          >
-            submit now
-          </Button>
-          <Button
-            variant="contained"
-            classes={{
-              containedPrimary: classes.buttonStyle,
-            }}
-            onClick={e => handleSubmit('false')}
-          >
-            save as draft
-          </Button>
-        </div>
-      </div>
+        <Grid container justify="center">
+          <Grid item>
+            <Button
+              variant="contained"
+              classes={{
+                contained: classes.buttonStyle,
+              }}
+              onClick={e => handleSubmit(true)}
+            >
+              submit now
+            </Button>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="contained"
+              classes={{
+                contained: classes.buttonStyle,
+              }}
+              onClick={e => handleSubmit('false')}
+            >
+              save as draft
+            </Button>
+          </Grid>
+        </Grid>
+      </Grid>
     );
   } else {
     return <div>loading</div>;

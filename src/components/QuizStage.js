@@ -2,10 +2,12 @@ import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import AddToPhotosIcon from '@material-ui/icons/AddToPhotos';
 import DeleteIcon from '@material-ui/icons/Delete';
+import AddIcon from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper';
 import { stageContext } from '../contexts/stageContext';
 import QuestionComponent from './QuestionComponent';
 import { wrap } from 'lodash';
+import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -24,7 +26,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     flexWrap: 'wrap',
-    width: '95%',
+    width: '80%',
+    [theme.breakpoints.down('sm')]: {
+      width: '95%',
+    },
   },
   paperStyle: {
     backgroundColor: 'aliceBlue',
@@ -79,7 +84,8 @@ export default function QuizStage(props) {
         <div className={classes.root}>
           <div className={classes.container}>
             <Paper className={classes.paperStyle} elevation={10}>
-              <p> stage id is {props.stageId}</p>
+              {/* <p> stage id is {props.stageId}</p> */}
+              <div style={{ height: '50px' }}></div>
               {/* <button onClick={addStage}> New stage</button>
             <button onClick={deleteStage}> delete stage</button> */}
               {/* <button onClick={addQuestion}>add question</button> */}
@@ -104,11 +110,13 @@ export default function QuizStage(props) {
                   className={classes.iconStyle}
                   onClick={addStage}
                   fontSize="large"
+                  style={{ color: 'gray' }}
                 />
                 <DeleteIcon
                   className={classes.iconStyle}
                   onClick={deleteStage}
                   fontSize="large"
+                  style={{ color: 'gray' }}
                 />
               </span>
             </div>
