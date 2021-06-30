@@ -1,4 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
+import { SingleCard } from '../components';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
@@ -14,6 +15,9 @@ import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import AlarmIcon from '@material-ui/icons/Alarm';
 import Fab from '@material-ui/core/Fab';
+import GridList from '@material-ui/core/GridList';
+import GridListTile from '@material-ui/core/GridListTile';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import api from '../api';
 import { Header, DashboardBody, DashboardSidebar } from '../components';
@@ -26,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   },
   editButton: {
     marginTop: theme.spacing(4),
+    marginBottom: theme.spacing(10),
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
@@ -57,6 +62,10 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
+  gridList: {
+    width: '70%',
+    height: 450,
+  },
 }));
 
 export default function Profile() {
@@ -68,6 +77,11 @@ export default function Profile() {
   const [img, setImg] = useState(null);
   const [errMsg, setErrMsg] = useState(' ');
   const [userName, setUserName] = useState(' ');
+  const [loading, setLoading] = useState(true);
+  const [quizzes, setQuizzes] = useState([]);
+  const [queryString, setQueryString] = useState(
+    'isTimeBound=true&isScheduled=true&isTest=false'
+  );
 
   const user = JSON.parse(localStorage.getItem('user'));
   // setUserName(user.name);
@@ -144,6 +158,26 @@ export default function Profile() {
   function refreshPage() {
     window.location.reload(false);
   }
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (!signedIn) {
+      props.history.push('/');
+    }
+
+    try {
+      setLoading(true);
+      // updateQueryString();
+      const response = await api.getQuizzes(queryString);
+      // console.log(response.data.results);
+
+      setQuizzes(response.data.results);
+      // setTotalPages(response.data.totalPages);
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   return (
     <>
@@ -243,6 +277,33 @@ export default function Profile() {
             </div>
           )}
         </Grid>
+        <Grid container justify="center">
+          {loading ? (
+            <div style={{}}>
+              <CircularProgress color="secondary" />
+            </div>
+          ) : (
+            <GridList cellHeight={320} className={classes.gridList} cols={4}>
+              {quizzes.map(q => {
+                return (
+                  <Grid
+                    item
+                    key={q.id}
+                    xs={12}
+                    md={6}
+                    style={{ marginBottom: '20px' }}
+                  >
+                    <SingleCard {...q} key={q.id} />
+                  </Grid>
+                );
+              })}
+              ;
+            </GridList>
+          )}
+        </Grid>
+        {/* <GridListTile cols={2} key={q.id}> */}
+        {/*   <SingleCard {...q} key={q.id} /> */}
+        {/* </GridListTile> */}
       </Grid>
     </>
   );
