@@ -11,6 +11,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
+import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams } from 'react-router';
 
@@ -111,18 +112,51 @@ export default function QuizHome(props) {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState('');
+  const [subbed, setSubbed] = useState(false);
   const { id } = useParams();
+  const [quizzes, setQuizzes] = useState([]);
+  const [queryString, setQueryString] = useState(
+    'isTimeBound=true&isScheduled=true&isTest=false'
+  );
+
+  const user = JSON.parse(localStorage.getItem('user'));
 
   useEffect(async () => {
     setLoading(true);
     api
       .getQuiz(id)
       .then(res => {
-        console.log(res.data);
+        // console.log(res.data);
         setQuiz(res.data);
         setLoading(false);
       })
       .catch(e => {});
+  }, []);
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (!signedIn) {
+      props.history.push('/');
+    }
+
+    try {
+      setLoading(true);
+      // updateQueryString();
+      const response = await api.getQuizzes(queryString);
+      // console.log(response.data.results[0]['id']);
+
+      setQuizzes(response.data.results);
+      // setTotalPages(response.data.totalPages);
+      response.data.results.map((e, i) => {
+        if (e.id === id) {
+          setSubbed(true);
+          // console.log(e.id);
+        }
+      });
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
   }, []);
 
   const subscribe = async e => {
@@ -178,7 +212,7 @@ export default function QuizHome(props) {
                   className={classes.subscribeBtn}
                   onClick={subscribe}
                 >
-                  Subscribe
+                  {subbed ? 'Unsubscribe' : 'Subscribe'}
                 </Button>
               </div>
             </Grid>
@@ -307,6 +341,11 @@ export default function QuizHome(props) {
           <Grid item md={6} xs={12}>
             <QuizReviewCard />
           </Grid>
+        </Grid>
+        <Grid container justify="center">
+          <div style={{ width: '1000px' }}>
+            <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} />
+          </div>
         </Grid>
       </Grid>
     );

@@ -123,7 +123,6 @@ export default function Profile() {
         .editAvatar(formData)
         .then(res => {
           console.log(res.data.avatar);
-          user.avatar = res.data.avatar;
           localStorage.setItem('user', JSON.stringify(user));
         })
         .catch(error => {
