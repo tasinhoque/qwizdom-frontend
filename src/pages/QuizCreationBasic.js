@@ -13,6 +13,10 @@ import {
   Button,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Fab from '@material-ui/core/Fab';
+import EditIcon from '@material-ui/icons/Edit';
+import ImageIcon from '@material-ui/icons/Image';
+import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
 
 const useStyles = makeStyles(theme => ({
@@ -21,6 +25,13 @@ const useStyles = makeStyles(theme => ({
   },
   rightColumn: {
     margin: theme.spacing(6, 0, 0, 0),
+  },
+  addCover: {
+    marginTop: theme.spacing(5),
+  },
+  cover: {
+    height: theme.spacing(30),
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -31,6 +42,7 @@ const QuizCreationBasic = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
+  const [img, setImg] = useState(null);
   const history = useHistory();
 
   const handleTypeChange = ({ target: { value } }) => {
@@ -39,6 +51,14 @@ const QuizCreationBasic = () => {
 
   const handleEvaluationChange = ({ target: { value } }) => {
     setAutoEvaluation(value === 'auto');
+  };
+
+  const handleImage = e => {
+    console.log(e);
+    if (e.target.files.length !== 0) {
+      setImg(URL.createObjectURL(e.target.files[0]));
+      console.log('image added', e.target.files[0]);
+    }
   };
 
   const handleSubmit = async () => {
@@ -124,21 +144,57 @@ const QuizCreationBasic = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={6} className={classes.rightColumn}>
-          <FormControl component="fieldset">
-            <FormLabel component="legend">Evaluation</FormLabel>
-            <RadioGroup
-              value={hasAutoEvaluation ? 'auto' : 'manual'}
-              onChange={handleEvaluationChange}
-            >
-              <FormControlLabel value="auto" control={<Radio />} label="Auto" />
-              <FormControlLabel
-                value="manual"
-                control={<Radio />}
-                label="Manual"
+        <Grid
+          container
+          direction="column"
+          item
+          xs={6}
+          className={classes.rightColumn}
+        >
+          <Grid item>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Evaluation</FormLabel>
+              <RadioGroup
+                value={hasAutoEvaluation ? 'auto' : 'manual'}
+                onChange={handleEvaluationChange}
+              >
+                <FormControlLabel
+                  value="auto"
+                  control={<Radio />}
+                  label="Auto"
+                />
+                <FormControlLabel
+                  value="manual"
+                  control={<Radio />}
+                  label="Manual"
+                />
+              </RadioGroup>
+            </FormControl>
+          </Grid>
+          <Grid item>
+            <Grid container item className={classes.imageContainer}>
+              <input
+                hidden
+                accept="image/*"
+                id="coverPhoto"
+                multiple
+                type="file"
+                onChange={handleImage}
+                // disabled={formDisabled}
               />
-            </RadioGroup>
-          </FormControl>
+              <Grid container direction="row" className={classes.addCover}>
+                <Typography style={{ marginRight: '30px' }}>
+                  Upload cover photo
+                </Typography>
+                <label htmlFor="coverPhoto">
+                  <Fab component="span">
+                    <AddPhotoAlternateIcon />
+                  </Fab>
+                </label>
+              </Grid>
+              {img && <img src={img} className={classes.cover} />}
+            </Grid>
+          </Grid>
         </Grid>
       </Grid>
     </Container>
