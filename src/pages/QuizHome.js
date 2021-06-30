@@ -75,7 +75,8 @@ const useStyles = makeStyles(theme => ({
     },
   },
   quizDescription: {
-    margin: theme.spacing(2),
+    marginTop: theme.spacing(5),
+    marginLeft: theme.spacing(2),
     // paddingRight: theme.spacing(3),
   },
   imgBtnContainer: {
@@ -229,8 +230,8 @@ export default function QuizHome(props) {
             </Grid>
           </Grid>
 
-          <Grid container item md={6} xs={12}>
-            <Grid container spacing={3} item>
+          <Grid container item md={6} xs={12} direction="column">
+            <Grid item>
               <Typography
                 variant="h4"
                 style={{ margin: '0px 0px 20px 20px' }}
@@ -238,37 +239,30 @@ export default function QuizHome(props) {
               >
                 {quiz.name}
               </Typography>
-              <Grid container item md={12} xs={12} spacing={3}>
-                <Grid item md={6} xs={12}>
-                  <CardHeader
-                    avatar={
-                      <Avatar
-                        src={quiz.creator.avatar}
-                        // src="assets/images/marcos.png"
-                        // className={classes.avatar}
-                      ></Avatar>
-                    }
-                    title="Marcos Marshal"
-                    titleTypographyProps={{ variant: 'h5' }}
-                    // subheader="September 14, 2016"
-                  />
-                </Grid>
-                <Grid container item md={6} xs={12} alignItems="center">
-                  <Grid item md={12} xs={12}>
-                    <Typography
-                      style={{
-                        color: 'gray',
-                        textAlign: 'right',
-                      }}
-                      component="p"
-                    >
-                      1 month ago
-                    </Typography>
-                  </Grid>
+            </Grid>
+            <Grid container item>
+              <Grid item md={6} xs={12}>
+                <CardHeader
+                  avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
+                  title="Marcos Marshal"
+                  titleTypographyProps={{ variant: 'h5' }}
+                />
+              </Grid>
+              <Grid container item md={6} xs={12} alignItems="center">
+                <Grid item md={12} xs={12}>
+                  <Typography
+                    style={{
+                      color: 'gray',
+                      textAlign: 'right',
+                    }}
+                    component="p"
+                  >
+                    1 month ago
+                  </Typography>
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item md={12} xs={12}>
+            <Grid item>
               <Typography className={classes.quizDescription} component="p">
                 {quiz.description}
               </Typography>
