@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import 'date-fns';
 import { useHistory } from 'react-router-dom';
 import {
   Grid,
@@ -12,6 +13,12 @@ import {
   Radio,
   Button,
 } from '@material-ui/core';
+import {
+  MuiPickersUtilsProvider,
+  KeyboardTimePicker,
+  KeyboardDatePicker,
+} from '@material-ui/pickers';
+import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 
@@ -22,6 +29,9 @@ const useStyles = makeStyles(theme => ({
   rightColumn: {
     margin: theme.spacing(6, 0, 0, 0),
   },
+  textField: {
+    minWidth: '300px',
+  },
 }));
 
 const QuizCreationBasic = () => {
@@ -31,6 +41,7 @@ const QuizCreationBasic = () => {
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
+  const [selectedDate, setSelectedDate] = useState(new Date('2021-1-1'));
   const history = useHistory();
 
   const handleTypeChange = ({ target: { value } }) => {
@@ -41,6 +52,10 @@ const QuizCreationBasic = () => {
     setAutoEvaluation(value === 'auto');
   };
 
+  const handleDateChange = date => {
+    setSelectedDate(date);
+  };
+
   const handleSubmit = async () => {
     try {
       const requestBody = {
@@ -49,6 +64,10 @@ const QuizCreationBasic = () => {
         name,
         description,
         duration,
+        startTime:
+          selectedDate.getTime() === new Date('2021-1-1').getTime()
+            ? undefined
+            : selectedDate,
       };
 
       const quiz = await api.postQuiz(requestBody);
@@ -90,27 +109,30 @@ const QuizCreationBasic = () => {
             <Grid item>
               <TextField
                 variant="outlined"
-                label="name"
+                label="Name"
                 value={name}
                 onChange={e => setName(e.target.value)}
+                className={classes.textField}
               />
             </Grid>
             <Grid item>
               <TextField
                 variant="outlined"
-                label="description"
+                label="Description"
                 value={description}
                 onChange={e => setDescription(e.target.value)}
                 multiline
                 rows={5}
+                className={classes.textField}
               />
             </Grid>
             <Grid item>
               <TextField
                 variant="outlined"
-                label="duration (in min)"
+                label="Duration (in min)"
                 value={duration}
                 onChange={e => setDuration(e.target.value)}
+                className={classes.textField}
               />
             </Grid>
             <Grid item>
@@ -139,6 +161,35 @@ const QuizCreationBasic = () => {
               />
             </RadioGroup>
           </FormControl>
+          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+            <Grid container justify="space-around" direction="column">
+              <Grid item>
+                <KeyboardDatePicker
+                  margin="normal"
+                  id="date-picker-dialog"
+                  label="Date"
+                  format="MM/dd/yyyy"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change date',
+                  }}
+                />
+              </Grid>
+              <Grid item>
+                <KeyboardTimePicker
+                  margin="normal"
+                  id="time-picker"
+                  label="Time"
+                  value={selectedDate}
+                  onChange={handleDateChange}
+                  KeyboardButtonProps={{
+                    'aria-label': 'change time',
+                  }}
+                />
+              </Grid>
+            </Grid>
+          </MuiPickersUtilsProvider>
         </Grid>
       </Grid>
     </Container>
