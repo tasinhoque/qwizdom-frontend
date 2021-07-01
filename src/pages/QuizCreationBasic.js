@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import 'date-fns';
 import { useHistory } from 'react-router-dom';
 import {
@@ -21,8 +21,6 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
-import EditIcon from '@material-ui/icons/Edit';
-import ImageIcon from '@material-ui/icons/Image';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
 
@@ -64,6 +62,7 @@ const QuizCreationBasic = () => {
   const [isTest, setTest] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
   const [name, setName] = useState('');
+  const cover = useRef(null);
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [img, setImg] = useState(null);
@@ -79,10 +78,10 @@ const QuizCreationBasic = () => {
   };
 
   const handleImage = e => {
-    console.log(e);
     if (e.target.files.length !== 0) {
-      setImg(URL.createObjectURL(e.target.files[0]));
-      console.log('image added', e.target.files[0]);
+      const file = e.target.files[0];
+      setImg(URL.createObjectURL(file));
+      cover.current = file;
     }
   };
 
@@ -104,9 +103,21 @@ const QuizCreationBasic = () => {
             : selectedDate,
       };
 
-      const quiz = await api.postQuiz(requestBody);
-      history.push(`/creation/${quiz.data.id}`);
-      console.log(quiz.data);
+      const { data: quiz } = await api.postQuiz(requestBody);
+
+      if (img != null) {
+        let formData = new FormData();
+        formData.append('cover', cover.current);
+        formData.append('fileUpload', true);
+
+        try {
+          await api.updateCover(quiz.id, formData);
+        } catch (error) {
+          console.log(error.response.data.message);
+        }
+      }
+
+      history.push(`/creation/${quiz.id}`);
     } catch (error) {
       console.log('App crashed, error:', error);
     }
