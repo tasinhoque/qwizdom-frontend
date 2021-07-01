@@ -8,6 +8,7 @@ import api from '../api';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
+import { useHistory } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -25,6 +26,7 @@ const useStyles = makeStyles(theme => ({
 
 export default function QuizCreationBody() {
   const classes = useStyles();
+  const history = useHistory();
 
   const [submitVal, setSubmit] = useState('halt');
   const { id } = useParams();
@@ -67,6 +69,7 @@ export default function QuizCreationBody() {
 
           fileUpload(id, formData);
         });
+        history.push(`/quiz-home/${id}`);
       })
       .catch(error => {
         console.log(error);

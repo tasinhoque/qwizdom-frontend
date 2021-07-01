@@ -97,7 +97,7 @@ export default function PlayQuestion(props) {
   }
   const [option, setOption] = useState(dummy);
   const [optionArray, setOptionArray] = useState(question.options);
-  console.log(question);
+  // console.log(question);
 
   const handleOption = (e, i) => {
     if (question.type == 'mcq') {
@@ -126,20 +126,21 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={question.image} />
           </div>
         )}
-
-        <RadioGroup value={option} onChange={handleOption}>
-          {optionArray.map((r, i) => {
-            return (
-              <div key={i}>
-                <FormControlLabel
-                  value={r.text}
-                  label={r.text}
-                  control={<Radio />}
-                />
-              </div>
-            );
-          })}
-        </RadioGroup>
+        <div className={classes.optionContainer} style={{ paddingLeft: '10%' }}>
+          <RadioGroup value={option} onChange={handleOption}>
+            {optionArray.map((r, i) => {
+              return (
+                <div key={i}>
+                  <FormControlLabel
+                    value={r.text}
+                    label={r.text}
+                    control={<Radio />}
+                  />
+                </div>
+              );
+            })}
+          </RadioGroup>
+        </div>
       </div>
     );
   };
@@ -152,7 +153,6 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={question.image} />
           </div>
         )}
-
         <FormGroup value={option}>
           {optionArray.map((r, i) => {
             return (

@@ -24,7 +24,7 @@ function Copyright() {
   );
 }
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   paper: {
     marginTop: theme.spacing(8),
     display: 'flex',
@@ -61,7 +61,7 @@ export default function SignUp(props) {
     }
   }, []);
 
-  const sendValue = async (event) => {
+  const sendValue = async event => {
     event.preventDefault();
     const registerBody = {
       name: userNameRef.current.value,
@@ -71,13 +71,15 @@ export default function SignUp(props) {
 
     await api
       .signup(registerBody)
-      .then((res) => {
+      .then(res => {
         localStorage.setItem('accessToken', res.data.tokens.access.token);
         localStorage.setItem('refreshToken', res.data.tokens.refresh.token);
+        localStorage.setItem('user', JSON.stringify(res.data.user));
+
         console.log(res);
         props.history.push('/dashboard');
       })
-      .catch((error) => {
+      .catch(error => {
         setErrorValue(error.response.data.message);
       });
   };
