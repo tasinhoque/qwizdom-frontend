@@ -172,6 +172,10 @@ export default function QuizHome(props) {
       });
   };
 
+  const startQuiz = () => {
+    props.history.push(`/quiz-play/${id}`);
+  };
+
   if (loading) {
     return (
       <>
@@ -223,7 +227,7 @@ export default function QuizHome(props) {
                   variant="contained"
                   color="primary"
                   className={classes.buttons}
-                  onClick={subscribe}
+                  onClick={startQuiz}
                 >
                   Start Quiz
                 </Button>

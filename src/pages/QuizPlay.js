@@ -5,6 +5,9 @@ import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import { Header } from '../components';
 import PlayQuestion from '../components/QuizPlay/PlayQuestion';
+import Button from '@material-ui/core/Button';
+import { useParams } from 'react-router';
+import { useHistory } from 'react-router-dom';
 
 import store from '../components/QuizPlay/store';
 const useStyles = makeStyles(theme => ({
@@ -30,17 +33,56 @@ export default function QuizPlay() {
   const [currentPageNum, setCurrentPageNum] = useState(0);
   // const [currentStage, setCurrentStage] = useState(null);
   const currentStage = useRef('');
+  const { id } = useParams();
+  const history = useHistory();
 
-  const id = '60dc04d501176c4f08da0dc6';
+  // const id = '60dc04d501176c4f08da0dc6';
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
-    console.log(fullQuiz.current.stages[num - 1]);
+    // console.log(fullQuiz.current.stages[num - 1]);
   };
   const allFunctions = {
     questionChange: (qId, message) => {
       // const pos = store.current.findIndex(i => i.stageId == message.stageId);
       fullQuiz.current.stages[currentPageNum].questions[qId] = message;
     },
+  };
+  const handleSubmit = async e => {
+    const stageResponses = [];
+    fullQuiz.current.stages.map((el, i) => {
+      const stage = { stageId: el.stage.id };
+      const responses = [];
+      el.questions.map((q, j) => {
+        const options = [];
+        const question = {
+          questionId: q.id,
+        };
+        if (q.options) {
+          q.options.map(o => {
+            options.push(o.isAnswer);
+          });
+
+          question.options = options;
+        }
+        responses.push(question);
+      });
+      stage.responses = responses;
+      stageResponses.push(stage);
+    });
+    // console.log(stageResponses);
+    const postBody = {
+      stageResponses: stageResponses,
+    };
+    console.log('api called');
+    await api
+      .submitQuizPlay(id, postBody)
+      .then(res => {
+        console.log(res);
+        history.push(`/quiz-home/${id}`);
+      })
+      .catch(error => {
+        console.log(error);
+      });
   };
   useEffect(async () => {
     api
@@ -55,13 +97,13 @@ export default function QuizPlay() {
             }
           });
         });
-        console.log(res.data.stages);
+        // console.log(res.data.stages);
 
         fullQuiz.current = res.data;
         currentStage.current = res.data.stages[0];
         setTotalPages(res.data.stages.length);
 
-        console.log(fullQuiz.current.stages[currentPageNum].questions);
+        // console.log(fullQuiz.current.stages[currentPageNum].questions);
         setLoading(false);
       })
       .catch(error => {
@@ -90,6 +132,26 @@ export default function QuizPlay() {
                   />
                 );
               }
+            )}
+            {currentPageNum + 1 == totalPages && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    width: '70%',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                  >
+                    {' '}
+                    Submit Quiz
+                  </Button>
+                </div>
+              </div>
             )}
             <Pagination
               style={{ display: 'flex', justifyContent: 'center' }}
