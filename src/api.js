@@ -93,8 +93,8 @@ const api = {
       `${baseUrl}/discussion-threads/60bdae891bcc9948e077bfdf/comments`
     );
   },
-  postCompleteQuiz: quizBody => {
-    return axios.post(`${baseUrl}/quizzes/complete`, quizBody);
+  postCompleteQuiz: (quizId, quizBody) => {
+    return axios.post(`${baseUrl}/quizzes/${quizId}/complete`, quizBody);
   },
   uploadQuestionImage: (id, body) => {
     return axios.patch(`${baseUrl}/questions/${id}/image`, body);

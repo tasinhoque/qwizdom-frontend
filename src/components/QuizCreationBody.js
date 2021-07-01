@@ -32,7 +32,6 @@ export default function QuizCreationBody() {
 
   const handleSubmit = async isPublished => {
     var postBody = {
-      quizId: id,
       stages: _.cloneDeep(store.current),
       isPublished: isPublished,
     };
@@ -53,7 +52,7 @@ export default function QuizCreationBody() {
     console.log('postbody is ', postBody);
 
     await api
-      .postCompleteQuiz(postBody)
+      .postCompleteQuiz(id, postBody)
       .then(res => {
         console.log(res);
         const responseQuiz = res.data;
