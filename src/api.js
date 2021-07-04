@@ -119,6 +119,11 @@ const api = {
   submitQuizPlay: (qId, body) => {
     return axios.post(`${baseUrl}/quizzes/${qId}/responses/complete`, body);
   },
+
+  //QuizResult api
+  getQuizResult: qId => {
+    return axios.get(`${baseUrl}/quizzes/${qId}/responses/complete`);
+  },
 };
 
 export default api;

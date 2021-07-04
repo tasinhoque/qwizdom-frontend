@@ -45,9 +45,11 @@ export default function QuizPlay() {
     questionChange: (qId, message) => {
       // const pos = store.current.findIndex(i => i.stageId == message.stageId);
       fullQuiz.current.stages[currentPageNum].questions[qId] = message;
+      console.log(fullQuiz.current);
     },
   };
   const handleSubmit = async e => {
+    console.log('before response', fullQuiz.current);
     const stageResponses = [];
     fullQuiz.current.stages.map((el, i) => {
       const stage = { stageId: el.stage.id };
@@ -73,7 +75,7 @@ export default function QuizPlay() {
     const postBody = {
       stageResponses: stageResponses,
     };
-    console.log('api called');
+    console.log(postBody);
     await api
       .submitQuizPlay(id, postBody)
       .then(res => {
@@ -125,7 +127,9 @@ export default function QuizPlay() {
               (element, index) => {
                 return (
                   <PlayQuestion
-                    key={`StageId ${currentPageNum}index${index}`}
+                    key={
+                      `StageId ${currentPageNum}index${index} ` + Math.random()
+                    }
                     allFunctions={allFunctions}
                     qId={index}
                     question={element}

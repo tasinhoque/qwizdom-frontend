@@ -194,7 +194,7 @@ export default function QuizCreationBody() {
         const body = [...presentState];
         store.current[pos].questions.splice(quesPos + 1, 0, newQuestion);
 
-        body[pos].questions.splice(quesPos + 1, 0, 'h');
+        body[pos].questions.splice(quesPos + 1, 0, 'h' + Math.random());
 
         return body;
       });

@@ -6,3 +6,4 @@ export { default as QuizCreation } from './QuizCreation';
 export { default as Profile } from './Profile';
 export { default as QuizCreationBasic } from './QuizCreationBasic';
 export { default as QuizPlay } from './QuizPlay';
+export { default as ResultPage } from './ResultPage';

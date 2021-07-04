@@ -8,6 +8,8 @@ import {
   Profile,
   QuizCreationBasic,
   QuizPlay,
+  Quiz,
+  ResultPage,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -23,6 +25,7 @@ const App = () => {
         <Route path="/profile" component={Profile} />
         <Route path="/creation-basic" component={QuizCreationBasic} />
         <Route path="/quiz-play/:id" component={QuizPlay} />
+        <Route path="/quiz-result/:id" component={ResultPage} />
       </Switch>
     </main>
   );
