@@ -75,7 +75,7 @@ const useStyles = makeStyles(theme => ({
   },
   chipStyle: {
     display: 'flex',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     '& > *': {
       margin: theme.spacing(0.5),
     },
@@ -104,7 +104,6 @@ export default withRouter(function SingleCard(props) {
   const subscribe = async e => {
     let res = await api
       .subscribeQuiz(props.id)
-
       .then(res => {
         console.log(res);
         // console.log(props.id);
@@ -141,9 +140,9 @@ export default withRouter(function SingleCard(props) {
         </Typography>
       </div>
       <Box className={classes.chipStyle}>
-        <Chip color="primary" label="Web" />
-        <Chip color="primary" label="Web" />
-        <Chip color="primary" label="Web" />
+        {props.categories.map(category => (
+          <Chip color="primary" label={category.name} />
+        ))}
       </Box>
 
       <div className={classes.titleContainer}>
