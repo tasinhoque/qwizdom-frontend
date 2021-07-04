@@ -23,6 +23,12 @@ const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
   },
+  createQuiz: {
+    marginTop: theme.spacing(2.5),
+    marginRight: theme.spacing(3),
+    fontWeight: 'bold',
+    cursor: 'pointer',
+  },
   menuButton: {
     marginRight: theme.spacing(1),
   },
@@ -130,6 +136,10 @@ export default withRouter(function Header(props) {
     props.history.push('/profile');
   };
 
+  const gotoQuizCreation = event => {
+    props.history.push('/creation-basic');
+  };
+
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
     <Menu
@@ -222,6 +232,9 @@ export default withRouter(function Header(props) {
           {/* </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <div className={classes.createQuiz} onClick={gotoQuizCreation}>
+              Create Quiz
+            </div>
             <IconButton aria-label="show 4 new mails" color="inherit">
               <Badge badgeContent={4} color="secondary">
                 <MailIcon />
