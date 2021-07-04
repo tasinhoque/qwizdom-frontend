@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import 'date-fns';
 import { useHistory } from 'react-router-dom';
 import {
@@ -13,6 +13,10 @@ import {
   Radio,
   Button,
   Fab,
+  Chip,
+  Select,
+  Input,
+  MenuItem,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -20,7 +24,7 @@ import {
   KeyboardDatePicker,
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
 
@@ -55,7 +59,31 @@ const useStyles = makeStyles(theme => ({
     left: '0',
     bottom: '0',
   },
+  category: {
+    marginBottom: theme.spacing(4),
+    minWidth: '300px',
+  },
 }));
+
+const ITEM_HEIGHT = 48;
+const ITEM_PADDING_TOP = 8;
+const MenuProps = {
+  PaperProps: {
+    style: {
+      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+      width: 250,
+    },
+  },
+};
+
+function getStyles(name, personName, theme) {
+  return {
+    fontWeight:
+      personName.indexOf(name) === -1
+        ? theme.typography.fontWeightRegular
+        : theme.typography.fontWeightMedium,
+  };
+}
 
 const QuizCreationBasic = () => {
   const classes = useStyles();
@@ -68,6 +96,30 @@ const QuizCreationBasic = () => {
   const [img, setImg] = useState(null);
   const [selectedDate, setSelectedDate] = useState(new Date('2021-1-1'));
   const history = useHistory();
+  const [names, setNames] = useState([]);
+  const [personName, setPersonName] = useState([]);
+  const [categoryIds, setCategoryIds] = useState([]);
+
+  const theme = useTheme();
+
+  const handleChange = event => {
+    const arr = event.target.value;
+    setPersonName(arr);
+
+    const ids = [];
+    names.forEach(({ name, id }) => {
+      if (arr.includes(name)) {
+        ids.push(id);
+      }
+    });
+
+    setCategoryIds(ids);
+  };
+
+  useEffect(async () => {
+    const response = await api.getCategories();
+    setNames(response.data);
+  }, []);
 
   const handleTypeChange = ({ target: { value } }) => {
     setTest(value === 'test');
@@ -97,6 +149,7 @@ const QuizCreationBasic = () => {
         name,
         description,
         duration,
+        categories: categoryIds,
         startTime:
           selectedDate.getTime() === new Date('2021-1-1').getTime()
             ? undefined
@@ -198,6 +251,43 @@ const QuizCreationBasic = () => {
           xs={6}
           className={classes.rightColumn}
         >
+          <Grid item className={classes.category}>
+            <FormControl className={classes.formControl} variant="filled">
+              <Typography variant="h6" gutterBottom>
+                Categories
+              </Typography>
+              <Select
+                labelId="demo-mutiple-chip-filled-label"
+                id="demo-mutiple-chip"
+                multiple
+                value={personName}
+                onChange={handleChange}
+                input={<Input id="select-multiple-chip" />}
+                renderValue={selected => (
+                  <div className={classes.chips}>
+                    {selected.map(value => (
+                      <Chip
+                        key={value}
+                        label={value}
+                        className={classes.muiChip}
+                      />
+                    ))}
+                  </div>
+                )}
+                MenuProps={MenuProps}
+              >
+                {names.map(({ name, id }) => (
+                  <MenuItem
+                    key={id}
+                    value={name}
+                    style={getStyles(name, personName, theme)}
+                  >
+                    {name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Grid>
           <Grid item>
             <FormControl component="fieldset">
               <FormLabel component="legend">Evaluation</FormLabel>
