@@ -13,7 +13,7 @@ import { Header } from '../components';
 import { QuizReviewCard } from '../components';
 import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
-import { useParams } from 'react-router';
+import { useParams, useHistory } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -118,6 +118,7 @@ export default function QuizHome(props) {
   const [queryString, setQueryString] = useState(
     'isTimeBound=true&isScheduled=true&isTest=false'
   );
+  const history = useHistory();
 
   const user = JSON.parse(localStorage.getItem('user'));
 
@@ -238,7 +239,9 @@ export default function QuizHome(props) {
                   variant="contained"
                   color="primary"
                   className={classes.buttons}
-                  onClick={subscribe}
+                  onClick={() => {
+                    history.push('/leaderboard');
+                  }}
                 >
                   Leaderboard
                 </Button>

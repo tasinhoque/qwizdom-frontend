@@ -214,7 +214,13 @@ export default withRouter(function Header(props) {
             <MenuIcon />
           </IconButton>
           <img src="/assets/images/logo.png" width="50" />
-          <Typography className={classes.title} variant="h5" noWrap>
+          <Typography
+            className={classes.title}
+            variant="h5"
+            noWrap
+            style={{ cursor: 'pointer' }}
+            onClick={() => props.history.push('/dashboard')}
+          >
             Qwizdom
           </Typography>
           {/* <div className={classes.search}> */}
