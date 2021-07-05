@@ -230,17 +230,30 @@ export default function QuizHome(props) {
               </div>
             </Grid>
             <Grid container item md={12} xs={12} spacing={0}>
-              <Grid container item md={3} xs={3} className={classes.buttons}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.buttons}
-                  onClick={startQuiz}
-                >
-                  Start Quiz
-                </Button>
-              </Grid>
+              {quiz.creator.id != user.id ? (
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={startQuiz}
+                  >
+                    Start Quiz
+                  </Button>
+                </Grid>
+              ) : (
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                  >
+                    Preview Quiz
+                  </Button>
+                </Grid>
+              )}
               <Grid container item md={3} xs={3} className={classes.buttons}>
                 <Button
                   type="submit"
@@ -254,24 +267,36 @@ export default function QuizHome(props) {
                   Leaderboard
                 </Button>
               </Grid>
+              {quiz.creator.id != user.id ? (
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={quizResult}
+                  >
+                    My Submission
+                  </Button>
+                </Grid>
+              ) : (
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                  >
+                    All Submissions
+                  </Button>
+                </Grid>
+              )}
               <Grid container item md={3} xs={3} className={classes.buttons}>
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
                   className={classes.buttons}
-                  onClick={quizResult}
-                >
-                  My Submission
-                </Button>
-              </Grid>
-              <Grid container item md={3} xs={3} className={classes.buttons}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.buttons}
-                  onClick={subscribe}
                 >
                   Forum
                 </Button>
