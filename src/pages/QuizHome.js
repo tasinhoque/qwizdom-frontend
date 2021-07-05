@@ -115,31 +115,12 @@ export default function QuizHome(props) {
   const [subbed, setSubbed] = useState(false);
   const { id } = useParams();
   const [quizzes, setQuizzes] = useState([]);
-  const [creatorId, setcreatorId] = useState('');
+  const [creatorId, setCreatorId] = useState('');
   const [queryString, setQueryString] = useState(
     'isTimeBound=true&isScheduled=true&isTest=false'
   );
   const history = useHistory();
-
   const user = JSON.parse(localStorage.getItem('user'));
-
-  useEffect(async () => {
-    setLoading(true);
-    api
-      .getQuiz(id)
-      .then(res => {
-        console.log(res.data.creator.id);
-        console.log(res);
-        setQuiz(res.data);
-        console.log(user.id);
-        setcreatorId(res.data.creator.id);
-        console.log(res.data.creator.id);
-        setLoading(false);
-
-        // console.log(re.creator);
-      })
-      .catch(e => {});
-  }, []);
 
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
@@ -151,6 +132,9 @@ export default function QuizHome(props) {
       setLoading(true);
       // updateQueryString();
       const response = await api.getSubbedQuizzes();
+      const { data: quizData } = await api.getQuiz(id);
+      setQuiz(quizData);
+      setCreatorId(quizData.creator.id);
       // console.log(response.data.results[0]['id']);
 
       setQuizzes(response.data.results);

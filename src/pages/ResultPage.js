@@ -28,6 +28,9 @@ const useStyles = makeStyles(theme => ({
   questionStyle: {
     width: '70%',
   },
+  quizName: {
+    margin: theme.spacing(3, 0, 0, 1),
+  },
 }));
 export default function ResultPage() {
   const classes = useStyles();
@@ -93,11 +96,12 @@ export default function ResultPage() {
               <Paper className={classes.headerStyle} elevation={3}>
                 <Grid container direction="row">
                   <Grid item>
-                    <Typography variant="h6" gutterBottom>
-                      Quiz Name :{quizInfo.name}
-                    </Typography>
-                    <Typography variant="h6" gutterBottom>
-                      Creator :{quizInfo.creator.name}
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      className={classes.quizName}
+                    >
+                      {quizInfo.name}
                     </Typography>
                   </Grid>
                   <Grid item>
