@@ -109,6 +109,7 @@ export default function QuizCreationBody() {
           stageId: 0,
           questionId: 0,
           title: 'first question',
+          points: '10',
         },
       ],
     },
@@ -141,8 +142,10 @@ export default function QuizCreationBody() {
           stageId: newId,
           questions: [
             {
+              stageId: newId,
               questionId: 0,
               title: 'new one',
+              points: '10',
             },
           ],
         };
@@ -195,6 +198,7 @@ export default function QuizCreationBody() {
         stageId: stageId,
         questionId: newId,
         title: 'new one',
+        points: 10,
       };
 
       // store.current[pos].questions.push(message);

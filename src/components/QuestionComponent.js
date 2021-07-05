@@ -111,6 +111,7 @@ export default function QuestionComponent(props) {
     stageId: props.stageId,
     questionId: props.questionId,
     title: full.title,
+    points: 10,
   });
 
   const [value, setValue] = useState(props.title || '');
