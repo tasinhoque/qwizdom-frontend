@@ -23,7 +23,12 @@ import api from '../api';
 import { Header, DashboardBody, DashboardSidebar } from '../components';
 
 const useStyles = makeStyles(theme => ({
-  root: {},
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+  },
   buttons: {
     position: 'relative',
     // width: '100%',
@@ -63,8 +68,12 @@ const useStyles = makeStyles(theme => ({
     display: 'none',
   },
   gridList: {
-    width: '70%',
-    height: 450,
+    width: '90%',
+    // height: '450px',
+    flexWrap: 'nowrap',
+    // transform: 'translateZ(0)',
+    // display: 'flex',
+    // justifyContent: 'center',
   },
 }));
 
@@ -167,7 +176,8 @@ export default function Profile() {
     try {
       setLoading(true);
       // updateQueryString();
-      const response = await api.getQuizzes(queryString);
+      // const response = await api.getQuizzes(queryString);
+      const response = await api.getSubbedQuizzes();
       // console.log(response.data.results);
 
       setQuizzes(response.data.results);
@@ -182,7 +192,7 @@ export default function Profile() {
     <>
       <Header />
 
-      <Grid container className={classes.root}>
+      <div className={classes.root}>
         <Grid container alignItems="center" justify="center" direction="column">
           <Grid item md={12} xs={12}>
             <Grid container className={classes.imageContainer}>
@@ -276,34 +286,85 @@ export default function Profile() {
             </div>
           )}
         </Grid>
-        <Grid container justify="center">
+        <Grid container direction="column" className={classes.root}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              variant="h4"
+              style={{ marginLeft: 10, marginBottom: 50 }}
+            >
+              Subscribed Quizzes
+            </Typography>
+          </div>
           {loading ? (
-            <div style={{}}>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
               <CircularProgress color="secondary" />
             </div>
           ) : (
-            <GridList cellHeight={320} className={classes.gridList} cols={4}>
+            <GridList cellHeight={320} className={classes.gridList}>
               {quizzes.map(q => {
                 return (
-                  <Grid
-                    item
+                  <GridListTile
                     key={q.id}
-                    xs={12}
-                    md={6}
-                    style={{ marginBottom: '20px' }}
+                    style={{ display: 'flex', justifyContent: 'center' }}
                   >
                     <SingleCard {...q} key={q.id} />
-                  </Grid>
+                  </GridListTile>
                 );
               })}
               ;
             </GridList>
           )}
         </Grid>
-        {/* <GridListTile cols={2} key={q.id}> */}
-        {/*   <SingleCard {...q} key={q.id} /> */}
-        {/* </GridListTile> */}
-      </Grid>
+        <Grid container direction="column" className={classes.root}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
+            <Typography
+              variant="h4"
+              style={{ marginLeft: 10, marginBottom: 50 }}
+            >
+              Other Quizzes
+            </Typography>
+          </div>
+          {loading ? (
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <CircularProgress color="secondary" />
+            </div>
+          ) : (
+            <GridList cellHeight={320} className={classes.gridList}>
+              {quizzes.map(q => {
+                return (
+                  <GridListTile
+                    key={q.id}
+                    style={{ display: 'flex', justifyContent: 'center' }}
+                  >
+                    <SingleCard {...q} key={q.id} />
+                  </GridListTile>
+                );
+              })}
+              ;
+            </GridList>
+          )}
+        </Grid>
+      </div>
     </>
   );
 }
