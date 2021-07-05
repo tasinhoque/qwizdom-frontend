@@ -107,11 +107,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function QuestionComponent(props) {
+  let qHold = props.element;
+  let full = props.fullQues[props.stageId].questions[props.questionId];
+  console.log(full);
   const classes = useStyles();
-  const [selectType, setType] = useState('');
+  const [selectType, setType] = useState(full.type ? full.type : '');
   const questionBody = useRef({
     stageId: props.stageId,
     questionId: props.questionId,
+    title: full.title,
+    points: 10,
   });
 
   const [value, setValue] = useState(props.title || '');
@@ -119,7 +124,9 @@ export default function QuestionComponent(props) {
 
   //MCQ Hooks
   const [option, setOption] = useState('');
-  const [optionArray, setOptionArray] = useState([]);
+  const [optionArray, setOptionArray] = useState(
+    full.options ? full.options : []
+  );
   const optionHolder = useRef([]);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
@@ -153,6 +160,10 @@ export default function QuestionComponent(props) {
     questionBody.current.title = e.target.value;
     props.questionChange(questionBody.current);
   };
+  const editTitle = e => {
+    questionBody.current.title = e.target.value;
+    props.questionChange(questionBody.current);
+  };
   const handleSelect = e => {
     setType(e.target.value);
 
@@ -168,9 +179,8 @@ export default function QuestionComponent(props) {
   };
   const handleOption = (e, i) => {
     if (selectType != 'mcq') {
-      questionBody.current.options[i].isAnswer = !questionBody.current.options[
-        i
-      ].isAnswer;
+      questionBody.current.options[i].isAnswer =
+        !questionBody.current.options[i].isAnswer;
       setOption(e.target.value + Math.random());
     } else {
       questionBody.current.options.map((element, i) => {
@@ -460,9 +470,11 @@ export default function QuestionComponent(props) {
                 label="Question Title"
                 name="email"
                 // autoComplete="email"
-                // autoFocus
-                value={value}
-                onChange={inputChange}
+                autoFocus
+                // value={value}
+                // onChange={inputChange}
+                defaultValue={full.title || ''}
+                onChange={editTitle}
               />
             </Grid>
             <Grid container justify="flex-end" item sm={3}>

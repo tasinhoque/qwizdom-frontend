@@ -53,6 +53,7 @@ export default function QuizPlay(props) {
     },
   };
   const handleSubmit = async e => {
+    if (previewState) return;
     console.log('before response', fullQuiz.current);
     const stageResponses = [];
     fullQuiz.current.stages.map((el, i) => {

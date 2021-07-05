@@ -109,6 +109,7 @@ export default function QuizCreationBody() {
           stageId: 0,
           questionId: 0,
           title: 'first question',
+          points: '10',
         },
       ],
     },
@@ -141,14 +142,16 @@ export default function QuizCreationBody() {
           stageId: newId,
           questions: [
             {
+              stageId: newId,
               questionId: 0,
               title: 'new one',
+              points: '10',
             },
           ],
         };
 
         store.current.splice(pos + 1, 0, newStage);
-        body.splice(pos + 1, 0, newStage);
+        body.splice(pos + 1, 0, { questions: ['h'] });
         return body;
       });
     },
@@ -195,6 +198,7 @@ export default function QuizCreationBody() {
         stageId: stageId,
         questionId: newId,
         title: 'new one',
+        points: 10,
       };
 
       // store.current[pos].questions.push(message);
@@ -221,6 +225,7 @@ export default function QuizCreationBody() {
     console.log(store.current);
     setPreviewBody(store.current);
     setPreview(true);
+    window.scroll(0, 0);
   };
 
   if (store.current) {
@@ -248,6 +253,7 @@ export default function QuizCreationBody() {
                   <QuizStage
                     submitChecker={submitVal}
                     {...stage}
+                    fullQues={store.current}
                     bodySetter={allFunctions}
                   />
                 </Grid>
