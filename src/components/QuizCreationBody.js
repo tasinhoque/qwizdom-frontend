@@ -148,7 +148,7 @@ export default function QuizCreationBody() {
         };
 
         store.current.splice(pos + 1, 0, newStage);
-        body.splice(pos + 1, 0, newStage);
+        body.splice(pos + 1, 0, { questions: ['h'] });
         return body;
       });
     },
@@ -221,6 +221,7 @@ export default function QuizCreationBody() {
     console.log(store.current);
     setPreviewBody(store.current);
     setPreview(true);
+    window.scroll(0, 0);
   };
 
   if (store.current) {
@@ -248,6 +249,7 @@ export default function QuizCreationBody() {
                   <QuizStage
                     submitChecker={submitVal}
                     {...stage}
+                    fullQues={store.current}
                     bodySetter={allFunctions}
                   />
                 </Grid>
