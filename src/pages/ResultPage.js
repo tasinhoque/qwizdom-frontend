@@ -105,11 +105,6 @@ export default function ResultPage() {
                       {quizInfo.name}
                     </Typography>
                   </Grid>
-                  <Grid item>
-                    <Typography variant="h6" gutterBottom>
-                      Quiz Name :{quizInfo.name}
-                    </Typography>
-                  </Grid>
                 </Grid>
               </Paper>
             </div>
