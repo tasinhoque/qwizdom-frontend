@@ -1,36 +1,16 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, TextField } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import Portal from '@material-ui/core/Portal';
 import FormGroup from '@material-ui/core/FormGroup';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import ImageIcon from '@material-ui/icons/Image';
-
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import ToggleOffIcon from '@material-ui/icons/ToggleOff';
-import { findLastIndex } from 'lodash';
-import { CenterFocusStrong } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
-import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
-import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
-import Grid from '@material-ui/core/Grid';
-import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import Fab from '@material-ui/core/Fab';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import { ReactComponent as ReactLogo } from './../assets/check.svg';
+import CloseIcon from '@material-ui/icons/Close';
+import CheckIcon from '@material-ui/icons/Check';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -70,6 +50,10 @@ const useStyles = makeStyles(theme => ({
   questionContainer: {
     paddingLeft: theme.spacing(2),
   },
+  optionStyle: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   floatingButton: {
     height: '50px',
     width: '50px',
@@ -82,48 +66,22 @@ const useStyles = makeStyles(theme => ({
     fontWeight: '500',
   },
 }));
-
 export default function PlayQuestion(props) {
-  const [img, setImg] = useState(null);
-
-  const question = props.question;
-  console.log('question is ', question);
-  if (question.image instanceof File) {
-    console.log('this is file');
-    question.image = URL.createObjectURL(question.image);
-  }
-
-  const classes = useStyles();
+  const element = props.element;
+  const question = props.element.question;
   let dummy = '';
   if (question.type == 'mcq') {
-    question.options.map(e => {
-      if (e.isAnswer) {
-        dummy = e.text;
+    element.options.map((e, i) => {
+      if (e) {
+        dummy = question.options[i].text;
       }
     });
   }
   const [option, setOption] = useState(dummy);
   const [optionArray, setOptionArray] = useState(question.options);
-  // console.log(question);
 
-  const handleOption = (e, i) => {
-    if (question.type == 'mcq') {
-      question.options.map((e, j) => {
-        if (e.text != i) {
-          question.options[j].isAnswer = false;
-        } else {
-          question.options[j].isAnswer = !question.options[j].isAnswer;
-        }
-      });
-      setOption(e.target.value);
-    } else {
-      question.options[i].isAnswer = !question.options[i].isAnswer;
-      setOption(e.target.value + Math.random());
-    }
-    console.log(question.options);
-    props.allFunctions.questionChange(props.qId, question);
-  };
-
+  console.log(props);
+  const classes = useStyles();
   const mcqBuilder = () => {
     return (
       <div>
@@ -134,15 +92,21 @@ export default function PlayQuestion(props) {
           </div>
         )}
         <div className={classes.optionContainer} style={{ paddingLeft: '10%' }}>
-          <RadioGroup value={option} onChange={handleOption}>
+          <RadioGroup value={option}>
             {optionArray.map((r, i) => {
               return (
-                <div key={i}>
+                <div className={classes.optionStyle} key={i}>
                   <FormControlLabel
                     value={r.text}
                     label={r.text}
                     control={<Radio />}
                   />
+                  {r.isAnswer == true && (
+                    <CheckIcon style={{ color: 'green' }} />
+                  )}
+                  {element.options[i] == true && r.isAnswer == false && (
+                    <CloseIcon style={{ color: 'red' }} />
+                  )}
                 </div>
               );
             })}
@@ -151,6 +115,7 @@ export default function PlayQuestion(props) {
       </div>
     );
   };
+
   const checkboxBuilder = () => {
     return (
       <div>
@@ -160,22 +125,20 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={question.image} />
           </div>
         )}
-        <FormGroup value={option}>
+        <FormGroup>
           {optionArray.map((r, i) => {
             return (
-              <div key={i}>
+              <div key={i} className={classes.optionStyle}>
                 <FormControlLabel
                   value={r.text}
                   label={r.text}
-                  control={
-                    <Checkbox
-                      checked={r.isAnswer}
-                      onChange={e => {
-                        handleOption(e, i);
-                      }}
-                    />
-                  }
+                  control={<Checkbox checked={r.isAnswer} />}
                 />
+                {r.isAnswer == element.options[i] ? (
+                  <CheckIcon style={{ color: 'green' }} />
+                ) : (
+                  <CloseIcon style={{ color: 'red' }} />
+                )}
               </div>
             );
           })}
@@ -196,18 +159,16 @@ export default function PlayQuestion(props) {
         <FormGroup>
           {optionArray.map((r, i) => {
             return (
-              <div key={i}>
+              <div key={i} className={classes.optionStyle}>
                 <FormControlLabel
                   label={r.text}
-                  control={
-                    <Switch
-                      checked={r.isAnswer}
-                      onChange={e => {
-                        handleOption(e, i);
-                      }}
-                    />
-                  }
+                  control={<Switch checked={r.isAnswer} />}
                 />
+                {r.isAnswer == element.options[i] ? (
+                  <CheckIcon style={{ color: 'green' }} />
+                ) : (
+                  <CloseIcon style={{ color: 'red' }} />
+                )}
               </div>
             );
           })}
@@ -215,7 +176,6 @@ export default function PlayQuestion(props) {
       </div>
     );
   };
-
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
@@ -226,9 +186,6 @@ export default function PlayQuestion(props) {
             {question.type == 'checkbox' && checkboxBuilder()}
           </div>
         </form>
-
-        {/* <p> {props.questionName}</p> */}
-        {/* <p> props stage is {props.stageId}</p> */}
       </Paper>
     </div>
   );

@@ -9,6 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
+import { QuizPlay } from '../pages';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -22,9 +23,16 @@ const useStyles = makeStyles(theme => ({
       'background-color': '#333f46',
     },
   },
+  previewStyle: {
+    width: '100%',
+  },
 }));
 
 export default function QuizCreationBody() {
+  //preview
+  const [preview, setPreview] = useState(false);
+  const [previewBody, setPreviewBody] = useState(false);
+
   const classes = useStyles();
   const history = useHistory();
 
@@ -194,7 +202,7 @@ export default function QuizCreationBody() {
         const body = [...presentState];
         store.current[pos].questions.splice(quesPos + 1, 0, newQuestion);
 
-        body[pos].questions.splice(quesPos + 1, 0, 'h');
+        body[pos].questions.splice(quesPos + 1, 0, 'h' + Math.random());
 
         return body;
       });
@@ -207,6 +215,12 @@ export default function QuizCreationBody() {
       });
     },
     removeFromFileStorage: (stageId, questionId) => {},
+  };
+
+  const enablePreview = () => {
+    console.log(store.current);
+    setPreviewBody(store.current);
+    setPreview(true);
   };
 
   if (store.current) {
@@ -222,20 +236,52 @@ export default function QuizCreationBody() {
           justify="center"
           style={{ minHeight: '100vh' }}
         >
-          {store.current.map(stage => {
-            return (
-              <Grid item key={stage.stageId} md={12}>
-                <QuizStage
-                  submitChecker={submitVal}
-                  {...stage}
-                  bodySetter={allFunctions}
-                />
-              </Grid>
-            );
-          })}
+          {preview ? (
+            <div className={classes.previewStyle}>
+              {' '}
+              <QuizPlay body={previewBody} />;
+            </div>
+          ) : (
+            store.current.map(stage => {
+              return (
+                <Grid item key={stage.stageId} md={12}>
+                  <QuizStage
+                    submitChecker={submitVal}
+                    {...stage}
+                    bodySetter={allFunctions}
+                  />
+                </Grid>
+              );
+            })
+          )}
         </Grid>
 
         <Grid container justify="center">
+          <Grid item>
+            {preview ? (
+              <Button
+                variant="contained"
+                classes={{
+                  contained: classes.buttonStyle,
+                }}
+                onClick={e => setPreview(false)}
+              >
+                BACK TO EDIT
+              </Button>
+            ) : (
+              <Grid>
+                <Button
+                  variant="contained"
+                  classes={{
+                    contained: classes.buttonStyle,
+                  }}
+                  onClick={enablePreview}
+                >
+                  PREVIEW
+                </Button>
+              </Grid>
+            )}
+          </Grid>
           <Grid item>
             <Button
               variant="contained"
@@ -244,7 +290,7 @@ export default function QuizCreationBody() {
               }}
               onClick={e => handleSubmit(true)}
             >
-              submit now
+              PUBLISH
             </Button>
           </Grid>
           <Grid item>

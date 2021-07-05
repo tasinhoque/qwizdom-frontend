@@ -176,6 +176,9 @@ export default function QuizHome(props) {
   const startQuiz = () => {
     props.history.push(`/quiz-play/${id}`);
   };
+  const quizResult = () => {
+    props.history.push(`/quiz-result/${id}`);
+  };
 
   if (loading) {
     return (
@@ -252,7 +255,7 @@ export default function QuizHome(props) {
                   variant="contained"
                   color="primary"
                   className={classes.buttons}
-                  onClick={subscribe}
+                  onClick={quizResult}
                 >
                   My Submission
                 </Button>
