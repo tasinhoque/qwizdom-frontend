@@ -78,6 +78,7 @@ export default function ResultPage() {
         setLoading(false);
       })
       .catch(error => {
+        history.push(`/quiz-home/${id}`);
         console.log(error);
       });
   }, []);
