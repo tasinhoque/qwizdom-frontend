@@ -128,6 +128,7 @@ export default function QuizHome(props) {
       .getQuiz(id)
       .then(res => {
         console.log(res.data.creator.id);
+        console.log(res);
         setQuiz(res.data);
         setLoading(false);
       })

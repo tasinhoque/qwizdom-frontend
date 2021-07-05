@@ -112,6 +112,7 @@ export default function QuestionComponent(props) {
     questionId: props.questionId,
     title: full.title,
     points: 10,
+    options: full.options,
   });
 
   const [value, setValue] = useState(props.title || '');

@@ -132,13 +132,9 @@ export default function PlayQuestion(props) {
                 <FormControlLabel
                   value={r.text}
                   label={r.text}
-                  control={<Checkbox checked={r.isAnswer} />}
+                  control={<Checkbox checked={element.options[i]} />}
                 />
-                {r.isAnswer == element.options[i] ? (
-                  <CheckIcon style={{ color: 'green' }} />
-                ) : (
-                  <CloseIcon style={{ color: 'red' }} />
-                )}
+                {r.isAnswer && <CheckIcon style={{ color: 'green' }} />}
               </div>
             );
           })}
@@ -162,7 +158,7 @@ export default function PlayQuestion(props) {
               <div key={i} className={classes.optionStyle}>
                 <FormControlLabel
                   label={r.text}
-                  control={<Switch checked={r.isAnswer} />}
+                  control={<Switch checked={element.options[i]} />}
                 />
                 {r.isAnswer == element.options[i] ? (
                   <CheckIcon style={{ color: 'green' }} />
