@@ -156,6 +156,9 @@ export default function QuizCreationBody() {
       });
     },
     deleteStage: stageId => {
+      if (store.current.length == 1) {
+        return;
+      }
       setQuizBody(presentState => {
         const body = [...presentState];
         const pos = store.current.findIndex(i => i.stageId == stageId);
@@ -169,6 +172,9 @@ export default function QuizCreationBody() {
       const quesPos = store.current[pos].questions.findIndex(
         i => i.questionId == questionId
       );
+      if (store.current[pos].questions.length == 1) {
+        return;
+      }
       setQuizBody(presentState => {
         const body = [...presentState];
         body[pos].questions.splice(quesPos, 1);
@@ -223,7 +229,9 @@ export default function QuizCreationBody() {
 
   const enablePreview = () => {
     console.log(store.current);
-    setPreviewBody(store.current);
+    const pre = _.cloneDeep(store.current);
+    pre.p = 'ssdfs';
+    setPreviewBody(pre);
     setPreview(true);
     window.scroll(0, 0);
   };

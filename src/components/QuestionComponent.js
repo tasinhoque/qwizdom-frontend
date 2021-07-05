@@ -120,11 +120,20 @@ export default function QuestionComponent(props) {
     options: full.options,
   });
 
+  let optVal = '';
+  if (full.type && full.type == 'mcq' && full.options) {
+    full.options.map((e, i) => {
+      if (e.isAnswer) {
+        optVal = e.text;
+      }
+    });
+  }
+
   const [value, setValue] = useState(props.title || '');
   const updatedVal = useRef('');
 
   //MCQ Hooks
-  const [option, setOption] = useState('');
+  const [option, setOption] = useState(optVal);
   const [optionArray, setOptionArray] = useState(
     full.options ? full.options : []
   );
@@ -193,6 +202,8 @@ export default function QuestionComponent(props) {
         setOption(e.target.value);
       });
     }
+    // console.log(questionBody.current);
+    props.questionChange(questionBody.current);
   };
   const handleImage = e => {
     console.log(e);
