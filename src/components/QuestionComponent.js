@@ -112,12 +112,17 @@ export default function QuestionComponent(props) {
   console.log(full);
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
+  let im = '';
+  if (full.image && full.image instanceof File) {
+    im = URL.createObjectURL(full.image);
+  }
   const questionBody = useRef({
     stageId: props.stageId,
     questionId: props.questionId,
     title: full.title,
     points: 10,
     options: full.options,
+    image: im,
   });
 
   let optVal = '';
@@ -142,7 +147,7 @@ export default function QuestionComponent(props) {
   const placeholderRef = useRef('Add option');
 
   //image upload Hooks
-  const [img, setImg] = useState(null);
+  const [img, setImg] = useState(im);
   const imageInputId = 'sid-' + props.stageId + 'qid-' + props.questionId;
 
   //jodit hook
