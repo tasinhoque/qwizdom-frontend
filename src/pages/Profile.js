@@ -87,7 +87,9 @@ export default function Profile() {
   const [errMsg, setErrMsg] = useState(' ');
   const [userName, setUserName] = useState(' ');
   const [loading, setLoading] = useState(true);
-  const [quizzes, setQuizzes] = useState([]);
+  const [subbedQuizzes, setSubbedQuizzes] = useState([]);
+  const [draftQuizzes, setDraftQuizzes] = useState([]);
+  const [publishedQuizzes, setPublishedQuizzes] = useState([]);
   const [queryString, setQueryString] = useState(
     'isTimeBound=true&isScheduled=true&isTest=false'
   );
@@ -177,11 +179,13 @@ export default function Profile() {
       setLoading(true);
       // updateQueryString();
       // const response = await api.getQuizzes(queryString);
-      const response = await api.getSubbedQuizzes();
-      // console.log(response.data.results);
+      let response = await api.getSubbedQuizzes();
+      setSubbedQuizzes(response.data.results);
+      response = await api.getPublishedQuizzes();
+      setPublishedQuizzes(response.data.results);
+      response = await api.getDraftQuizzes();
+      setDraftQuizzes(response.data.results);
 
-      setQuizzes(response.data.results);
-      // setTotalPages(response.data.totalPages);
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -286,84 +290,132 @@ export default function Profile() {
             </div>
           )}
         </Grid>
-        <Grid container direction="column" className={classes.root}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography
-              variant="h4"
-              style={{ marginLeft: 10, marginBottom: 50 }}
-            >
-              Subscribed Quizzes
-            </Typography>
-          </div>
-          {loading ? (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <CircularProgress color="secondary" />
+        <div className={classes.root} style={{ width: '100%' }}>
+          {subbedQuizzes.length != 0 ? (
+            <div className={classes.root}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '100px',
+                  width: '100%',
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ marginLeft: 10, marginBottom: 50 }}
+                >
+                  Subscribed Quizzes
+                </Typography>
+              </div>
+              <div className={classes.root}>
+                <GridList cellHeight={320} className={classes.gridList}>
+                  {subbedQuizzes.map(q => {
+                    return (
+                      <GridListTile
+                        key={q.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '500px',
+                        }}
+                      >
+                        <SingleCard {...q} key={q.id} />
+                      </GridListTile>
+                    );
+                  })}
+                  ;
+                </GridList>
+              </div>
             </div>
           ) : (
-            <GridList cellHeight={320} className={classes.gridList}>
-              {quizzes.map(q => {
-                return (
-                  <GridListTile
-                    key={q.id}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                  >
-                    <SingleCard {...q} key={q.id} />
-                  </GridListTile>
-                );
-              })}
-              ;
-            </GridList>
+            <div className={classes.root}></div>
           )}
-        </Grid>
-        <Grid container direction="column" className={classes.root}>
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'center',
-            }}
-          >
-            <Typography
-              variant="h4"
-              style={{ marginLeft: 10, marginBottom: 50 }}
-            >
-              Other Quizzes
-            </Typography>
-          </div>
-          {loading ? (
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'center',
-              }}
-            >
-              <CircularProgress color="secondary" />
+        </div>
+        <div className={classes.root} style={{ width: '100%' }}>
+          {publishedQuizzes.length != 0 ? (
+            <div className={classes.root}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '100px',
+                  width: '100%',
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ marginLeft: 10, marginBottom: 50 }}
+                >
+                  Published Quizzes
+                </Typography>
+              </div>
+              <div className={classes.root}>
+                <GridList cellHeight={320} className={classes.gridList}>
+                  {publishedQuizzes.map(q => {
+                    return (
+                      <GridListTile
+                        key={q.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '500px',
+                        }}
+                      >
+                        <SingleCard {...q} key={q.id} />
+                      </GridListTile>
+                    );
+                  })}
+                  ;
+                </GridList>
+              </div>
             </div>
           ) : (
-            <GridList cellHeight={320} className={classes.gridList}>
-              {quizzes.map(q => {
-                return (
-                  <GridListTile
-                    key={q.id}
-                    style={{ display: 'flex', justifyContent: 'center' }}
-                  >
-                    <SingleCard {...q} key={q.id} />
-                  </GridListTile>
-                );
-              })}
-              ;
-            </GridList>
+            <div className={classes.root}></div>
           )}
-        </Grid>
+        </div>
+        <div className={classes.root} style={{ width: '100%' }}>
+          {draftQuizzes.length != 0 ? (
+            <div className={classes.root}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '100px',
+                  width: '100%',
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ marginLeft: 10, marginBottom: 50 }}
+                >
+                  Draft Quizzes
+                </Typography>
+              </div>
+              <div className={classes.root}>
+                <GridList cellHeight={320} className={classes.gridList}>
+                  {draftQuizzes.map(q => {
+                    return (
+                      <GridListTile
+                        key={q.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '500px',
+                        }}
+                      >
+                        <SingleCard {...q} key={q.id} />
+                      </GridListTile>
+                    );
+                  })}
+                  ;
+                </GridList>
+              </div>
+            </div>
+          ) : (
+            <div className={classes.root}></div>
+          )}
+        </div>
       </div>
     </>
   );
