@@ -115,6 +115,7 @@ export default function QuizHome(props) {
   const [subbed, setSubbed] = useState(false);
   const { id } = useParams();
   const [quizzes, setQuizzes] = useState([]);
+  const [creatorId, setcreatorId] = useState('');
   const [queryString, setQueryString] = useState(
     'isTimeBound=true&isScheduled=true&isTest=false'
   );
@@ -130,7 +131,12 @@ export default function QuizHome(props) {
         console.log(res.data.creator.id);
         console.log(res);
         setQuiz(res.data);
+        console.log(user.id);
+        setcreatorId(res.data.creator.id);
+        console.log(res.data.creator.id);
         setLoading(false);
+
+        // console.log(re.creator);
       })
       .catch(e => {});
   }, []);
@@ -214,7 +220,7 @@ export default function QuizHome(props) {
             <Grid item md={12} xs={12}>
               <div className={classes.imgBtnContainer}>
                 <img src={quiz.coverImage} className={classes.quizImage} />
-                {quiz.creator.id !== user.id ? (
+                {creatorId !== user.id ? (
                   <Button
                     type="submit"
                     variant="contained"
@@ -230,7 +236,7 @@ export default function QuizHome(props) {
               </div>
             </Grid>
             <Grid container item md={12} xs={12} spacing={0}>
-              {quiz.creator.id != user.id ? (
+              {creatorId != user.id ? (
                 <Grid container item md={3} xs={3} className={classes.buttons}>
                   <Button
                     type="submit"
