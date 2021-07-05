@@ -8,6 +8,7 @@ import PlayQuestion from '../components/QuizPlay/PlayQuestion';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
+import produce from 'immer';
 
 import store from '../components/QuizPlay/store';
 const useStyles = makeStyles(theme => ({
@@ -103,10 +104,14 @@ export default function QuizPlay(props) {
           }
         });
       });
+      const nextState = produce(stages, draftState => {
+        // draftState.push({ todo: 'Tweet about it' });
+        // draftState[1].done = true;
+      });
 
       fullQuiz.current = {
         info: 'habijabi',
-        stages: stages,
+        stages: nextState,
       };
       setTotalPages(stages.length);
       setLoading(false);
@@ -159,6 +164,7 @@ export default function QuizPlay(props) {
                     allFunctions={allFunctions}
                     qId={index}
                     question={element}
+                    previewState={previewState}
                   />
                 );
               }

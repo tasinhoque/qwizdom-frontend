@@ -84,14 +84,18 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function PlayQuestion(props) {
-  const [img, setImg] = useState(null);
-
+  let im = '';
   const question = props.question;
   console.log('question is ', question);
   if (question.image instanceof File) {
-    console.log('this is file');
-    question.image = URL.createObjectURL(question.image);
+    // console.log('this is file');
+    im = URL.createObjectURL(question.image);
+    // console.log(im);
+  } else if (question.image) {
+    im = question.image;
   }
+
+  const [img, setImg] = useState(im);
 
   const classes = useStyles();
   let dummy = '';
@@ -107,6 +111,9 @@ export default function PlayQuestion(props) {
   // console.log(question);
 
   const handleOption = (e, i) => {
+    if (props.previewState) {
+      return;
+    }
     if (question.type == 'mcq') {
       question.options.map((e, j) => {
         if (e.text != i) {
@@ -130,7 +137,7 @@ export default function PlayQuestion(props) {
         <Typography className={classes.typoStyle}> {question.title}</Typography>
         {question.image && (
           <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
+            <img className={classes.imageStyle} src={img} />
           </div>
         )}
         <div className={classes.optionContainer} style={{ paddingLeft: '10%' }}>
@@ -157,7 +164,7 @@ export default function PlayQuestion(props) {
         <Typography className={classes.typoStyle}> {question.title}</Typography>
         {question.image && (
           <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
+            <img className={classes.imageStyle} src={img} />
           </div>
         )}
         <FormGroup value={option}>
@@ -189,7 +196,7 @@ export default function PlayQuestion(props) {
         <Typography className={classes.typoStyle}>{question.title}</Typography>
         {question.image && (
           <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
+            <img className={classes.imageStyle} src={img} />
           </div>
         )}
 

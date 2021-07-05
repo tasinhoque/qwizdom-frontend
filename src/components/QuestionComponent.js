@@ -112,18 +112,20 @@ export default function QuestionComponent(props) {
   console.log(full);
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
-  let im = '';
-  if (full.image && full.image instanceof File) {
-    im = URL.createObjectURL(full.image);
-  }
+
   const questionBody = useRef({
     stageId: props.stageId,
     questionId: props.questionId,
     title: full.title,
     points: 10,
     options: full.options,
-    image: im,
+    image: full.image,
+    type: full.type,
   });
+  let im = '';
+  if (full.image && full.image instanceof File) {
+    im = URL.createObjectURL(full.image);
+  }
 
   let optVal = '';
   if (full.type && full.type == 'mcq' && full.options) {
