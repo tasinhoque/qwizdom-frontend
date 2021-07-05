@@ -127,6 +127,12 @@ const api = {
   getSubbedQuizzes: () => {
     return axios.get(`${baseUrl}/quizzes/subscribed?page=1&limit=100`);
   },
+  getPublishedQuizzes: () => {
+    return axios.get(`${baseUrl}/quizzes/published`);
+  },
+  getDraftQuizzes: () => {
+    return axios.get(`${baseUrl}/quizzes/draft`);
+  },
 };
 
 export default api;

@@ -92,12 +92,17 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
   questionContainer: {
-    paddingLeft: theme.spacing(2),
+    paddingLeft: theme.spacing(5),
   },
   floatingButton: {
     height: '50px',
     width: '50px',
     minHeight: '20px',
+    marginLeft: theme.spacing(3),
+  },
+  gridContainer: {
+    marginLeft: theme.spacing(2),
+    marginTop: theme.spacing(2),
   },
 }));
 
@@ -435,8 +440,8 @@ export default function QuestionComponent(props) {
             e.preventDefault();
           }}
         >
-          <Grid container spacing={2}>
-            <Grid item sm={8}>
+          <Grid container spacing={2} className={classes.gridContainer}>
+            <Grid container justify="center" item sm={8}>
               {/* <JoditEditor
                 ref={editor}
                 value={content}
@@ -452,7 +457,7 @@ export default function QuestionComponent(props) {
                 fullWidth
                 multiline
                 // id="email"
-                label="Question Text"
+                label="Question Title"
                 name="email"
                 // autoComplete="email"
                 // autoFocus
@@ -460,7 +465,7 @@ export default function QuestionComponent(props) {
                 onChange={inputChange}
               />
             </Grid>
-            <Grid item sm={3}>
+            <Grid container justify="flex-end" item sm={3}>
               <FormControl className={classes.formControl}>
                 <InputLabel id="demo-simple-select-filled-label">
                   Type

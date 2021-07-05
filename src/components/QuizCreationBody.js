@@ -16,8 +16,8 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(5),
   },
   buttonStyle: {
-    marginLeft: theme.spacing(2),
-    marginRight: theme.spacing(2),
+    marginLeft: theme.spacing(1),
+    marginRight: theme.spacing(1),
     '&:hover': {
       color: 'white',
       'background-color': '#333f46',
@@ -234,7 +234,7 @@ export default function QuizCreationBody() {
           // direction="column"
           alignItems="center"
           justify="center"
-          style={{ minHeight: '100vh' }}
+          // style={{ minHeight: '100vh' }}
         >
           {preview ? (
             <div className={classes.previewStyle}>
