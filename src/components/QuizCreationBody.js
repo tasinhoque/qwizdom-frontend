@@ -108,7 +108,7 @@ export default function QuizCreationBody() {
         {
           stageId: 0,
           questionId: 0,
-          title: 'first question',
+          title: '',
           points: '10',
         },
       ],
