@@ -84,8 +84,15 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default function PlayQuestion(props) {
+  const [img, setImg] = useState(null);
+
   const question = props.question;
-  // console.log('question is ', question);
+  console.log('question is ', question);
+  if (question.image instanceof File) {
+    console.log('this is file');
+    question.image = URL.createObjectURL(question.image);
+  }
+
   const classes = useStyles();
   let dummy = '';
   if (question.type == 'mcq') {

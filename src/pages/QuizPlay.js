@@ -24,7 +24,11 @@ const useStyles = makeStyles(theme => ({
     width: '70%',
   },
 }));
-export default function QuizPlay() {
+export default function QuizPlay(props) {
+  const [previewState, setPreviewState] = useState(props.body ? true : false);
+  if (props.body) {
+    console.log(props.body);
+  }
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [totalPages, setTotalPages] = useState(0);
@@ -87,35 +91,56 @@ export default function QuizPlay() {
       });
   };
   useEffect(async () => {
-    api
-      .getCompleteQuiz(id)
-      .then(res => {
-        res.data.stages.map((e, i) => {
-          e.questions.map((q, j) => {
-            if (q.options) {
-              q.options.map((o, k) => {
-                res.data.stages[i].questions[j].options[k].isAnswer = false;
-              });
-            }
-          });
+    if (previewState) {
+      let stages = props.body;
+      stages.map((e, i) => {
+        e.questions.map((q, j) => {
+          if (q.options) {
+            q.options.map((o, k) => {
+              stages[i].questions[j].options[k].isAnswer = false;
+            });
+          }
         });
-        // console.log(res.data.stages);
-
-        fullQuiz.current = res.data;
-        currentStage.current = res.data.stages[0];
-        setTotalPages(res.data.stages.length);
-
-        // console.log(fullQuiz.current.stages[currentPageNum].questions);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
       });
-  }, []);
+
+      fullQuiz.current = {
+        info: 'habijabi',
+        stages: stages,
+      };
+      setTotalPages(stages.length);
+      setLoading(false);
+    } else {
+      api
+        .getCompleteQuiz(id)
+        .then(res => {
+          console.log(res);
+          res.data.stages.map((e, i) => {
+            e.questions.map((q, j) => {
+              if (q.options) {
+                q.options.map((o, k) => {
+                  res.data.stages[i].questions[j].options[k].isAnswer = false;
+                });
+              }
+            });
+          });
+          // console.log(res.data.stages);
+
+          fullQuiz.current = res.data;
+          currentStage.current = res.data.stages[0];
+          setTotalPages(res.data.stages.length);
+
+          // console.log(fullQuiz.current.stages[currentPageNum].questions);
+          setLoading(false);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
+  }, [props]);
 
   return (
     <>
-      <Header />
+      {!previewState && <Header />}
       <div>
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>

@@ -36,9 +36,9 @@ export default function ResultPage() {
   const fullQuiz = useRef(null);
   const [currentPageNum, setCurrentPageNum] = useState(0);
   const [quizInfo, setQuizInfo] = useState('');
-  //   const { id } = useParams();
+  const { id } = useParams();
   const history = useHistory();
-  const id = '60dc856ecc4ccb376c3d034f';
+  // const id = '60dc856ecc4ccb376c3d034f';
 
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
