@@ -124,6 +124,9 @@ const api = {
   getQuizResult: qId => {
     return axios.get(`${baseUrl}/quizzes/${qId}/responses/complete`);
   },
+  getSubbedQuizzes: () => {
+    return axios.get(`${baseUrl}/quizzes/subscribed?page=1&limit=100`);
+  },
 };
 
 export default api;

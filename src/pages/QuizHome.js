@@ -127,7 +127,7 @@ export default function QuizHome(props) {
     api
       .getQuiz(id)
       .then(res => {
-        // console.log(res.data);
+        console.log(res.data.creator.id);
         setQuiz(res.data);
         setLoading(false);
       })
@@ -143,7 +143,7 @@ export default function QuizHome(props) {
     try {
       setLoading(true);
       // updateQueryString();
-      const response = await api.getQuizzes(queryString);
+      const response = await api.getSubbedQuizzes();
       // console.log(response.data.results[0]['id']);
 
       setQuizzes(response.data.results);
@@ -161,12 +161,12 @@ export default function QuizHome(props) {
   }, []);
 
   const subscribe = async e => {
+    setSubbed(!subbed);
     let res = await api
       .subscribeQuiz(id)
-
       .then(res => {
         console.log(res);
-        // console.log(id);
+        console.log(id);
       })
       .catch(error => {
         console.log(error.response.data.message);
@@ -213,15 +213,19 @@ export default function QuizHome(props) {
             <Grid item md={12} xs={12}>
               <div className={classes.imgBtnContainer}>
                 <img src={quiz.coverImage} className={classes.quizImage} />
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.subscribeBtn}
-                  onClick={subscribe}
-                >
-                  {subbed ? 'Unsubscribe' : 'Subscribe'}
-                </Button>
+                {quiz.creator.id !== user.id ? (
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.subscribeBtn}
+                    onClick={subscribe}
+                  >
+                    {subbed ? 'Unsubscribe' : 'Subscribe'}
+                  </Button>
+                ) : (
+                  <div></div>
+                )}
               </div>
             </Grid>
             <Grid container item md={12} xs={12} spacing={0}>
@@ -352,11 +356,11 @@ export default function QuizHome(props) {
             <QuizReviewCard />
           </Grid>
         </Grid>
-        <Grid container justify="center">
-          <div style={{ width: '1000px' }}>
-            <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} />
-          </div>
-        </Grid>
+        {/* <Grid container justify="center"> */}
+        {/*   <div style={{ width: '1000px' }}> */}
+        {/*     <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} /> */}
+        {/*   </div> */}
+        {/* </Grid> */}
       </Grid>
     );
   }

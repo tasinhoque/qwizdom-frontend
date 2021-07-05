@@ -123,15 +123,15 @@ export default withRouter(function SingleCard(props) {
             image={props.coverImage}
           />
         </CardActionArea>
-        <Button
-          type="submit"
-          variant="contained"
-          color="primary"
-          className={classes.subscribe}
-          onClick={subscribe}
-        >
-          Subscribe
-        </Button>
+        {/* <Button */}
+        {/*   type="submit" */}
+        {/*   variant="contained" */}
+        {/*   color="primary" */}
+        {/*   className={classes.subscribe} */}
+        {/*   onClick={subscribe} */}
+        {/* > */}
+        {/*   Subscribe */}
+        {/* </Button> */}
       </div>
 
       <div style={{ padding: '5px' }}>
