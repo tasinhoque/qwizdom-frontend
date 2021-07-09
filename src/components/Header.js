@@ -25,6 +25,9 @@ import { Grid } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   grow: {
     flexGrow: 1,
+    position: 'sticky',
+    top: 0,
+    zIndex: 1,
   },
   createQuiz: {
     marginTop: theme.spacing(2.5),
