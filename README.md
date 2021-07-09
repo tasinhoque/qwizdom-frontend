@@ -1,67 +1,103 @@
-# Create React App example
+# Tasks
 
-## How to use
+## Header
 
-Install it and run:
+- Remove mail icon
+- Remove the profile list view
+- Redirect to profile when the user clicks on his avatar
+- Keep a log out button
+- Remove the hamburger menu icon
+- Make the header float type
+- Change the quizdom logo, search google for a new one
 
-```sh
-yarn
-yarn dev
-```
+## Quiz Creation Basic
 
-## The idea behind the example
+- If survey, remove the evaluation field
+- Check garbage input in duration, or better put restriction (only number will be allowed)
+- Add some more categories in the database
+- Add dashboard header
+- Send default image when user hasn't chosen any image
+- Add end date picker
 
-This example demonstrates how you can use [Create React App](https://github.com/facebookincubator/create-react-app). It includes `@material-ui/core` and its peer dependencies, including `emotion`, the default style engine in Material-UI v5. If you prefer, you can [use styled-components instead](https://next.material-ui.com/guides/interoperability/#styled-components).
+## Quiz Creation
 
-## Dialog/Page
-
-- Title
-- Cover image
-- Description
-- Categories
-- Test type
-  - survey/test
-    - if test : check auto/manual
-      - if manual : current features + paragraph
-      - check if time bound or not
-      - date
-      - Point system
-
-## Quiz Creation tasks
-
-- Image upload feature
-- Perfecting the json file
+- Add stage and question header (i.e. number).
+- Fix the image preview (the aspect ratio should be preserved)
+- Add points to each of the questions
 - CSS fixing
-- Point system
-
-## My own Quizzes
-
-- Draft quizzes
-- Published quizzes
-- Subscribed quizzes
-- Participated quizzes view
+  - Make the cards look similar to the cards in the figma design.
+  - Textfields should have the texts in the center (currently there is a top margin)
+  - Question text-field type should be changed (at least set it to outlined)
+- The user should be able to toggle the radio button/checkbox/toggle button before saving his option. Ideally, there should be an "Add Option" button at the right side of the text-field for adding the option.
 
 ## Quiz Preview + Play
 
-- Preview page not editable
 - Handle timer in quiz play
+- Add a header containing quiz name, cover image, stage serial (e.g. Stage 1/7)
+- Show points in individual questions
+- Fix CSS
+  - Add more padding in the card
+  - Checkboxes and toggle buttons should be indented (add left padding)
+- At the end of quiz play, let the user give a feedback (containing review message and rating)
 
-## Home Page Tasks
+## Quiz Play
 
-- Subscribe button add
-- Discussion thread and rating functional
-- Submitted response view
+- Handle time bound quiz
+- Handle scheduled quiz (set a restriction)
+- When the user has submitted, show him a confirmation dialog and THEN redirect to the quiz home
 
-## Sunday-Monday
+## My Submission
 
-- Nibir
-  - [ ] Quiz creation
-- Tasin
-  - [ ] Dialog/page Figma design
-  - [ ] Backend: necessary APIs
-- Enan
-  - [ ] Fix CSS
-  - [x] Subscribe in quiz homepage and dashboard
-  - [ ] User profile page
+- Keep a back button (to go back to the quiz home)
+- Make the input elements un-clickable
+- Keep a header containing date of participation, quiz name, cover image, current stage, etc.
 
-## Profile Page
+## Quiz Card
+
+- Fix participant count (API integration needed)
+- Fix rating (API integration needed)
+- Rename the component (`SingleCard` to `QuizCard`)
+- Add padding
+- When there's blank space due to absence of chip/title, the bottom row components should stay at the bottom.
+
+## Quiz Home
+
+- Show subscriber count
+- Fix the time of publication (use package for formatting time if necessary, e.g. `moment`)
+- Show start and end date for quiz participation
+- [backend] Add end date for quiz
+
+## Quiz Operations
+
+- [backend] Whenever a user participates in a quiz, update the `totalParticipant` field in the quiz.
+- [backend] Whenever a user flip his subscription status, the `totalSubscribed` field in the quiz should be updated.
+- [backend] The post review route should update the `averageRating` field of the quiz.
+
+## Profile
+
+- Fix bug: When user uploads a picture, it doesn't get saved.
+- Fix bug: In the published quizzes section, some quizzes are showing empty chips as categories.
+- Let the user edit or publish a draft quiz
+- Let the user delete his quiz
+- Remove the textfields in viewing mode (keep only text)
+- Remove the image upload button in viewing mode
+- Add fields
+  - profession
+  - bio
+  - education (e.g. CSE, BUET)
+
+## Forum
+
+- [backend] Write necessary APIs
+- Complete the view, follow facebook
+
+## Leaderboard
+
+- [backend] Write necessary APIs
+- Complete the view
+
+## Notification
+
+- [backend] Implement push notification
+- Fetch notifications for a user
+- Facebook style
