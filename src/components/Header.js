@@ -39,13 +39,15 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
   title: {
-    display: 'block',
+    // display: 'block',
     color: theme.palette.common.gray,
     fontFamily: 'Rammetto One',
     marginLeft: theme.spacing(2),
   },
   logo: {
-    padding: theme.spacing(2),
+    display: 'flex',
+    justifyContent: 'space-around',
+    alignItems: 'center',
   },
   search: {
     position: 'relative',
@@ -213,24 +215,23 @@ export default withRouter(function Header(props) {
         style={{ background: '#2E3B55', color: '#f5f5f5' }}
       >
         <Toolbar>
-          {/* <IconButton */}
-          {/*   edge="start" */}
+          {/* <IconButton */} {/*   edge="start" */}
           {/*   className={classes.menuButton} */}
           {/*   color="inherit" */}
           {/*   aria-label="open drawer" */}
           {/* > */}
           {/*   <MenuIcon /> */}
           {/* </IconButton> */}
-          <img src="/assets/images/logo.png" width="50" />
-          <Typography
-            className={classes.title}
-            variant="h5"
-            noWrap
+          <div
+            className={classes.logo}
             style={{ cursor: 'pointer' }}
             onClick={() => props.history.push('/dashboard')}
           >
-            Qwizdom
-          </Typography>
+            <img src="/assets/images/logo.png" width="50" />
+            <Typography className={classes.title} variant="h5" noWrap>
+              Qwizdom
+            </Typography>
+          </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
