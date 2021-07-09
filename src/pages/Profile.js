@@ -219,13 +219,17 @@ export default function Profile() {
                 onChange={handleImage}
                 disabled={formDisabled}
               />
-              <div className={classes.editAvatar}>
-                <label htmlFor="avatarImg">
-                  <Fab component="span">
-                    <EditIcon />
-                  </Fab>
-                </label>
-              </div>
+              {!formDisabled ? (
+                <div className={classes.editAvatar}>
+                  <label htmlFor="avatarImg">
+                    <Fab component="span">
+                      <EditIcon />
+                    </Fab>
+                  </label>
+                </div>
+              ) : (
+                <div className={classes.editAvatar}></div>
+              )}
             </Grid>
           </Grid>
           <Grid item md={12} xs={12}>
