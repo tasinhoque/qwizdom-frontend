@@ -210,14 +210,14 @@ export default withRouter(function Header(props) {
         style={{ background: '#2E3B55', color: '#f5f5f5' }}
       >
         <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            <MenuIcon />
-          </IconButton>
+          {/* <IconButton */}
+          {/*   edge="start" */}
+          {/*   className={classes.menuButton} */}
+          {/*   color="inherit" */}
+          {/*   aria-label="open drawer" */}
+          {/* > */}
+          {/*   <MenuIcon /> */}
+          {/* </IconButton> */}
           <img src="/assets/images/logo.png" width="50" />
           <Typography
             className={classes.title}
@@ -228,29 +228,11 @@ export default withRouter(function Header(props) {
           >
             Qwizdom
           </Typography>
-          {/* <div className={classes.search}> */}
-          {/*   <div className={classes.searchIcon}> */}
-          {/*     <SearchIcon /> */}
-          {/*   </div> */}
-          {/*   <InputBase */}
-          {/*     placeholder="Search…" */}
-          {/*     classes={{ */}
-          {/*       root: classes.inputRoot, */}
-          {/*       input: classes.inputInput, */}
-          {/*     }} */}
-          {/*     inputProps={{ 'aria-label': 'search' }} */}
-          {/*   /> */}
-          {/* </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
               Create Quiz
             </div>
-            <IconButton aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="secondary">
-                <MailIcon />
-              </Badge>
-            </IconButton>
             <IconButton aria-label="show 17 new notifications" color="inherit">
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
