@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, TextField } from '@material-ui/core';
+import { Container, TextField, Typography } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -63,6 +63,8 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     marginBottom: '50px',
+    marginLeft: '12px',
+    marginRight: '12px',
   },
   iconStyle: {
     cursor: 'pointer',
@@ -82,17 +84,17 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     alignContent: 'flex-start',
-    '& > *': {
-      margin: theme.spacing(1),
-    },
+    // '& > *': {
+    //   margin: theme.spacing(1),
+    // },
   },
   imageStyle: {
-    height: '200px',
-    width: '100%',
+    height: 'auto',
+    width: '70%',
     marginRight: theme.spacing(1),
   },
   questionContainer: {
-    paddingLeft: theme.spacing(5),
+    paddingLeft: theme.spacing(3),
   },
   floatingButton: {
     height: '50px',
@@ -450,6 +452,15 @@ export default function QuestionComponent(props) {
 
   return (
     <div className={classes.container}>
+      <Typography
+        style={{
+          fontSize: '1.2rem',
+          fontWeight: '500',
+          margin: '0px 0px -10px 16px',
+        }}
+      >
+        Question {props.arrayIndex + 1}
+      </Typography>
       <Paper className={classes.questionStyle} elevation={7}>
         <div className={classes.iconContainer}>
           <span>
@@ -473,7 +484,7 @@ export default function QuestionComponent(props) {
             e.preventDefault();
           }}
         >
-          <Grid container spacing={2} className={classes.gridContainer}>
+          <Grid container className={classes.gridContainer}>
             <Grid container justify="center" item sm={8}>
               {/* <JoditEditor
                 ref={editor}

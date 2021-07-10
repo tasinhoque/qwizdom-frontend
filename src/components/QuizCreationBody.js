@@ -140,9 +140,18 @@ export default function QuizCreationBody(props) {
         const temp = res.data.stages;
         temp.map((t, i) => {
           useTemp.push({ stageId: i, questions: [] });
+          delete temp[i].id;
+          delete temp[i].quiz;
+          delete temp[i].stage;
           temp[i].stageId = i;
           t.questions.map((q, j) => {
             temp[i].questions[j].questionId = j;
+            delete temp[i].questions[j].id;
+            delete temp[i].questions[j].stage;
+            delete temp[i].questions[j].serial;
+            q.options.map((o, k) => {
+              delete temp[i].questions[j].options[k]._id;
+            });
             useTemp[i].questions.push('h' + Math.random());
           });
         });
@@ -164,7 +173,7 @@ export default function QuizCreationBody(props) {
   const editChecker = () => {
     if (editMode && !preview) {
       console.log('edit checker called');
-      window.scroll(0, 0);
+      // window.scroll(0, 0);
     }
   };
 
@@ -299,12 +308,13 @@ export default function QuizCreationBody(props) {
               <QuizPlay body={previewBody} />;
             </div>
           ) : (
-            store.current.map(stage => {
+            store.current.map((stage, i) => {
               return (
                 <Grid item key={stage.stageId + Math.random()} md={12}>
                   <QuizStage
                     submitChecker={submitVal}
                     {...stage}
+                    arrayIndex={i}
                     fullQues={store.current}
                     bodySetter={allFunctions}
                   />
