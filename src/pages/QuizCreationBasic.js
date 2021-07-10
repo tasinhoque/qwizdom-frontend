@@ -28,12 +28,14 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
 import { Header } from '../components';
+import IconButton from '@material-ui/core/IconButton';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const useStyles = makeStyles(theme => ({
   root: {},
   main: {
     margin: theme.spacing(6, 0, 0, 0),
-    justifyContent: 'center',
+    padding: theme.spacing(0, 0, 6, 6),
   },
   rightColumn: {
     margin: theme.spacing(6, 0, 0, 0),
@@ -65,6 +67,12 @@ const useStyles = makeStyles(theme => ({
   category: {
     marginBottom: theme.spacing(4),
     minWidth: '300px',
+  },
+  proceedButton: {
+    position: 'fixed',
+    right: '5%',
+    top: '50%',
+    borderRadius: '100px',
   },
 }));
 
@@ -194,14 +202,9 @@ const QuizCreationBasic = () => {
     <div className={classes.root}>
       <Header style={{ width: '100%' }} />
       <Container>
-        <Grid container className={classes.main}>
+        <Grid container className={classes.main} justify="center">
           <Grid item xs={6}>
-            <Grid
-              container
-              direction="column"
-              spacing={3}
-              style={{ justifyContent: 'center' }}
-            >
+            <Grid container direction="column" spacing={3} justify="center">
               <Grid item>
                 <Typography variant="h4">Quiz Settings</Typography>
               </Grid>
@@ -260,15 +263,6 @@ const QuizCreationBasic = () => {
               ) : (
                 <div></div>
               )}
-              <Grid item>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={handleSubmit}
-                >
-                  Proceed
-                </Button>
-              </Grid>
             </Grid>
           </Grid>
           <Grid
@@ -428,6 +422,16 @@ const QuizCreationBasic = () => {
               </Grid>
             </Grid>
           </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.proceedButton}
+            endIcon={<DoubleArrowIcon />}
+            onClick={handleSubmit}
+          >
+            Proceed
+          </Button>
         </Grid>
       </Container>
     </div>
