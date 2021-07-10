@@ -1,15 +1,5 @@
 # Tasks
 
-## Header
-
-- Remove mail icon
-- Remove the profile list view
-- Redirect to profile when the user clicks on his avatar
-- Keep a log out button
-- Remove the hamburger menu icon
-- Make the header float type
-- Change the quizdom logo, search google for a new one
-
 ## Quiz Creation Basic
 
 - If survey, remove the evaluation field
@@ -21,9 +11,6 @@
 
 ## Quiz Creation
 
-- Add stage and question header (i.e. number).
-- Fix the image preview (the aspect ratio should be preserved)
-- Add points to each of the questions
 - CSS fixing
   - Make the cards look similar to the cards in the figma design.
   - Textfields should have the texts in the center (currently there is a top margin)
@@ -65,22 +52,12 @@
 - Show subscriber count
 - Fix the time of publication (use package for formatting time if necessary, e.g. `moment`)
 - Show start and end date for quiz participation
-- [backend] Add end date for quiz
-
-## Quiz Operations
-
-- [backend] Whenever a user participates in a quiz, update the `totalParticipant` field in the quiz.
-- [backend] Whenever a user flip his subscription status, the `totalSubscribed` field in the quiz should be updated.
-- [backend] The post review route should update the `averageRating` field of the quiz.
 
 ## Profile
 
-- Fix bug: When user uploads a picture, it doesn't get saved.
 - Fix bug: In the published quizzes section, some quizzes are showing empty chips as categories.
 - Let the user edit or publish a draft quiz
 - Let the user delete his quiz
-- Remove the textfields in viewing mode (keep only text)
-- Remove the image upload button in viewing mode
 - Add fields
   - profession
   - bio
@@ -88,7 +65,6 @@
 
 ## Forum
 
-- [backend] Write necessary APIs
 - Complete the view, follow facebook
 
 ## Leaderboard
@@ -101,3 +77,7 @@
 - [backend] Implement push notification
 - Fetch notifications for a user
 - Facebook style
+
+## Review
+
+- Let the user give feedback on a quiz

@@ -20,3 +20,18 @@
   - Profession
   - Bio
   - Education (e.g. CSE, BUET)
+
+# Sunday, 11 July
+
+## Review
+
+- Let the user give feedback on a quiz
+
+## Quiz Creation Basic
+
+- If survey, remove the evaluation field
+- Check garbage input in duration, or better put restriction (only number will be allowed)
+- Add some more categories in the database
+- Add dashboard header
+- Send default image when user hasn't chosen any image
+- Add end date picker

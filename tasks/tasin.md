@@ -2,18 +2,28 @@
 
 ## Quiz Operations
 
-- [backend] Whenever a user participates in a quiz, update the `totalParticipant` field in the quiz.
-- [backend] Whenever a user flip his subscription status, the `totalSubscribed` field in the quiz should be updated.
-- [backend] The post review route should update the `averageRating` field of the quiz.
+- [x] Whenever a user participates in a quiz, update the `totalParticipant` field in the quiz.
+- [x] Whenever a user flip his subscription status, the `totalSubscribed` field in the quiz should be updated.
+- [x] The post review route should update the `averageRating` field of the quiz.
 
 ## Quiz Home
 
-- [backend] Add end date for quiz
+- [x] Add end date for quiz
 
 ## Forum
 
-- [backend] Write necessary APIs
+- [x] Write necessary APIs
+
+# Sunday, 11 July
+
+## Quiz Responses
+
+- [ ] Get all responses for a quiz (for all participants)
 
 ## Leaderboard
 
-- [backend] Write necessary APIs
+- [ ] Write necessary APIs
+
+## Notification
+
+- [ ] Implement push notification APIs
