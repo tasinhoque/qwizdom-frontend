@@ -8,8 +8,9 @@ import api from '../api';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { Grid } from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
 import { QuizPlay } from '../pages';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -28,7 +29,10 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function QuizCreationBody() {
+export default function QuizCreationBody(props) {
+  const [loading, setLoading] = useState(true);
+  const [editMode, setEditMode] = useState(false);
+
   //preview
   const [preview, setPreview] = useState(false);
   const [previewBody, setPreviewBody] = useState(false);
@@ -38,9 +42,12 @@ export default function QuizCreationBody() {
 
   const [submitVal, setSubmit] = useState('halt');
   const { id } = useParams();
+  const location = useLocation();
+
   const fileStorage = [];
 
   const handleSubmit = async isPublished => {
+    console.log('store is', store.current);
     var postBody = {
       stages: _.cloneDeep(store.current),
       isPublished: isPublished,
@@ -64,18 +71,20 @@ export default function QuizCreationBody() {
     await api
       .postCompleteQuiz(id, postBody)
       .then(res => {
-        console.log(res);
+        console.log('postbody response', res);
         const responseQuiz = res.data;
-        fileStorage.map((element, index) => {
-          let formData = new FormData();
-          formData.append('image', element.image);
-          formData.append('fileUpload', true);
-          const id =
-            responseQuiz.stages[element.stageId].questions[element.questionId]
-              .id;
 
-          fileUpload(id, formData);
-        });
+        // fileStorage.map((element, index) => {
+        //   console.log(element);
+        //   let formData = new FormData();
+        //   formData.append('image', element.image);
+        //   formData.append('fileUpload', true);
+        //   const id =
+        //     responseQuiz.stages[element.stageId].questions[element.questionId]
+        //       .id;
+
+        //   fileUpload(id, formData);
+        // });
         history.push(`/quiz-home/${id}`);
       })
       .catch(error => {
@@ -101,6 +110,7 @@ export default function QuizCreationBody() {
   //  another usestate container quizbody is tracked simultaneously holding
   //  only array size and question size  . it gets updated only  add or delete stage,questions
   //  also renders
+
   const store = useRef([
     {
       stageId: 0,
@@ -121,6 +131,42 @@ export default function QuizCreationBody() {
       questions: [],
     },
   ]);
+  useEffect(async () => {
+    if (location.pathname.includes('edit')) {
+      console.log('edit');
+      api.getCompleteQuiz(id).then(res => {
+        console.log('completeQuiz', res);
+        const useTemp = [];
+        const temp = res.data.stages;
+        temp.map((t, i) => {
+          useTemp.push({ stageId: i, questions: [] });
+          temp[i].stageId = i;
+          t.questions.map((q, j) => {
+            temp[i].questions[j].questionId = j;
+            useTemp[i].questions.push('h' + Math.random());
+          });
+        });
+
+        store.current = temp;
+        console.log('current is', store.current);
+        setQuizBody(useTemp);
+        setEditMode(true);
+        setLoading(false);
+      });
+    } else {
+      setLoading(false);
+    }
+
+    return () => {
+      // cleanup;
+    };
+  }, []);
+  const editChecker = () => {
+    if (editMode && !preview) {
+      console.log('edit checker called');
+      window.scroll(0, 0);
+    }
+  };
 
   const allFunctions = {
     handleBodyChange: message => {
@@ -236,11 +282,9 @@ export default function QuizCreationBody() {
     window.scroll(0, 0);
   };
 
-  if (store.current) {
+  if (store.current && !loading) {
     return (
       <Grid container className={classes.root}>
-        {/* <button onClick={handleSubmit}> submit full page</button> */}
-
         <Grid
           container
           spacing={0}
@@ -257,7 +301,7 @@ export default function QuizCreationBody() {
           ) : (
             store.current.map(stage => {
               return (
-                <Grid item key={stage.stageId} md={12}>
+                <Grid item key={stage.stageId + Math.random()} md={12}>
                   <QuizStage
                     submitChecker={submitVal}
                     {...stage}
@@ -318,10 +362,23 @@ export default function QuizCreationBody() {
               save as draft
             </Button>
           </Grid>
+          {editChecker()}
         </Grid>
       </Grid>
     );
   } else {
-    return <div>loading</div>;
+    return (
+      <>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            paddingTop: '20px',
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </div>
+      </>
+    );
   }
 }

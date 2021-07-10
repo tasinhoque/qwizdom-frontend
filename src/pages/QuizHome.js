@@ -170,6 +170,9 @@ export default function QuizHome(props) {
   const quizResult = () => {
     props.history.push(`/quiz-result/${id}`);
   };
+  const quizCreationRerouting = () => {
+    props.history.push(`/edit-quiz/${id}`);
+  };
 
   if (loading) {
     return (
@@ -239,6 +242,7 @@ export default function QuizHome(props) {
                     variant="contained"
                     color="primary"
                     className={classes.buttons}
+                    onClick={quizCreationRerouting}
                   >
                     Preview Quiz
                   </Button>

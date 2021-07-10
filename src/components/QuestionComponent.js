@@ -108,8 +108,12 @@ const useStyles = makeStyles(theme => ({
 
 export default function QuestionComponent(props) {
   let qHold = props.element;
-  let full = props.fullQues[props.stageId].questions[props.questionId];
-  console.log(full);
+  console.log(props);
+  const pos = props.fullQues.findIndex(i => i.stageId == props.stageId);
+  const quesPos = props.fullQues[pos].questions.findIndex(
+    i => i.questionId == props.questionId
+  );
+  let full = props.fullQues[pos].questions[quesPos];
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
 
@@ -489,7 +493,7 @@ export default function QuestionComponent(props) {
                 label="Question Title"
                 name="email"
                 // autoComplete="email"
-                autoFocus
+                // autoFocus
                 // value={value}
                 // onChange={inputChange}
                 defaultValue={full.title || ''}

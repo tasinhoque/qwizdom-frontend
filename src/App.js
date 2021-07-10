@@ -28,7 +28,8 @@ const App = () => {
         <Route path="/quiz-play/:id" component={QuizPlay} />
         <Route path="/leaderboard" component={Leaderboard} />
         <Route path="/quiz-result/:id" component={ResultPage} />
-        <Route path="/creation" component={QuizCreation} />
+        <Route path="/creation/:id" component={QuizCreation} />
+        <Route path="/edit-quiz/:id" component={QuizCreation} />
       </Switch>
     </main>
   );
