@@ -56,7 +56,7 @@ export default function QuizCreationBody(props) {
       postBody.stages[i].questions.map((q, j) => {
         if (q.hasOwnProperty('stageId'))
           delete postBody.stages[i].questions[j].stageId;
-        if (q.hasOwnProperty('image')) {
+        if (q.hasOwnProperty('image') && q.image instanceof File) {
           fileStorage.push({
             stageId: i,
             questionId: j,
@@ -74,17 +74,17 @@ export default function QuizCreationBody(props) {
         console.log('postbody response', res);
         const responseQuiz = res.data;
 
-        // fileStorage.map((element, index) => {
-        //   console.log(element);
-        //   let formData = new FormData();
-        //   formData.append('image', element.image);
-        //   formData.append('fileUpload', true);
-        //   const id =
-        //     responseQuiz.stages[element.stageId].questions[element.questionId]
-        //       .id;
+        fileStorage.map((element, index) => {
+          console.log(element);
+          let formData = new FormData();
+          formData.append('image', element.image);
+          formData.append('fileUpload', true);
+          const id =
+            responseQuiz.stages[element.stageId].questions[element.questionId]
+              .id;
 
-        //   fileUpload(id, formData);
-        // });
+          fileUpload(id, formData);
+        });
         history.push(`/quiz-home/${id}`);
       })
       .catch(error => {

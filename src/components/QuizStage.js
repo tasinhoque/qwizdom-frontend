@@ -40,6 +40,10 @@ const useStyles = makeStyles(theme => ({
   iconStyle: {
     cursor: 'pointer',
   },
+  typoStyle: {
+    fontWeight: '500',
+    fontSize: '1.5rem',
+  },
 
   iconContainer: {
     position: 'absolute',
@@ -92,7 +96,7 @@ export default function QuizStage(props) {
                   margin: '11px 0px 3px 28px',
                 }}
               >
-                <Typography style={{ fontWeight: '500', fontSize: '1.5rem' }}>
+                <Typography className={classes.typoStyle}>
                   Stage {props.arrayIndex + 1}
                 </Typography>
               </div>

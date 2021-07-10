@@ -136,8 +136,10 @@ export default function QuestionComponent(props) {
     type: full.type,
   });
   let im = '';
-  if (full.image && full.image instanceof File) {
-    im = URL.createObjectURL(full.image);
+  if (full.image) {
+    if (full.image instanceof File) {
+      im = URL.createObjectURL(full.image);
+    } else im = full.image;
   }
 
   let optVal = '';

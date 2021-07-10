@@ -86,7 +86,8 @@ const useStyles = makeStyles(theme => ({
   },
   quizImage: {
     width: '100%',
-    height: 'auto',
+    // height: 'auto',
+    maxHeight: 350,
   },
   subscribeBtn: {
     position: 'absolute',
@@ -244,7 +245,7 @@ export default function QuizHome(props) {
                     className={classes.buttons}
                     onClick={quizCreationRerouting}
                   >
-                    Preview Quiz
+                    EDIT QUIZ
                   </Button>
                 </Grid>
               )}
@@ -312,7 +313,7 @@ export default function QuizHome(props) {
               <Grid item md={6} xs={12}>
                 <CardHeader
                   avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
-                  title="Marcos Marshal"
+                  title={quiz.creator.name}
                   titleTypographyProps={{ variant: 'h5' }}
                 />
               </Grid>

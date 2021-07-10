@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import produce from 'immer';
 
 import store from '../components/QuizPlay/store';
+import { Typography } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -20,6 +21,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  typoStyle: {
+    fontWeight: '500',
+    fontSize: '1.5rem',
   },
   questionStyle: {
     width: '70%',
@@ -154,6 +159,21 @@ export default function QuizPlay(props) {
           </div>
         ) : (
           <div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '10px',
+              }}
+            >
+              <Typography
+                style={{ width: '70%' }}
+                className={classes.typoStyle}
+              >
+                Stage {currentPageNum + 1} of {totalPages}
+              </Typography>
+            </div>
+
             {fullQuiz.current.stages[currentPageNum].questions.map(
               (element, index) => {
                 return (
