@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import TextField from '@material-ui/core/TextField';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
@@ -105,6 +107,17 @@ const useStyles = makeStyles(theme => ({
     fontSize: '12px',
     width: '85%',
     // paddingLeft: theme.spacing(3),
+  },
+  feedback: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '100%',
+    margin: theme.spacing(10),
+    [theme.breakpoints.down('sm')]: {
+      margin: theme.spacing(1),
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
+    },
   },
 }));
 
@@ -331,6 +344,33 @@ export default function QuizHome(props) {
                 {quiz.description}
               </Typography>
             </Grid>
+          </Grid>
+        </Grid>
+
+        <Grid container spacing={3} className={classes.feedback}>
+          <Grid
+            item
+            md={3}
+            xs={12}
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
+            <Rating name="size-medium" defaultValue={2} size="large" />
+          </Grid>
+          <Grid item md={9} xs={12}>
+            <TextField
+              id="standard-full-width"
+              label="Review"
+              placeholder="Give your feedback here"
+              fullWidth
+              multiline
+              rows={3}
+              rowsMax={6}
+              variant="outlined"
+              margin="normal"
+              InputLabelProps={{
+                shrink: true,
+              }}
+            />
           </Grid>
         </Grid>
 
