@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   root: {},
   main: {
     margin: theme.spacing(6, 0, 0, 0),
+    justifyContent: 'center',
   },
   rightColumn: {
     margin: theme.spacing(6, 0, 0, 0),
@@ -96,7 +97,8 @@ const QuizCreationBasic = () => {
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [img, setImg] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date('2021-1-1'));
+  const [startDate, setStartDate] = useState(new Date('2021-1-1'));
+  const [endDate, setEndDate] = useState(new Date('2021-1-1'));
   const history = useHistory();
   const [names, setNames] = useState([]);
   const [personName, setPersonName] = useState([]);
@@ -139,8 +141,14 @@ const QuizCreationBasic = () => {
     }
   };
 
-  const handleDateChange = date => {
-    setSelectedDate(date);
+  const handleStartDate = date => {
+    setStartDate(date);
+    console.log(date);
+  };
+
+  const handleEndDate = date => {
+    setEndDate(date);
+    console.log(date);
   };
 
   const handleSubmit = async () => {
@@ -153,9 +161,13 @@ const QuizCreationBasic = () => {
         duration,
         categories: categoryIds,
         startTime:
-          selectedDate.getTime() === new Date('2021-1-1').getTime()
+          startDate.getTime() === new Date('2021-1-1').getTime()
             ? undefined
-            : selectedDate,
+            : startDate,
+        endTime:
+          startDate.getTime() === new Date('2021-1-1').getTime()
+            ? undefined
+            : endDate,
       };
 
       const { data: quiz } = await api.postQuiz(requestBody);
@@ -184,7 +196,12 @@ const QuizCreationBasic = () => {
       <Container>
         <Grid container className={classes.main}>
           <Grid item xs={6}>
-            <Grid container direction="column" spacing={3}>
+            <Grid
+              container
+              direction="column"
+              spacing={3}
+              style={{ justifyContent: 'center' }}
+            >
               <Grid item>
                 <Typography variant="h4">Quiz Settings</Typography>
               </Grid>
@@ -228,17 +245,21 @@ const QuizCreationBasic = () => {
                   className={classes.textField}
                 />
               </Grid>
-              <Grid item>
-                <TextField
-                  variant="outlined"
-                  label="Duration (in min)"
-                  value={duration}
-                  type="number"
-                  InputProps={{ inputProps: { min: 1 } }}
-                  onChange={e => setDuration(e.target.value)}
-                  className={classes.textField}
-                />
-              </Grid>
+              {isTest ? (
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    label="Duration (in min)"
+                    value={duration}
+                    type="number"
+                    InputProps={{ inputProps: { min: 1 } }}
+                    onChange={e => setDuration(e.target.value)}
+                    className={classes.textField}
+                  />
+                </Grid>
+              ) : (
+                <div></div>
+              )}
               <Grid item>
                 <Button
                   variant="contained"
@@ -319,37 +340,70 @@ const QuizCreationBasic = () => {
               )}
             </Grid>
             <Grid item>
-              <Grid item>
-                <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <Grid container justify="space-around" direction="column">
-                    <Grid item>
-                      <KeyboardDatePicker
-                        margin="normal"
-                        id="date-picker-dialog"
-                        label="Date"
-                        format="MM/dd/yyyy"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change date',
-                        }}
-                      />
+              {isTest ? (
+                <Grid item>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around" direction="column">
+                      <Grid item>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="date-picker-start"
+                          label="Start Date"
+                          format="MM/dd/yyyy"
+                          value={startDate}
+                          onChange={handleStartDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <KeyboardTimePicker
+                          margin="normal"
+                          id="time-picker-start"
+                          label="Start Time"
+                          value={startDate}
+                          onChange={handleStartDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change time',
+                          }}
+                        />
+                      </Grid>
                     </Grid>
-                    <Grid item>
-                      <KeyboardTimePicker
-                        margin="normal"
-                        id="time-picker"
-                        label="Time"
-                        value={selectedDate}
-                        onChange={handleDateChange}
-                        KeyboardButtonProps={{
-                          'aria-label': 'change time',
-                        }}
-                      />
-                    </Grid>
-                  </Grid>
-                </MuiPickersUtilsProvider>
-              </Grid>
+                  </MuiPickersUtilsProvider>
+                  {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
+                  {/*   <Grid container justify="space-around" direction="column"> */}
+                  {/*     <Grid item> */}
+                  {/*       <KeyboardDatePicker */}
+                  {/*         margin="normal" */}
+                  {/*         id="date-picker-end" */}
+                  {/*         label="End Date" */}
+                  {/*         format="MM/dd/yyyy" */}
+                  {/*         value={endDate} */}
+                  {/*         onChange={handleEndDate} */}
+                  {/*         KeyboardButtonProps={{ */}
+                  {/*           'aria-label': 'change date', */}
+                  {/*         }} */}
+                  {/*       /> */}
+                  {/*     </Grid> */}
+                  {/*     <Grid item> */}
+                  {/*       <KeyboardTimePicker */}
+                  {/*         margin="normal" */}
+                  {/*         id="time-picker-end" */}
+                  {/*         label="End Time" */}
+                  {/*         value={endDate} */}
+                  {/*         onChange={handleEndDate} */}
+                  {/*         KeyboardButtonProps={{ */}
+                  {/*           'aria-label': 'change time', */}
+                  {/*         }} */}
+                  {/*       /> */}
+                  {/*     </Grid> */}
+                  {/*   </Grid> */}
+                  {/* </MuiPickersUtilsProvider> */}
+                </Grid>
+              ) : (
+                <div></div>
+              )}
               <Grid item className={classes.imageContainer}>
                 <input
                   accept="image/*"
