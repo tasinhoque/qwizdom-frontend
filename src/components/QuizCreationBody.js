@@ -132,6 +132,7 @@ export default function QuizCreationBody(props) {
     },
   ]);
   useEffect(async () => {
+    console.log(location.pathname);
     if (location.pathname.includes('edit')) {
       console.log('edit');
       api.getCompleteQuiz(id).then(res => {
@@ -163,6 +164,7 @@ export default function QuizCreationBody(props) {
         setLoading(false);
       });
     } else {
+      console.log('creation');
       setLoading(false);
     }
 

@@ -38,7 +38,14 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    width: 150,
+  },
+  pointStyle: {
+    margin: theme.spacing(1),
+    width: 150,
+  },
+  textFieldStyle: {
+    marginTop: theme.spacing(1),
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -82,15 +89,13 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     alignContent: 'flex-start',
-    width: '70%',
-    // '& > *': {
-    //   margin: theme.spacing(1),
-    // },
+    '& > *': {
+      margin: '12px 8px 10px 8px',
+    },
   },
   imageStyle: {
-    height: 'auto',
-    width: '70%',
-    marginRight: theme.spacing(1),
+    maxHeight: 400,
+    width: '100%',
   },
   questionContainer: {
     paddingLeft: theme.spacing(1),
@@ -99,11 +104,14 @@ const useStyles = makeStyles(theme => ({
     height: '50px',
     width: '50px',
     minHeight: '20px',
-    marginLeft: theme.spacing(3),
+    // marginLeft: theme.spacing(1),
   },
   fullPaper: {
     paddingTop: theme.spacing(2),
     paddingLeft: theme.spacing(2),
+  },
+  leftContainer: {
+    flexDirection: 'column',
   },
 }));
 
@@ -122,7 +130,7 @@ export default function QuestionComponent(props) {
     stageId: props.stageId,
     questionId: props.questionId,
     title: full.title,
-    points: 10,
+    points: full.points,
     options: full.options,
     image: full.image,
     type: full.type,
@@ -160,7 +168,8 @@ export default function QuestionComponent(props) {
   //jodit hook
   const editor = useRef(null);
   const [content, setContent] = useState('');
-
+  //point Hooks
+  const pointsValue = useRef(questionBody.current.points);
   const config = {
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
@@ -173,6 +182,11 @@ export default function QuestionComponent(props) {
 
   const deleteQuestion = i => {
     props.bodySetter.deleteQuestion(props.stageId, props.questionId);
+  };
+
+  const onPointChange = e => {
+    questionBody.current.points = e.target.value;
+    props.questionChange(questionBody.current);
   };
 
   const inputChange = e => {
@@ -320,7 +334,7 @@ export default function QuestionComponent(props) {
 
             <TextField
               style={{ width: '60%', margin: '8px' }}
-              variant="filled"
+              variant="outlined"
               required
               onKeyDown={keyPress}
               placeholder={placeholderRef.current}
@@ -378,7 +392,7 @@ export default function QuestionComponent(props) {
 
           <TextField
             style={{ width: '60%', margin: '8px' }}
-            variant="filled"
+            variant="outlined"
             required
             onKeyDown={keyPress}
             placeholder={placeholderRef.current}
@@ -436,7 +450,7 @@ export default function QuestionComponent(props) {
 
           <TextField
             style={{ width: '60%', margin: '8px' }}
-            variant="filled"
+            variant="outlined"
             required
             onKeyDown={keyPress}
             placeholder={placeholderRef.current}
@@ -484,19 +498,11 @@ export default function QuestionComponent(props) {
               e.preventDefault();
             }}
           >
-            <Grid container className={classes.gridContainer}>
-              <Grid container justify="center" item sm={8}>
-                {/* <JoditEditor
-                ref={editor}
-                value={content}
-                config={config}
-                tabIndex={1} // tabIndex of textarea
-                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                onChange={newContent => {}}
-              /> */}
+            <Grid container>
+              <Grid container item xs={6} lg={8} direction="column">
                 <TextField
                   className={classes.textFieldStyle}
-                  variant="filled"
+                  variant="outlined"
                   required
                   fullWidth
                   multiline
@@ -510,9 +516,60 @@ export default function QuestionComponent(props) {
                   defaultValue={full.title || ''}
                   onChange={editTitle}
                 />
+                <div className={classes.imageContainer}>
+                  <input
+                    accept="image/*"
+                    className={classes.input}
+                    id={imageInputId}
+                    multiple
+                    type="file"
+                    onChange={handleImage}
+                  />
+                  {!img && (
+                    <div>
+                      <label htmlFor={imageInputId}>
+                        <Fab
+                          component="span"
+                          classes={{ root: classes.floatingButton }}
+                        >
+                          <AddPhotoAlternateIcon />
+                        </Fab>
+                      </label>
+                    </div>
+                  )}
+
+                  {img && (
+                    <>
+                      <div>
+                        <Fab
+                          component="span"
+                          classes={{ root: classes.floatingButton }}
+                          onClick={imageDelete}
+                        >
+                          <CloseIcon fontSize="large" />
+                        </Fab>
+                      </div>
+                      <span>
+                        <img className={classes.imageStyle} src={img} />
+                      </span>
+                    </>
+                  )}
+                </div>
               </Grid>
-              <Grid container justify="flex-end" item sm={3}>
-                <FormControl className={classes.formControl}>
+
+              <Grid
+                container
+                alignItems="center"
+                item
+                xs={6}
+                lg={4}
+                direction="column"
+              >
+                <FormControl
+                  variant="outlined"
+                  size="medium"
+                  className={classes.formControl}
+                >
                   <InputLabel id="demo-simple-select-filled-label">
                     Type
                   </InputLabel>
@@ -521,6 +578,7 @@ export default function QuestionComponent(props) {
                       selectMenu: classes.selectStyle,
                     }}
                     placeholder="Type"
+                    label="Type"
                     value={selectType}
                     onChange={handleSelect}
                   >
@@ -541,52 +599,20 @@ export default function QuestionComponent(props) {
                     </MenuItem>
                   </Select>
                 </FormControl>
+
+                <TextField
+                  className={classes.pointStyle}
+                  onChange={onPointChange}
+                  id="outlined-number"
+                  label="Point"
+                  type="number"
+                  size="medium"
+                  defaultValue={questionBody.current.points}
+                  variant="outlined"
+                />
               </Grid>
             </Grid>
-            <div>
-              <div className={classes.imageContainer}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id={imageInputId}
-                  multiple
-                  type="file"
-                  onChange={handleImage}
-                />
-                {!img && (
-                  <div>
-                    <label htmlFor={imageInputId}>
-                      <Fab
-                        component="span"
-                        classes={{ root: classes.floatingButton }}
-                      >
-                        <AddPhotoAlternateIcon />
-                      </Fab>
-                    </label>
-                  </div>
-                )}
 
-                {img && (
-                  <>
-                    <div>
-                      <Fab
-                        component="span"
-                        classes={{ root: classes.floatingButton }}
-                        onClick={imageDelete}
-                      >
-                        <CloseIcon fontSize="large" />
-                      </Fab>
-                    </div>
-                    <span>
-                      <img className={classes.imageStyle} src={img} />
-                    </span>
-                  </>
-                )}
-              </div>
-              <div style={{ width: '30%' }}>
-                <TextField></TextField>
-              </div>
-            </div>
             <div className={classes.questionContainer}>
               {selectType == 'mcq' && mcqBuilder()}
 
