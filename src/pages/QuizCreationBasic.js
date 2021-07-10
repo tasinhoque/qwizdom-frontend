@@ -289,24 +289,28 @@ const QuizCreationBasic = () => {
             </FormControl>
           </Grid>
           <Grid item>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Evaluation</FormLabel>
-              <RadioGroup
-                value={hasAutoEvaluation ? 'auto' : 'manual'}
-                onChange={handleEvaluationChange}
-              >
-                <FormControlLabel
-                  value="auto"
-                  control={<Radio />}
-                  label="Auto"
-                />
-                <FormControlLabel
-                  value="manual"
-                  control={<Radio />}
-                  label="Manual"
-                />
-              </RadioGroup>
-            </FormControl>
+            {isTest ? (
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Evaluation</FormLabel>
+                <RadioGroup
+                  value={hasAutoEvaluation ? 'auto' : 'manual'}
+                  onChange={handleEvaluationChange}
+                >
+                  <FormControlLabel
+                    value="auto"
+                    control={<Radio />}
+                    label="Auto"
+                  />
+                  <FormControlLabel
+                    value="manual"
+                    control={<Radio />}
+                    label="Manual"
+                  />
+                </RadioGroup>
+              </FormControl>
+            ) : (
+              <div></div>
+            )}
           </Grid>
           <Grid item>
             <Grid item>
