@@ -53,9 +53,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyItems: 'space-between',
   },
-  textFieldStyle: {
-    margin: '8px',
-  },
+
   questionStyle: {
     margin: theme.spacing(2),
     minHeight: theme.spacing(25),
@@ -84,6 +82,7 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     alignContent: 'flex-start',
+    width: '70%',
     // '& > *': {
     //   margin: theme.spacing(1),
     // },
@@ -94,7 +93,7 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
   questionContainer: {
-    paddingLeft: theme.spacing(3),
+    paddingLeft: theme.spacing(1),
   },
   floatingButton: {
     height: '50px',
@@ -102,9 +101,9 @@ const useStyles = makeStyles(theme => ({
     minHeight: '20px',
     marginLeft: theme.spacing(3),
   },
-  gridContainer: {
-    marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(2),
+  fullPaper: {
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
   },
 }));
 
@@ -462,31 +461,32 @@ export default function QuestionComponent(props) {
         Question {props.arrayIndex + 1}
       </Typography>
       <Paper className={classes.questionStyle} elevation={7}>
-        <div className={classes.iconContainer}>
-          <span>
-            {' '}
-            <AddCircleOutlineTwoToneIcon
-              className={classes.iconStyle}
-              onClick={addQuestion}
-              fontSize="large"
-              style={{ color: 'gray' }}
-            />
-            <DeleteOutlineTwoToneIcon
-              className={classes.iconStyle}
-              onClick={deleteQuestion}
-              fontSize="large"
-              style={{ color: 'gray' }}
-            />
-          </span>
-        </div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          <Grid container className={classes.gridContainer}>
-            <Grid container justify="center" item sm={8}>
-              {/* <JoditEditor
+        <div className={classes.fullPaper}>
+          <div className={classes.iconContainer}>
+            <span>
+              {' '}
+              <AddCircleOutlineTwoToneIcon
+                className={classes.iconStyle}
+                onClick={addQuestion}
+                fontSize="large"
+                style={{ color: 'gray' }}
+              />
+              <DeleteOutlineTwoToneIcon
+                className={classes.iconStyle}
+                onClick={deleteQuestion}
+                fontSize="large"
+                style={{ color: 'gray' }}
+              />
+            </span>
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+            }}
+          >
+            <Grid container className={classes.gridContainer}>
+              <Grid container justify="center" item sm={8}>
+                {/* <JoditEditor
                 ref={editor}
                 value={content}
                 config={config}
@@ -494,105 +494,111 @@ export default function QuestionComponent(props) {
                 onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
                 onChange={newContent => {}}
               /> */}
-              <TextField
-                className={classes.textFieldStyle}
-                variant="filled"
-                required
-                fullWidth
-                multiline
-                // id="email"
-                label="Question Title"
-                name="email"
-                // autoComplete="email"
-                // autoFocus
-                // value={value}
-                // onChange={inputChange}
-                defaultValue={full.title || ''}
-                onChange={editTitle}
-              />
-            </Grid>
-            <Grid container justify="flex-end" item sm={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-filled-label">
-                  Type
-                </InputLabel>
-                <Select
-                  classes={{
-                    selectMenu: classes.selectStyle,
-                  }}
-                  placeholder="Type"
-                  value={selectType}
-                  onChange={handleSelect}
-                >
-                  <MenuItem value={'mcq'}>
-                    {' '}
-                    <RadioButtonCheckedIcon
-                      style={{ fontSize: '1.7rem' }}
-                    />{' '}
-                    Mcq
-                  </MenuItem>
-                  <MenuItem value={'trueOrFalse'}>
-                    {' '}
-                    <ToggleOffIcon style={{ fontSize: '1.7rem' }} /> True/false
-                  </MenuItem>
-                  <MenuItem value={'checkbox'}>
-                    <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
-
-          <div className={classes.imageContainer}>
-            <input
-              accept="image/*"
-              className={classes.input}
-              id={imageInputId}
-              multiple
-              type="file"
-              onChange={handleImage}
-            />
-            {!img && (
-              <div>
-                <label htmlFor={imageInputId}>
-                  <Fab
-                    component="span"
-                    classes={{ root: classes.floatingButton }}
+                <TextField
+                  className={classes.textFieldStyle}
+                  variant="filled"
+                  required
+                  fullWidth
+                  multiline
+                  // id="email"
+                  label="Question Title"
+                  name="email"
+                  // autoComplete="email"
+                  // autoFocus
+                  // value={value}
+                  // onChange={inputChange}
+                  defaultValue={full.title || ''}
+                  onChange={editTitle}
+                />
+              </Grid>
+              <Grid container justify="flex-end" item sm={3}>
+                <FormControl className={classes.formControl}>
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Type
+                  </InputLabel>
+                  <Select
+                    classes={{
+                      selectMenu: classes.selectStyle,
+                    }}
+                    placeholder="Type"
+                    value={selectType}
+                    onChange={handleSelect}
                   >
-                    <AddPhotoAlternateIcon />
-                  </Fab>
-                </label>
+                    <MenuItem value={'mcq'}>
+                      {' '}
+                      <RadioButtonCheckedIcon
+                        style={{ fontSize: '1.7rem' }}
+                      />{' '}
+                      Mcq
+                    </MenuItem>
+                    <MenuItem value={'trueOrFalse'}>
+                      {' '}
+                      <ToggleOffIcon style={{ fontSize: '1.7rem' }} />{' '}
+                      True/false
+                    </MenuItem>
+                    <MenuItem value={'checkbox'}>
+                      <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
+              </Grid>
+            </Grid>
+            <div>
+              <div className={classes.imageContainer}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id={imageInputId}
+                  multiple
+                  type="file"
+                  onChange={handleImage}
+                />
+                {!img && (
+                  <div>
+                    <label htmlFor={imageInputId}>
+                      <Fab
+                        component="span"
+                        classes={{ root: classes.floatingButton }}
+                      >
+                        <AddPhotoAlternateIcon />
+                      </Fab>
+                    </label>
+                  </div>
+                )}
+
+                {img && (
+                  <>
+                    <div>
+                      <Fab
+                        component="span"
+                        classes={{ root: classes.floatingButton }}
+                        onClick={imageDelete}
+                      >
+                        <CloseIcon fontSize="large" />
+                      </Fab>
+                    </div>
+                    <span>
+                      <img className={classes.imageStyle} src={img} />
+                    </span>
+                  </>
+                )}
               </div>
-            )}
+              <div style={{ width: '30%' }}>
+                <TextField></TextField>
+              </div>
+            </div>
+            <div className={classes.questionContainer}>
+              {selectType == 'mcq' && mcqBuilder()}
 
-            {img && (
-              <>
-                <div>
-                  <Fab
-                    component="span"
-                    classes={{ root: classes.floatingButton }}
-                    onClick={imageDelete}
-                  >
-                    <CloseIcon fontSize="large" />
-                  </Fab>
-                </div>
-                <span>
-                  <img className={classes.imageStyle} src={img} />
-                </span>
-              </>
-            )}
-          </div>
-          <div className={classes.questionContainer}>
-            {selectType == 'mcq' && mcqBuilder()}
+              {selectType == 'trueOrFalse' && tfBuilder()}
 
-            {selectType == 'trueOrFalse' && tfBuilder()}
+              {selectType == 'checkbox' && checkboxBuilder()}
+            </div>
+          </form>
 
-            {selectType == 'checkbox' && checkboxBuilder()}
-          </div>
-        </form>
-
-        {/* <p> {props.questionName}</p> */}
-        {/* <p> props stage is {props.stageId}</p> */}
+          {/* <p> {props.questionName}</p> */}
+          {/* <p> props stage is {props.stageId}</p> */}
+        </div>
       </Paper>
     </div>
   );
