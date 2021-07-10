@@ -229,6 +229,8 @@ const QuizCreationBasic = () => {
                 variant="outlined"
                 label="Duration (in min)"
                 value={duration}
+                type="number"
+                InputProps={{ inputProps: { min: 1 } }}
                 onChange={e => setDuration(e.target.value)}
                 className={classes.textField}
               />
