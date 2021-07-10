@@ -33,6 +33,6 @@
 - [x] Check garbage input in duration, or better put restriction
       (only number will be allowed)
 - [ ] Add some more categories in the database
-- [ ] Add dashboard header
+- [x] Add dashboard header
 - [ ] Send default image when user hasn't chosen any image
 - [ ] Add end date picker
