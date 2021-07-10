@@ -8,6 +8,7 @@ import { stageContext } from '../contexts/stageContext';
 import QuestionComponent from './QuestionComponent';
 import { wrap } from 'lodash';
 import PlaylistAddIcon from '@material-ui/icons/PlaylistAdd';
+import { Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -38,6 +39,10 @@ const useStyles = makeStyles(theme => ({
   },
   iconStyle: {
     cursor: 'pointer',
+  },
+  typoStyle: {
+    fontWeight: '500',
+    fontSize: '1.5rem',
   },
 
   iconContainer: {
@@ -85,10 +90,16 @@ export default function QuizStage(props) {
           <div className={classes.container}>
             <Paper className={classes.paperStyle} elevation={10}>
               {/* <p> stage id is {props.stageId}</p> */}
-              <div style={{ height: '50px' }}></div>
-              {/* <button onClick={addStage}> New stage</button>
-            <button onClick={deleteStage}> delete stage</button> */}
-              {/* <button onClick={addQuestion}>add question</button> */}
+              <div
+                style={{
+                  height: '30px',
+                  margin: '11px 0px 3px 28px',
+                }}
+              >
+                <Typography className={classes.typoStyle}>
+                  Stage {props.arrayIndex + 1}
+                </Typography>
+              </div>
 
               {props.questions.map((q, i) => {
                 return (
@@ -100,6 +111,7 @@ export default function QuizStage(props) {
                     questionChange={props.bodySetter.questionChange}
                     bodySetter={props.bodySetter}
                     fullQues={props.fullQues}
+                    arrayIndex={i}
                     key={
                       `qID ${q.questionId} sId ${props.stageId}   ` +
                       Math.random()

@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   imageStyle: {
-    height: '300px',
+    minHeight: 220,
     marginRight: theme.spacing(1),
     maxWidth: '80%',
   },
@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
   typoStyle: {
     fontSize: '1.2rem',
-    paddingTop: '1.2rem',
+    // paddingTop: '1.2rem',
     marginBottom: '5px',
     fontWeight: '500',
   },
@@ -226,6 +226,22 @@ export default function PlayQuestion(props) {
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            style={{
+              padding: '16px 0px 0px 16px',
+              fontWeight: '500',
+              fontSize: '1.4rem',
+            }}
+          >
+            Question {props.qId + 1}
+          </Typography>
+          <Typography
+            style={{ fontWeight: '500', fontSize: '1.2rem', margin: '16px ' }}
+          >
+            {question.points} point
+          </Typography>
+        </div>
         <form>
           <div className={classes.questionContainer}>
             {question.type == 'mcq' && mcqBuilder()}

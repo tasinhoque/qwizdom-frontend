@@ -140,8 +140,8 @@ export default withRouter(function SingleCard(props) {
         </Typography>
       </div>
       <Box className={classes.chipStyle}>
-        {props.categories.map(category => (
-          <Chip color="primary" label={category.name} />
+        {props.categories.map((category, i) => (
+          <Chip color="primary" label={category.name} key={i} />
         ))}
       </Box>
 

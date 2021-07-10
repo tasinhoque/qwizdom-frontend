@@ -88,7 +88,8 @@ const useStyles = makeStyles(theme => ({
   },
   quizImage: {
     width: '100%',
-    height: 'auto',
+    // height: 'auto',
+    maxHeight: 350,
   },
   subscribeBtn: {
     position: 'absolute',
@@ -183,6 +184,9 @@ export default function QuizHome(props) {
   const quizResult = () => {
     props.history.push(`/quiz-result/${id}`);
   };
+  const quizCreationRerouting = () => {
+    props.history.push(`/edit-quiz/${id}`);
+  };
 
   if (loading) {
     return (
@@ -252,8 +256,9 @@ export default function QuizHome(props) {
                     variant="contained"
                     color="primary"
                     className={classes.buttons}
+                    onClick={quizCreationRerouting}
                   >
-                    Preview Quiz
+                    EDIT QUIZ
                   </Button>
                 </Grid>
               )}
@@ -321,7 +326,7 @@ export default function QuizHome(props) {
               <Grid item md={6} xs={12}>
                 <CardHeader
                   avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
-                  title="Marcos Marshal"
+                  title={quiz.creator.name}
                   titleTypographyProps={{ variant: 'h5' }}
                 />
               </Grid>
