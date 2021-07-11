@@ -11,7 +11,7 @@ import { useHistory } from 'react-router-dom';
 import produce from 'immer';
 
 import store from '../components/QuizPlay/store';
-import { Typography } from '@material-ui/core';
+import { Grid, Paper, Typography } from '@material-ui/core';
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -28,6 +28,15 @@ const useStyles = makeStyles(theme => ({
   },
   questionStyle: {
     width: '70%',
+  },
+  barStyle: {
+    fontWeight: '450',
+    fontSize: '1.25rem',
+    margin: theme.spacing(0, 0, 0, 2),
+  },
+  barContainer: {
+    width: '100%',
+    padding: theme.spacing(2, 0, 2, 0),
   },
 }));
 export default function QuizPlay(props) {
@@ -159,6 +168,26 @@ export default function QuizPlay(props) {
           </div>
         ) : (
           <div>
+            <Grid container justify="center">
+              <Paper elevation={7} className={classes.barContainer}>
+                <Grid container justify="center">
+                  <Grid container item xs={6} direction="column">
+                    <Typography gutterBottom className={classes.barStyle}>
+                      Quiz : {fullQuiz.current.name}
+                    </Typography>
+                    <Typography gutterBottom className={classes.barStyle}>
+                      Creator: {fullQuiz.current.creator.name}
+                    </Typography>
+                  </Grid>
+                  <Grid container item xs={6} direction="column">
+                    <Typography gutterBottom className={classes.barStyle}>
+                      Total Point : {fullQuiz.current.totalPoints}
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Paper>
+            </Grid>
+
             <div
               style={{
                 display: 'flex',

@@ -19,6 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   headerStyle: {
     flexGrow: 1,
+    width: '70%',
   },
   questionContainer: {
     display: 'flex',
@@ -29,7 +30,8 @@ const useStyles = makeStyles(theme => ({
     width: '70%',
   },
   quizName: {
-    margin: theme.spacing(3, 0, 0, 1),
+    // margin: theme.spacing(3, 0, 0, 1),
+    marginLeft: theme.spacing(2),
   },
 }));
 export default function ResultPage() {
@@ -49,15 +51,6 @@ export default function ResultPage() {
   };
   useEffect(async () => {
     api
-      .getQuiz(id)
-      .then(res => {
-        console.log(res.data);
-        setQuizInfo(res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    api
       .getQuizResult(id)
       .then(res => {
         console.log(res);
@@ -70,7 +63,7 @@ export default function ResultPage() {
         //       }
         //     });
         //   });
-        fullQuiz.current = res.data.stageResponses;
+        fullQuiz.current = res.data;
         console.log(fullQuiz.current);
         setTotalPages(res.data.stageResponses.length);
 
@@ -93,22 +86,51 @@ export default function ResultPage() {
           </div>
         ) : (
           <div>
-            <div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
               <Paper className={classes.headerStyle} elevation={3}>
-                <Grid container direction="row">
-                  <Grid item>
+                <Grid container>
+                  <Grid
+                    container
+                    style={{ marginTop: '10px' }}
+                    item
+                    xs={6}
+                    direction="column"
+                  >
                     <Typography
                       variant="h6"
                       gutterBottom
                       className={classes.quizName}
                     >
-                      {quizInfo.name}
+                      Quiz : {fullQuiz.current.quiz.name}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      className={classes.quizName}
+                    >
+                      Creator: {fullQuiz.current.quiz.creator.name}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    contanier
+                    style={{ marginTop: '10px ' }}
+                    item
+                    xs={6}
+                    direction="column"
+                  >
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      className={classes.quizName}
+                    >
+                      Point : {fullQuiz.current.totalPoints}/
+                      {fullQuiz.current.quiz.totalPoints}
                     </Typography>
                   </Grid>
                 </Grid>
               </Paper>
             </div>
-            {fullQuiz.current[currentPageNum].responses.map(
+            {fullQuiz.current.stageResponses[currentPageNum].responses.map(
               (element, index) => {
                 return (
                   <ResultQuestion
