@@ -8,3 +8,4 @@ export { default as QuizStage } from './QuizStage';
 export { default as QuizCreationBody } from './QuizCreationBody';
 export { default as QuestionComponent } from './QuestionComponent';
 export { default as ResultQuestion } from './ResultQuestion';
+export { default as SubmissionQuestion } from './SubmissionDialog';

@@ -12,7 +12,7 @@ import produce from 'immer';
 
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
-import SubmissionDialog from '../components/QuizPlay/SubmissionDialog';
+import SubmissionDialog from '../components/SubmissionDialog';
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -173,7 +173,12 @@ export default function QuizPlay(props) {
           </div>
         ) : (
           <div>
-            <SubmissionDialog id={id} open={open} setOpen={setOpen} />
+            <SubmissionDialog
+              id={id}
+              open={open}
+              setOpen={setOpen}
+              caller="quizPlay"
+            />
 
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>

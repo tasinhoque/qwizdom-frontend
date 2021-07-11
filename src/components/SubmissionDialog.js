@@ -9,10 +9,11 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import Rating from '@material-ui/lab/Rating';
 import Typography from '@material-ui/core/Typography';
 import { useState, useRef } from 'react';
-import api from '../../api';
-import { useHistory } from 'react-router-dom';
 
-export default function SubmissionDialog({ id, open, setOpen }) {
+import { useHistory, useLocation } from 'react-router-dom';
+import api from '../api';
+
+export default function SubmissionDialog({ id, open, setOpen, caller }) {
   const [value, setValue] = useState(0);
   const review = useRef('');
   const history = useHistory();
@@ -30,6 +31,8 @@ export default function SubmissionDialog({ id, open, setOpen }) {
     setValue(parseInt(e.target.value));
   };
   const handlePost = async () => {
+    setOpen(false);
+
     console.log(review.current.value);
     const postBody = {
       rating: value,
@@ -38,8 +41,7 @@ export default function SubmissionDialog({ id, open, setOpen }) {
     await api
       .sumbitReviewRating(id, postBody)
       .then(res => {
-        console.log(res);
-        setOpen(false);
+        // console.log(res);
         history.push(`/quiz-home/${id}`);
       })
       .catch(err => {
@@ -54,9 +56,11 @@ export default function SubmissionDialog({ id, open, setOpen }) {
         onClose={handleClose}
         aria-labelledby="form-dialog-title"
       >
-        <DialogTitle id="form-dialog-title">
-          Your script has been submitted successfully
-        </DialogTitle>
+        {caller == 'quizPlay' && (
+          <DialogTitle id="form-dialog-title">
+            Your script has been submitted successfully
+          </DialogTitle>
+        )}
         <DialogContent>
           <div component="fieldset">
             <Typography

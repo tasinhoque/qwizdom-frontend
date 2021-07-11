@@ -8,7 +8,7 @@ import FormGroup from '@material-ui/core/FormGroup';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-import submissionDialog from './SubmissionDialog';
+import submissionDialog from '../SubmissionDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {},

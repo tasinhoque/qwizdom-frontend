@@ -132,7 +132,6 @@ export default function QuizCreationBody(props) {
     },
   ]);
   useEffect(async () => {
-    console.log(location.pathname);
     if (location.pathname.includes('edit')) {
       console.log('edit');
       api.getCompleteQuiz(id).then(res => {

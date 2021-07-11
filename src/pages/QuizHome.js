@@ -16,6 +16,7 @@ import { QuizReviewCard } from '../components';
 import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
+import SubmissionDialog from '../components/SubmissionDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -135,6 +136,7 @@ export default function QuizHome(props) {
   );
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem('user'));
+  const [open, setOpen] = useState(false);
 
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
@@ -147,6 +149,7 @@ export default function QuizHome(props) {
       // updateQueryString();
       const response = await api.getSubbedQuizzes();
       const { data: quizData } = await api.getQuiz(id);
+      console.log(quizData);
       setQuiz(quizData);
       setCreatorId(quizData.creator.id);
       // console.log(response.data.results[0]['id']);
@@ -177,7 +180,10 @@ export default function QuizHome(props) {
         console.log(error.response.data.message);
       });
   };
-
+  const popDialog = () => {
+    console.log('pop called');
+    setOpen(true);
+  };
   const startQuiz = () => {
     props.history.push(`/quiz-play/${id}`);
   };
@@ -205,224 +211,244 @@ export default function QuizHome(props) {
     );
   } else {
     return (
-      <Grid container className={classes.root} spacing={0}>
-        <Grid item md={12} xs={12}>
-          <Header />
-        </Grid>
-        <Grid
-          container
-          item
-          md={12}
-          xs={12}
-          spacing={3}
-          className={classes.quizContainer}
-        >
-          <Grid container item md={6} xs={12}>
-            <Grid item md={12} xs={12}>
-              <div className={classes.imgBtnContainer}>
-                <img src={quiz.coverImage} className={classes.quizImage} />
-                {creatorId !== user.id ? (
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.subscribeBtn}
-                    onClick={subscribe}
-                  >
-                    {subbed ? 'Unsubscribe' : 'Subscribe'}
-                  </Button>
-                ) : (
-                  <div></div>
-                )}
-              </div>
-            </Grid>
-            <Grid container item md={12} xs={12} spacing={0}>
-              {creatorId != user.id ? (
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={startQuiz}
-                  >
-                    Start Quiz
-                  </Button>
-                </Grid>
-              ) : (
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={quizCreationRerouting}
-                  >
-                    EDIT QUIZ
-                  </Button>
-                </Grid>
-              )}
-              <Grid container item md={3} xs={3} className={classes.buttons}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.buttons}
-                  onClick={() => {
-                    history.push('/leaderboard');
-                  }}
-                >
-                  Leaderboard
-                </Button>
-              </Grid>
-              {quiz.creator.id != user.id ? (
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                    onClick={quizResult}
-                  >
-                    My Submission
-                  </Button>
-                </Grid>
-              ) : (
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    className={classes.buttons}
-                  >
-                    All Submissions
-                  </Button>
-                </Grid>
-              )}
-              <Grid container item md={3} xs={3} className={classes.buttons}>
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  className={classes.buttons}
-                >
-                  Forum
-                </Button>
-              </Grid>
-            </Grid>
-          </Grid>
+      <>
+        <SubmissionDialog
+          id={id}
+          open={open}
+          setOpen={setOpen}
+          caller="quizHome"
+        />
 
-          <Grid container item md={6} xs={12} direction="column">
-            <Grid item>
-              <Typography
-                variant="h4"
-                style={{ margin: '0px 0px 20px 20px' }}
-                component="p"
-              >
-                {quiz.name}
-              </Typography>
-            </Grid>
-            <Grid container item>
-              <Grid item md={6} xs={12}>
-                <CardHeader
-                  avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
-                  title={quiz.creator.name}
-                  titleTypographyProps={{ variant: 'h5' }}
-                />
-              </Grid>
-              <Grid container item md={6} xs={12} alignItems="center">
-                <Grid item md={12} xs={12}>
-                  <Typography
-                    style={{
-                      color: 'gray',
-                      textAlign: 'right',
-                    }}
-                    component="p"
-                  >
-                    1 month ago
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-            <Grid item>
-              <Typography className={classes.quizDescription} component="p">
-                {quiz.description}
-              </Typography>
-            </Grid>
+        <Grid container className={classes.root} spacing={0}>
+          <Grid item md={12} xs={12}>
+            <Header />
           </Grid>
-        </Grid>
-
-        <Grid container spacing={3} className={classes.feedback}>
           <Grid
+            container
             item
-            md={3}
+            md={12}
             xs={12}
-            style={{ display: 'flex', justifyContent: 'center' }}
+            spacing={3}
+            className={classes.quizContainer}
           >
-            <Rating name="size-medium" defaultValue={2} size="large" />
-          </Grid>
-          <Grid item md={9} xs={12}>
-            <TextField
-              id="standard-full-width"
-              label="Review"
-              placeholder="Give your feedback here"
-              fullWidth
-              multiline
-              rows={3}
-              rowsMax={6}
-              variant="outlined"
-              margin="normal"
-              InputLabelProps={{
-                shrink: true,
-              }}
-            />
-          </Grid>
-        </Grid>
+            <Grid container item md={6} xs={12}>
+              <Grid item md={12} xs={12}>
+                <div className={classes.imgBtnContainer}>
+                  <img src={quiz.coverImage} className={classes.quizImage} />
+                  {creatorId !== user.id ? (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.subscribeBtn}
+                      onClick={subscribe}
+                    >
+                      {subbed ? 'Unsubscribe' : 'Subscribe'}
+                    </Button>
+                  ) : (
+                    <div></div>
+                  )}
+                </div>
+              </Grid>
+              <Grid container item md={12} xs={12} spacing={0}>
+                {creatorId != user.id ? (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
+                    className={classes.buttons}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                      onClick={startQuiz}
+                    >
+                      Start Quiz
+                    </Button>
+                  </Grid>
+                ) : (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
+                    className={classes.buttons}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                      onClick={quizCreationRerouting}
+                    >
+                      EDIT QUIZ
+                    </Button>
+                  </Grid>
+                )}
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                    onClick={() => {
+                      history.push('/leaderboard');
+                    }}
+                  >
+                    Leaderboard
+                  </Button>
+                </Grid>
+                {quiz.creator.id != user.id ? (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
+                    className={classes.buttons}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                      onClick={quizResult}
+                    >
+                      My Submission
+                    </Button>
+                  </Grid>
+                ) : (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
+                    className={classes.buttons}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                    >
+                      All Submissions
+                    </Button>
+                  </Grid>
+                )}
+                <Grid container item md={3} xs={3} className={classes.buttons}>
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    className={classes.buttons}
+                  >
+                    Forum
+                  </Button>
+                </Grid>
+              </Grid>
+            </Grid>
 
-        <Grid container item md={12} xs={12} spacing={3}>
-          <Grid container item md={12} xs={12} className={classes.avgRating}>
-            <Typography component="p">101 participants</Typography>
+            <Grid container item md={6} xs={12} direction="column">
+              <Grid item>
+                <Typography
+                  variant="h4"
+                  style={{ margin: '0px 0px 20px 20px' }}
+                  component="p"
+                >
+                  {quiz.name}
+                </Typography>
+              </Grid>
+              <Grid container item>
+                <Grid item md={6} xs={12}>
+                  <CardHeader
+                    avatar={<Avatar src={quiz.creator.avatar}></Avatar>}
+                    title={quiz.creator.name}
+                    titleTypographyProps={{ variant: 'h5' }}
+                  />
+                </Grid>
+                <Grid container item md={6} xs={12} alignItems="center">
+                  <Grid item md={12} xs={12}>
+                    <Typography
+                      style={{
+                        color: 'gray',
+                        textAlign: 'right',
+                      }}
+                      component="p"
+                    >
+                      1 month ago
+                    </Typography>
+                  </Grid>
+                </Grid>
+              </Grid>
+              <Grid item>
+                <Typography className={classes.quizDescription} component="p">
+                  {quiz.description}
+                </Typography>
+              </Grid>
+            </Grid>
           </Grid>
-          <Grid container item md={12} xs={12} className={classes.avgRating}>
-            <Rating
-              name="read-only"
-              value={2}
-              size="large"
-              style={{
-                border: '2px',
-              }}
-              readOnly
-            />
-          </Grid>
-        </Grid>
 
-        <Grid
-          container
-          item
-          md={12}
-          xs={12}
-          spacing={3}
-          className={classes.reviewContainer}
-        >
-          <Grid item md={6} xs={12}>
-            <QuizReviewCard />
+          <Grid container item md={12} xs={12} spacing={3}>
+            <Grid container item md={12} xs={12} className={classes.avgRating}>
+              <Typography component="p">
+                {quiz.totalParticipants} participant
+              </Typography>
+            </Grid>
+            <Grid container item md={12} xs={12} className={classes.avgRating}>
+              <Rating
+                name="read-only"
+                value={quiz.averageRating}
+                precision={0.5}
+                size="large"
+                style={{
+                  border: '2px',
+                }}
+                readOnly
+              />
+            </Grid>
           </Grid>
-          <Grid item md={6} xs={12}>
-            <QuizReviewCard />
+
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            style={{ width: 'fit-content', marginLeft: '18px' }}
+            className={classes.buttons}
+            onClick={popDialog}
+          >
+            post review & rating
+          </Button>
+
+          <Grid
+            container
+            item
+            md={12}
+            xs={12}
+            spacing={3}
+            className={classes.reviewContainer}
+          >
+            <Grid item md={6} xs={12}>
+              <QuizReviewCard />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <QuizReviewCard />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <QuizReviewCard />
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <QuizReviewCard />
+            </Grid>
           </Grid>
-          <Grid item md={6} xs={12}>
-            <QuizReviewCard />
-          </Grid>
-          <Grid item md={6} xs={12}>
-            <QuizReviewCard />
-          </Grid>
+          {/* <Grid container justify="center"> */}
+          {/*   <div style={{ width: '1000px' }}> */}
+          {/*     <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} /> */}
+          {/*   </div> */}
+          {/* </Grid> */}
         </Grid>
-        {/* <Grid container justify="center"> */}
-        {/*   <div style={{ width: '1000px' }}> */}
-        {/*     <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} /> */}
-        {/*   </div> */}
-        {/* </Grid> */}
-      </Grid>
+      </>
     );
   }
 }
