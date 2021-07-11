@@ -12,6 +12,7 @@ import produce from 'immer';
 
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
+import SubmissionDialog from '../components/QuizPlay/SubmissionDialog';
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -22,9 +23,11 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
-  typoStyle: {
-    fontWeight: '500',
-    fontSize: '1.5rem',
+  stageTitle: {
+    fontWeight: '420',
+    fontSize: '1.7em',
+    marginTop: '10px',
+    marginBottom: '-14px',
   },
   questionStyle: {
     width: '70%',
@@ -32,10 +35,10 @@ const useStyles = makeStyles(theme => ({
   barStyle: {
     fontWeight: '450',
     fontSize: '1.25rem',
-    margin: theme.spacing(0, 0, 0, 2),
+    margin: theme.spacing(0, 2, 0, 2),
   },
   barContainer: {
-    width: '100%',
+    width: '70%',
     padding: theme.spacing(2, 0, 2, 0),
   },
 }));
@@ -51,18 +54,18 @@ export default function QuizPlay(props) {
   const fullQuiz = useRef(null);
   const [currentPageNum, setCurrentPageNum] = useState(0);
   // const [currentStage, setCurrentStage] = useState(null);
+
+  const [open, setOpen] = useState(false);
+
   const currentStage = useRef('');
   const { id } = useParams();
   const history = useHistory();
 
-  // const id = '60dc04d501176c4f08da0dc6';
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
-    // console.log(fullQuiz.current.stages[num - 1]);
   };
   const allFunctions = {
     questionChange: (qId, message) => {
-      // const pos = store.current.findIndex(i => i.stageId == message.stageId);
       fullQuiz.current.stages[currentPageNum].questions[qId] = message;
       console.log(fullQuiz.current);
     },
@@ -96,11 +99,13 @@ export default function QuizPlay(props) {
       stageResponses: stageResponses,
     };
     console.log(postBody);
+    setOpen(true);
+
     await api
       .submitQuizPlay(id, postBody)
       .then(res => {
         console.log(res);
-        history.push(`/quiz-home/${id}`);
+        // history.push(`/quiz-home/${id}`);
       })
       .catch(error => {
         console.log(error);
@@ -168,6 +173,8 @@ export default function QuizPlay(props) {
           </div>
         ) : (
           <div>
+            <SubmissionDialog id={id} open={open} setOpen={setOpen} />
+
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
                 <Grid container justify="center">
@@ -179,8 +186,18 @@ export default function QuizPlay(props) {
                       Creator: {fullQuiz.current.creator.name}
                     </Typography>
                   </Grid>
-                  <Grid container item xs={6} direction="column">
-                    <Typography gutterBottom className={classes.barStyle}>
+                  <Grid
+                    container
+                    item
+                    xs={6}
+                    align="flex-end"
+                    direction="column"
+                  >
+                    <Typography
+                      gutterBottom
+                      className={classes.barStyle}
+                      align="right"
+                    >
                       Total Point : {fullQuiz.current.totalPoints}
                     </Typography>
                   </Grid>
@@ -197,7 +214,8 @@ export default function QuizPlay(props) {
             >
               <Typography
                 style={{ width: '70%' }}
-                className={classes.typoStyle}
+                className={classes.stageTitle}
+                align="center"
               >
                 Stage {currentPageNum + 1} of {totalPages}
               </Typography>

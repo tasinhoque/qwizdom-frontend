@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { Height } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
@@ -18,7 +19,6 @@ const useStyles = makeStyles(theme => ({
     'background-color': '#333f46',
   },
   headerStyle: {
-    flexGrow: 1,
     width: '70%',
   },
   questionContainer: {
@@ -26,12 +26,22 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  stageTitle: {
+    fontWeight: '420',
+    fontSize: '1.7em',
+    marginTop: '10px',
+    marginBottom: '-14px',
+  },
   questionStyle: {
     width: '70%',
   },
+  imageStyle: {
+    width: '100%',
+    maxHeight: 250,
+  },
   quizName: {
     // margin: theme.spacing(3, 0, 0, 1),
-    marginLeft: theme.spacing(2),
+    margin: theme.spacing(0, 2, 0, 2),
   },
 }));
 export default function ResultPage() {
@@ -87,7 +97,15 @@ export default function ResultPage() {
         ) : (
           <div>
             <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Paper className={classes.headerStyle} elevation={3}>
+              <Paper className={classes.headerStyle} elevation={7}>
+                <Grid container>
+                  {fullQuiz.current.quiz.coverImage && (
+                    <img
+                      src={fullQuiz.current.quiz.coverImage}
+                      className={classes.imageStyle}
+                    />
+                  )}
+                </Grid>
                 <Grid container>
                   <Grid
                     container
@@ -112,7 +130,7 @@ export default function ResultPage() {
                     </Typography>
                   </Grid>
                   <Grid
-                    contanier
+                    container
                     style={{ marginTop: '10px ' }}
                     item
                     xs={6}
@@ -122,6 +140,7 @@ export default function ResultPage() {
                       variant="h6"
                       gutterBottom
                       className={classes.quizName}
+                      align="right"
                     >
                       Point : {fullQuiz.current.totalPoints}/
                       {fullQuiz.current.quiz.totalPoints}
@@ -129,6 +148,21 @@ export default function ResultPage() {
                   </Grid>
                 </Grid>
               </Paper>
+            </div>
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '10px',
+              }}
+            >
+              <Typography
+                style={{ width: '70%' }}
+                className={classes.stageTitle}
+                align="center"
+              >
+                Stage {currentPageNum + 1} of {totalPages}
+              </Typography>
             </div>
             {fullQuiz.current.stageResponses[currentPageNum].responses.map(
               (element, index) => {
