@@ -8,7 +8,7 @@ import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(theme => ({
   root: {
     // maxWidth: 400,
     marginBottom: 30,
@@ -47,19 +47,16 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function QuizReviewCard() {
+export default function QuizReviewCard(props) {
   const classes = useStyles();
   return (
     <Card className={classes.root}>
       <div className={classes.titleContainer}>
         <CardHeader
           avatar={
-            <Avatar
-              src="/assets/images/marcos.png"
-              className={classes.avatar}
-            ></Avatar>
+            <Avatar src={props.avatar} className={classes.avatar}></Avatar>
           }
-          title="Marcos Marshal"
+          title={props.name}
           // subheader="September 14, 2016"
         />
 
@@ -73,13 +70,12 @@ export default function QuizReviewCard() {
           }}
           borderColor="transparent"
         >
-          <Rating name="read-only" value={2} readOnly />
+          <Rating name="read-only" value={props.rating} readOnly />
         </Box>
       </div>
       <div style={{ padding: '5px' }}>
         <Typography className={classes.quizReview} component="p">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
-          euismod libero erat, vitae finibus dui viverra eu.
+          {props.text}
         </Typography>
       </div>
     </Card>

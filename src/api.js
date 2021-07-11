@@ -136,6 +136,9 @@ const api = {
   getDraftQuizzes: () => {
     return axios.get(`${baseUrl}/quizzes/draft`);
   },
+  fetchReviews: qid => {
+    return axios.get(`${baseUrl}/quizzes/${qid}/reviews?page=1&limit=10`);
+  },
 };
 
 export default api;

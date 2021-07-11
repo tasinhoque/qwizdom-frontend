@@ -138,6 +138,8 @@ export default function QuizHome(props) {
   const user = JSON.parse(localStorage.getItem('user'));
   const [open, setOpen] = useState(false);
 
+  const [reviews, setReviews] = useState(null);
+
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
     if (!signedIn) {
@@ -149,9 +151,15 @@ export default function QuizHome(props) {
       // updateQueryString();
       const response = await api.getSubbedQuizzes();
       const { data: quizData } = await api.getQuiz(id);
+      let revs = await api.fetchReviews(id);
+      revs = revs.data.results;
+      console.log('==========start==========');
+      console.log(revs);
+      console.log('==========end==========');
       console.log(quizData);
       setQuiz(quizData);
       setCreatorId(quizData.creator.id);
+      setReviews(revs);
       // console.log(response.data.results[0]['id']);
 
       setQuizzes(response.data.results);
@@ -430,16 +438,36 @@ export default function QuizHome(props) {
             className={classes.reviewContainer}
           >
             <Grid item md={6} xs={12}>
-              <QuizReviewCard />
+              <QuizReviewCard
+                name={reviews[0].user.name}
+                avatar={reviews[0].user.avatar}
+                rating={reviews[0].rating}
+                text={reviews[2].text}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
-              <QuizReviewCard />
+              <QuizReviewCard
+                name={reviews[1].user.name}
+                avatar={reviews[1].user.avatar}
+                rating={reviews[1].rating}
+                text={reviews[1].text}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
-              <QuizReviewCard />
+              <QuizReviewCard
+                name={reviews[2].user.name}
+                avatar={reviews[2].user.avatar}
+                rating={reviews[2].rating}
+                text={reviews[2].text}
+              />
             </Grid>
             <Grid item md={6} xs={12}>
-              <QuizReviewCard />
+              <QuizReviewCard
+                name={reviews[3].user.name}
+                avatar={reviews[3].user.avatar}
+                rating={reviews[3].rating}
+                text={reviews[3].text}
+              />
             </Grid>
           </Grid>
           {/* <Grid container justify="center"> */}
