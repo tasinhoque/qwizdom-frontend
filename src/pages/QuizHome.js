@@ -17,6 +17,7 @@ import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
 import SubmissionDialog from '../components/SubmissionDialog';
+import Pagination from '@material-ui/lab/Pagination';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -60,7 +61,10 @@ const useStyles = makeStyles(theme => ({
       margin: theme.spacing(1),
     },
   },
-  reviewContainer: {
+  reviewGrid: {
+    width: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: theme.spacing(5),
     [theme.breakpoints.down('sm')]: {
       margin: theme.spacing(1),
@@ -138,7 +142,9 @@ export default function QuizHome(props) {
   const user = JSON.parse(localStorage.getItem('user'));
   const [open, setOpen] = useState(false);
 
+  const [totalPages, setTotalPages] = useState(0);
   const [reviews, setReviews] = useState(null);
+  const [revPage, setRevPage] = useState(1);
 
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
@@ -151,19 +157,14 @@ export default function QuizHome(props) {
       // updateQueryString();
       const response = await api.getSubbedQuizzes();
       const { data: quizData } = await api.getQuiz(id);
-      let revs = await api.fetchReviews(id);
-      revs = revs.data.results;
-      console.log('==========start==========');
-      console.log(revs);
-      console.log('==========end==========');
+      let revs = await api.fetchReviews(id, revPage);
       console.log(quizData);
       setQuiz(quizData);
       setCreatorId(quizData.creator.id);
-      setReviews(revs);
-      // console.log(response.data.results[0]['id']);
+      setReviews(revs.data.results);
+      setTotalPages(revs.data.totalPages);
 
       setQuizzes(response.data.results);
-      // setTotalPages(response.data.totalPages);
       response.data.results.map((e, i) => {
         if (e.id === id) {
           setSubbed(true);
@@ -175,6 +176,11 @@ export default function QuizHome(props) {
       console.log(error);
     }
   }, []);
+
+  useEffect(async () => {
+    let revs = await api.fetchReviews(id, revPage);
+    setReviews(revs.data.results);
+  }, [revPage]);
 
   const subscribe = async e => {
     setSubbed(!subbed);
@@ -200,6 +206,10 @@ export default function QuizHome(props) {
   };
   const quizCreationRerouting = () => {
     props.history.push(`/edit-quiz/${id}`);
+  };
+
+  const pageChange = (_event, num) => {
+    setRevPage(num);
   };
 
   if (loading) {
@@ -422,7 +432,11 @@ export default function QuizHome(props) {
             type="submit"
             variant="contained"
             color="primary"
-            style={{ width: 'fit-content', marginLeft: '18px' }}
+            style={{
+              height: 'fit-content',
+              width: 'fit-content',
+              marginLeft: '18px',
+            }}
             className={classes.buttons}
             onClick={popDialog}
           >
@@ -435,7 +449,7 @@ export default function QuizHome(props) {
             md={12}
             xs={12}
             spacing={3}
-            className={classes.reviewContainer}
+            className={classes.reviewGrid}
           >
             {reviews.map((e, i) => {
               return (
@@ -449,6 +463,12 @@ export default function QuizHome(props) {
                 </Grid>
               );
             })}
+            <Pagination
+              count={totalPages}
+              onChange={pageChange}
+              page={revPage}
+              color="secondary"
+            />
           </Grid>
           {/* <Grid container justify="center"> */}
           {/*   <div style={{ width: '1000px' }}> */}
