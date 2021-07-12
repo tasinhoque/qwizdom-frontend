@@ -12,7 +12,7 @@
 
 ## Profile
 
-- [ ] Fix bug: In the published quizzes section, some quizzes are showing empty chips as categories.
+- [-] Fix bug: In the published quizzes section, some quizzes are showing empty chips as categories.
 - [x] Fix bug: When user uploads a picture, it doesn't get saved.
 - [x] Remove the textfields in viewing mode (keep only text)
 - [x] Remove the image upload button in viewing mode
@@ -25,7 +25,7 @@
 
 ## Review
 
-- [ ] Let the user give feedback on a quiz
+- [x] Let the user give feedback on a quiz
 
 ## Quiz Creation Basic
 
@@ -33,4 +33,16 @@
 - [x] Check garbage input in duration, or better put restriction
       (only number will be allowed)
 - [x] Add dashboard header
-- [ ] Send default image when user hasn't chosen any image
+- [-] Send default image when user hasn't chosen any image
+
+# July 12
+
+## Major Tasks
+
+- [ ] All submissions of a quiz
+- [ ] Forum
+
+## Minor Tasks
+
+- [x] Paginate feedbacks on quiz home
+- [ ] Publish button for drafted quizzes
