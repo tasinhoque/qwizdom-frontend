@@ -4,10 +4,9 @@
 
 - If survey, remove the evaluation field
 - If unscheduled, remove the time picker and duration field
-- Check garbage input in duration, or better put restriction (only number will be allowed)
-- Add some more categories in the database
-- Add dashboard header
 - Send default image when user hasn't chosen any image
+- Add a section (radio button type) for schedule type selection
+- If the quiz type is test, we should let the creator choose whether stage shuffle should be available
 
 ## Quiz Creation
 
@@ -81,3 +80,31 @@
 ## Review
 
 - Let the user give feedback on a quiz
+
+## 12 July
+
+- While posting a complete quiz, frontend should send points of number type, not string.
+- "Q : dfsd": Remove the "Q : " part
+- Rename:
+  - point to Points
+  - Total Point to Total Points
+- "Stage 1 of 1": Add bottom margin
+- Quiz play header
+  - Add top margin
+  - Remove space between the cover image and the top line of the card
+  - Make the top line of the card rounded
+- Remove Time filter from dashboard
+- Add Upload cover photo button (remove the text), basic quiz creation page
+- Keep "Stage 1" title outside of the stage card
+
+## Major tasks
+
+- Leaderboard: Tasin
+- All submissions of a quiz: Enan
+- Forum: Enan
+- Notification: Tasin
+- Manual Evaluation: Nibir
+
+## Minor Tasks
+
+- Scheduled quiz handling
