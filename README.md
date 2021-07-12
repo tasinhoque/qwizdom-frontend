@@ -95,6 +95,7 @@
   - Make the top line of the card rounded
 - Remove Time filter from dashboard
 - Add Upload cover photo button (remove the text), basic quiz creation page
+- Keep "Stage 1" title outside of the stage card
 
 ## Major tasks
 
@@ -103,3 +104,7 @@
 - Forum: Enan
 - Notification: Tasin
 - Manual Evaluation: Nibir
+
+## Minor Tasks
+
+- Scheduled quiz handling
