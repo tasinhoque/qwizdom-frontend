@@ -74,9 +74,19 @@ export default function QuizReviewCard(props) {
         </Box>
       </div>
       <div style={{ padding: '5px' }}>
-        <Typography className={classes.quizReview} component="p">
-          {props.text}
-        </Typography>
+        {props.text == null ? (
+          <Typography
+            className={classes.quizReview}
+            component="div"
+            style={{ color: 'gray' }}
+          >
+            <Box fontStyle="italic">No review posted</Box>
+          </Typography>
+        ) : (
+          <Typography className={classes.quizReview} component="p">
+            {props.text}
+          </Typography>
+        )}
       </div>
     </Card>
   );

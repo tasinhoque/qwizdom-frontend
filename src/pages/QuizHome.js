@@ -426,7 +426,7 @@ export default function QuizHome(props) {
             className={classes.buttons}
             onClick={popDialog}
           >
-            post review & rating
+            Give feedback
           </Button>
 
           <Grid
@@ -437,38 +437,18 @@ export default function QuizHome(props) {
             spacing={3}
             className={classes.reviewContainer}
           >
-            <Grid item md={6} xs={12}>
-              <QuizReviewCard
-                name={reviews[0].user.name}
-                avatar={reviews[0].user.avatar}
-                rating={reviews[0].rating}
-                text={reviews[2].text}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <QuizReviewCard
-                name={reviews[1].user.name}
-                avatar={reviews[1].user.avatar}
-                rating={reviews[1].rating}
-                text={reviews[1].text}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <QuizReviewCard
-                name={reviews[2].user.name}
-                avatar={reviews[2].user.avatar}
-                rating={reviews[2].rating}
-                text={reviews[2].text}
-              />
-            </Grid>
-            <Grid item md={6} xs={12}>
-              <QuizReviewCard
-                name={reviews[3].user.name}
-                avatar={reviews[3].user.avatar}
-                rating={reviews[3].rating}
-                text={reviews[3].text}
-              />
-            </Grid>
+            {reviews.map((e, i) => {
+              return (
+                <Grid item md={6} xs={12} key={i}>
+                  <QuizReviewCard
+                    name={e.user.name}
+                    avatar={e.user.avatar}
+                    rating={e.rating}
+                    text={e.text}
+                  />
+                </Grid>
+              );
+            })}
           </Grid>
           {/* <Grid container justify="center"> */}
           {/*   <div style={{ width: '1000px' }}> */}
