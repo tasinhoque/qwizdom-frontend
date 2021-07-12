@@ -11,6 +11,7 @@ import { useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import { Height } from '@material-ui/icons';
 
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
@@ -18,18 +19,30 @@ const useStyles = makeStyles(theme => ({
     'background-color': '#333f46',
   },
   headerStyle: {
-    flexGrow: 1,
+    width: '70%',
   },
   questionContainer: {
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'center',
   },
+  stageTitle: {
+    fontWeight: '420',
+    fontSize: '1.7em',
+    marginTop: '10px',
+    marginBottom: '-14px',
+  },
   questionStyle: {
     width: '70%',
   },
+  imageStyle: {
+    width: '100%',
+    maxHeight: 250,
+    objectFit: 'cover',
+  },
   quizName: {
-    margin: theme.spacing(3, 0, 0, 1),
+    // margin: theme.spacing(3, 0, 0, 1),
+    margin: theme.spacing(0, 2, 0, 2),
   },
 }));
 export default function ResultPage() {
@@ -49,15 +62,6 @@ export default function ResultPage() {
   };
   useEffect(async () => {
     api
-      .getQuiz(id)
-      .then(res => {
-        console.log(res.data);
-        setQuizInfo(res.data);
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    api
       .getQuizResult(id)
       .then(res => {
         console.log(res);
@@ -70,7 +74,7 @@ export default function ResultPage() {
         //       }
         //     });
         //   });
-        fullQuiz.current = res.data.stageResponses;
+        fullQuiz.current = res.data;
         console.log(fullQuiz.current);
         setTotalPages(res.data.stageResponses.length);
 
@@ -93,22 +97,75 @@ export default function ResultPage() {
           </div>
         ) : (
           <div>
-            <div>
-              <Paper className={classes.headerStyle} elevation={3}>
-                <Grid container direction="row">
-                  <Grid item>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <Paper className={classes.headerStyle} elevation={7}>
+                <Grid container>
+                  {fullQuiz.current.quiz.coverImage && (
+                    <img
+                      src={fullQuiz.current.quiz.coverImage}
+                      className={classes.imageStyle}
+                    />
+                  )}
+                </Grid>
+                <Grid container>
+                  <Grid
+                    container
+                    style={{ marginTop: '10px' }}
+                    item
+                    xs={6}
+                    direction="column"
+                  >
                     <Typography
                       variant="h6"
                       gutterBottom
                       className={classes.quizName}
                     >
-                      {quizInfo.name}
+                      Quiz : {fullQuiz.current.quiz.name}
+                    </Typography>
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      className={classes.quizName}
+                    >
+                      Creator: {fullQuiz.current.quiz.creator.name}
+                    </Typography>
+                  </Grid>
+                  <Grid
+                    container
+                    style={{ marginTop: '10px ' }}
+                    item
+                    xs={6}
+                    direction="column"
+                  >
+                    <Typography
+                      variant="h6"
+                      gutterBottom
+                      className={classes.quizName}
+                      align="right"
+                    >
+                      Point : {fullQuiz.current.totalPoints}/
+                      {fullQuiz.current.quiz.totalPoints}
                     </Typography>
                   </Grid>
                 </Grid>
               </Paper>
             </div>
-            {fullQuiz.current[currentPageNum].responses.map(
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'center',
+                marginTop: '10px',
+              }}
+            >
+              <Typography
+                style={{ width: '70%' }}
+                className={classes.stageTitle}
+                align="center"
+              >
+                Stage {currentPageNum + 1} of {totalPages}
+              </Typography>
+            </div>
+            {fullQuiz.current.stageResponses[currentPageNum].responses.map(
               (element, index) => {
                 return (
                   <ResultQuestion

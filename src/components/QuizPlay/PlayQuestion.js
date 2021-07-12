@@ -1,36 +1,14 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, TextField } from '@material-ui/core';
-import Select from '@material-ui/core/Select';
-import FormControl from '@material-ui/core/FormControl';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormLabel from '@material-ui/core/FormLabel';
-import Portal from '@material-ui/core/Portal';
 import FormGroup from '@material-ui/core/FormGroup';
-import { IconButton } from '@material-ui/core';
-import CloseIcon from '@material-ui/icons/Close';
-import ImageIcon from '@material-ui/icons/Image';
-
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
-import RadioButtonCheckedIcon from '@material-ui/icons/RadioButtonChecked';
-import ToggleOffIcon from '@material-ui/icons/ToggleOff';
-import { findLastIndex } from 'lodash';
-import { CenterFocusStrong } from '@material-ui/icons';
 import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
-
-import AddCircleOutlineTwoToneIcon from '@material-ui/icons/AddCircleOutlineTwoTone';
-import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
-import Grid from '@material-ui/core/Grid';
-import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import Fab from '@material-ui/core/Fab';
-import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import submissionDialog from '../SubmissionDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -63,9 +41,9 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
   },
   imageStyle: {
-    height: '300px',
+    minHeight: 220,
     marginRight: theme.spacing(1),
-    maxWidth: '80%',
+    maxWidth: '50%',
   },
   questionContainer: {
     paddingLeft: theme.spacing(2),
@@ -77,9 +55,9 @@ const useStyles = makeStyles(theme => ({
   },
   typoStyle: {
     fontSize: '1.2rem',
-    paddingTop: '1.2rem',
+    // paddingTop: '1.2rem',
     marginBottom: '5px',
-    fontWeight: '500',
+    // fontWeight: '500',
   },
 }));
 
@@ -134,13 +112,16 @@ export default function PlayQuestion(props) {
   const mcqBuilder = () => {
     return (
       <div>
-        <Typography className={classes.typoStyle}> {question.title}</Typography>
+        <Typography className={classes.typoStyle}>
+          {' '}
+          Q : {question.title}
+        </Typography>
         {question.image && (
           <div className={classes.imageContainer}>
             <img className={classes.imageStyle} src={img} />
           </div>
         )}
-        <div className={classes.optionContainer} style={{ paddingLeft: '10%' }}>
+        <div className={classes.optionContainer}>
           <RadioGroup value={option} onChange={handleOption}>
             {optionArray.map((r, i) => {
               return (
@@ -161,7 +142,10 @@ export default function PlayQuestion(props) {
   const checkboxBuilder = () => {
     return (
       <div>
-        <Typography className={classes.typoStyle}> {question.title}</Typography>
+        <Typography className={classes.typoStyle}>
+          {' '}
+          Q : {question.title}
+        </Typography>
         {question.image && (
           <div className={classes.imageContainer}>
             <img className={classes.imageStyle} src={img} />
@@ -199,7 +183,6 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={img} />
           </div>
         )}
-
         <FormGroup>
           {optionArray.map((r, i) => {
             return (
@@ -226,6 +209,26 @@ export default function PlayQuestion(props) {
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
+        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <Typography
+            style={{
+              padding: '16px 0px 0px 16px',
+              fontWeight: '400',
+              fontSize: '1.4rem',
+            }}
+          >
+            Question {props.qId + 1}
+          </Typography>
+          <Typography
+            style={{
+              fontWeight: '420',
+              fontSize: '1.2rem',
+              padding: '16px 10px 0px 16px',
+            }}
+          >
+            {question.points} point
+          </Typography>
+        </div>
         <form>
           <div className={classes.questionContainer}>
             {question.type == 'mcq' && mcqBuilder()}

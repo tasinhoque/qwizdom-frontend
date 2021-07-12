@@ -27,10 +27,15 @@ import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
+import { Header } from '../components';
+import IconButton from '@material-ui/core/IconButton';
+import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
 const useStyles = makeStyles(theme => ({
-  root: {
+  root: {},
+  main: {
     margin: theme.spacing(6, 0, 0, 0),
+    padding: theme.spacing(0, 0, 6, 6),
   },
   rightColumn: {
     margin: theme.spacing(6, 0, 0, 0),
@@ -63,6 +68,12 @@ const useStyles = makeStyles(theme => ({
     marginBottom: theme.spacing(4),
     minWidth: '300px',
   },
+  proceedButton: {
+    position: 'fixed',
+    right: '5%',
+    top: '50%',
+    borderRadius: '100px',
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -94,7 +105,8 @@ const QuizCreationBasic = () => {
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [img, setImg] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(new Date('2021-1-1'));
+  const [startDate, setStartDate] = useState(new Date('2021-1-1'));
+  const [endDate, setEndDate] = useState(new Date('2021-1-1'));
   const history = useHistory();
   const [names, setNames] = useState([]);
   const [personName, setPersonName] = useState([]);
@@ -137,8 +149,14 @@ const QuizCreationBasic = () => {
     }
   };
 
-  const handleDateChange = date => {
-    setSelectedDate(date);
+  const handleStartDate = date => {
+    setStartDate(date);
+    console.log(date);
+  };
+
+  const handleEndDate = date => {
+    setEndDate(date);
+    console.log(date);
   };
 
   const handleSubmit = async () => {
@@ -151,9 +169,13 @@ const QuizCreationBasic = () => {
         duration,
         categories: categoryIds,
         startTime:
-          selectedDate.getTime() === new Date('2021-1-1').getTime()
+          startDate.getTime() === new Date('2021-1-1').getTime()
             ? undefined
-            : selectedDate,
+            : startDate,
+        endTime:
+          startDate.getTime() === new Date('2021-1-1').getTime()
+            ? undefined
+            : endDate,
       };
 
       const { data: quiz } = await api.postQuiz(requestBody);
@@ -177,195 +199,242 @@ const QuizCreationBasic = () => {
   };
 
   return (
-    <Container>
-      <Grid container className={classes.root}>
-        <Grid item xs={6}>
-          <Grid container direction="column" spacing={3}>
-            <Grid item>
-              <Typography variant="h4">Quiz Settings</Typography>
+    <div className={classes.root}>
+      <Header style={{ width: '100%' }} />
+      <Container>
+        <Grid container className={classes.main} justify="center">
+          <Grid item xs={6}>
+            <Grid container direction="column" spacing={3} justify="center">
+              <Grid item>
+                <Typography variant="h4">Quiz Settings</Typography>
+              </Grid>
+              <Grid item>
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Type</FormLabel>
+                  <RadioGroup
+                    value={isTest ? 'test' : 'survey'}
+                    onChange={handleTypeChange}
+                  >
+                    <FormControlLabel
+                      value="test"
+                      control={<Radio />}
+                      label="Test"
+                    />
+                    <FormControlLabel
+                      value="survey"
+                      control={<Radio />}
+                      label="Survey"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              </Grid>
+              <Grid item>
+                <TextField
+                  variant="outlined"
+                  label="Name"
+                  value={name}
+                  onChange={e => setName(e.target.value)}
+                  className={classes.textField}
+                />
+              </Grid>
+              <Grid item>
+                <TextField
+                  variant="outlined"
+                  label="Description"
+                  value={description}
+                  onChange={e => setDescription(e.target.value)}
+                  multiline
+                  rows={5}
+                  className={classes.textField}
+                />
+              </Grid>
+              {isTest ? (
+                <Grid item>
+                  <TextField
+                    variant="outlined"
+                    label="Duration (in min)"
+                    value={duration}
+                    type="number"
+                    InputProps={{ inputProps: { min: 1 } }}
+                    onChange={e => setDuration(e.target.value)}
+                    className={classes.textField}
+                  />
+                </Grid>
+              ) : (
+                <div></div>
+              )}
             </Grid>
-            <Grid item>
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Type</FormLabel>
-                <RadioGroup
-                  value={isTest ? 'test' : 'survey'}
-                  onChange={handleTypeChange}
+          </Grid>
+          <Grid
+            container
+            direction="column"
+            item
+            xs={6}
+            className={classes.rightColumn}
+          >
+            <Grid item className={classes.category}>
+              <FormControl className={classes.formControl} variant="filled">
+                <Typography variant="h6" gutterBottom>
+                  Categories
+                </Typography>
+                <Select
+                  labelId="demo-mutiple-chip-filled-label"
+                  id="demo-mutiple-chip"
+                  multiple
+                  value={personName}
+                  onChange={handleChange}
+                  input={<Input id="select-multiple-chip" />}
+                  renderValue={selected => (
+                    <div className={classes.chips}>
+                      {selected.map(value => (
+                        <Chip
+                          key={value}
+                          label={value}
+                          className={classes.muiChip}
+                        />
+                      ))}
+                    </div>
+                  )}
+                  MenuProps={MenuProps}
                 >
-                  <FormControlLabel
-                    value="test"
-                    control={<Radio />}
-                    label="Test"
-                  />
-                  <FormControlLabel
-                    value="survey"
-                    control={<Radio />}
-                    label="Survey"
-                  />
-                </RadioGroup>
+                  {names.map(({ name, id }) => (
+                    <MenuItem
+                      key={id}
+                      value={name}
+                      style={getStyles(name, personName, theme)}
+                    >
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
               </FormControl>
             </Grid>
             <Grid item>
-              <TextField
-                variant="outlined"
-                label="Name"
-                value={name}
-                onChange={e => setName(e.target.value)}
-                className={classes.textField}
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                variant="outlined"
-                label="Description"
-                value={description}
-                onChange={e => setDescription(e.target.value)}
-                multiline
-                rows={5}
-                className={classes.textField}
-              />
-            </Grid>
-            <Grid item>
-              <TextField
-                variant="outlined"
-                label="Duration (in min)"
-                value={duration}
-                onChange={e => setDuration(e.target.value)}
-                className={classes.textField}
-              />
-            </Grid>
-            <Grid item>
-              <Button
-                variant="contained"
-                color="primary"
-                onClick={handleSubmit}
-              >
-                Proceed
-              </Button>
-            </Grid>
-          </Grid>
-        </Grid>
-        <Grid
-          container
-          direction="column"
-          item
-          xs={6}
-          className={classes.rightColumn}
-        >
-          <Grid item className={classes.category}>
-            <FormControl className={classes.formControl} variant="filled">
-              <Typography variant="h6" gutterBottom>
-                Categories
-              </Typography>
-              <Select
-                labelId="demo-mutiple-chip-filled-label"
-                id="demo-mutiple-chip"
-                multiple
-                value={personName}
-                onChange={handleChange}
-                input={<Input id="select-multiple-chip" />}
-                renderValue={selected => (
-                  <div className={classes.chips}>
-                    {selected.map(value => (
-                      <Chip
-                        key={value}
-                        label={value}
-                        className={classes.muiChip}
-                      />
-                    ))}
-                  </div>
-                )}
-                MenuProps={MenuProps}
-              >
-                {names.map(({ name, id }) => (
-                  <MenuItem
-                    key={id}
-                    value={name}
-                    style={getStyles(name, personName, theme)}
+              {isTest ? (
+                <FormControl component="fieldset">
+                  <FormLabel component="legend">Evaluation</FormLabel>
+                  <RadioGroup
+                    value={hasAutoEvaluation ? 'auto' : 'manual'}
+                    onChange={handleEvaluationChange}
                   >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl>
-          </Grid>
-          <Grid item>
-            <FormControl component="fieldset">
-              <FormLabel component="legend">Evaluation</FormLabel>
-              <RadioGroup
-                value={hasAutoEvaluation ? 'auto' : 'manual'}
-                onChange={handleEvaluationChange}
-              >
-                <FormControlLabel
-                  value="auto"
-                  control={<Radio />}
-                  label="Auto"
-                />
-                <FormControlLabel
-                  value="manual"
-                  control={<Radio />}
-                  label="Manual"
-                />
-              </RadioGroup>
-            </FormControl>
-          </Grid>
-          <Grid item>
+                    <FormControlLabel
+                      value="auto"
+                      control={<Radio />}
+                      label="Auto"
+                    />
+                    <FormControlLabel
+                      value="manual"
+                      control={<Radio />}
+                      label="Manual"
+                    />
+                  </RadioGroup>
+                </FormControl>
+              ) : (
+                <div></div>
+              )}
+            </Grid>
             <Grid item>
-              <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around" direction="column">
-                  <Grid item>
-                    <KeyboardDatePicker
-                      margin="normal"
-                      id="date-picker-dialog"
-                      label="Date"
-                      format="MM/dd/yyyy"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                      }}
-                    />
-                  </Grid>
-                  <Grid item>
-                    <KeyboardTimePicker
-                      margin="normal"
-                      id="time-picker"
-                      label="Time"
-                      value={selectedDate}
-                      onChange={handleDateChange}
-                      KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                      }}
-                    />
-                  </Grid>
+              {isTest ? (
+                <Grid item>
+                  <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <Grid container justify="space-around" direction="column">
+                      <Grid item>
+                        <KeyboardDatePicker
+                          margin="normal"
+                          id="date-picker-start"
+                          label="Start Date"
+                          format="MM/dd/yyyy"
+                          value={startDate}
+                          onChange={handleStartDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change date',
+                          }}
+                        />
+                      </Grid>
+                      <Grid item>
+                        <KeyboardTimePicker
+                          margin="normal"
+                          id="time-picker-start"
+                          label="Start Time"
+                          value={startDate}
+                          onChange={handleStartDate}
+                          KeyboardButtonProps={{
+                            'aria-label': 'change time',
+                          }}
+                        />
+                      </Grid>
+                    </Grid>
+                  </MuiPickersUtilsProvider>
+                  {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
+                  {/*   <Grid container justify="space-around" direction="column"> */}
+                  {/*     <Grid item> */}
+                  {/*       <KeyboardDatePicker */}
+                  {/*         margin="normal" */}
+                  {/*         id="date-picker-end" */}
+                  {/*         label="End Date" */}
+                  {/*         format="MM/dd/yyyy" */}
+                  {/*         value={endDate} */}
+                  {/*         onChange={handleEndDate} */}
+                  {/*         KeyboardButtonProps={{ */}
+                  {/*           'aria-label': 'change date', */}
+                  {/*         }} */}
+                  {/*       /> */}
+                  {/*     </Grid> */}
+                  {/*     <Grid item> */}
+                  {/*       <KeyboardTimePicker */}
+                  {/*         margin="normal" */}
+                  {/*         id="time-picker-end" */}
+                  {/*         label="End Time" */}
+                  {/*         value={endDate} */}
+                  {/*         onChange={handleEndDate} */}
+                  {/*         KeyboardButtonProps={{ */}
+                  {/*           'aria-label': 'change time', */}
+                  {/*         }} */}
+                  {/*       /> */}
+                  {/*     </Grid> */}
+                  {/*   </Grid> */}
+                  {/* </MuiPickersUtilsProvider> */}
                 </Grid>
-              </MuiPickersUtilsProvider>
-            </Grid>
-            <Grid item className={classes.imageContainer}>
-              <input
-                accept="image/*"
-                className={classes.input}
-                id="coverPhoto"
-                multiple
-                type="file"
-                onChange={handleImage}
-                // disabled={formDisabled}
-              />
-              <Grid container direction="row" className={classes.addCover}>
-                <Typography style={{ marginRight: '30px' }}>
-                  Upload cover photo
-                </Typography>
-                <label htmlFor="coverPhoto">
-                  <Fab component="span">
-                    <AddPhotoAlternateIcon />
-                  </Fab>
-                </label>
+              ) : (
+                <div></div>
+              )}
+              <Grid item className={classes.imageContainer}>
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="coverPhoto"
+                  multiple
+                  type="file"
+                  onChange={handleImage}
+                  // disabled={formDisabled}
+                />
+                <Grid container direction="row" className={classes.addCover}>
+                  <Typography style={{ marginRight: '30px' }}>
+                    Upload cover photo
+                  </Typography>
+                  <label htmlFor="coverPhoto">
+                    <Fab component="span">
+                      <AddPhotoAlternateIcon />
+                    </Fab>
+                  </label>
+                </Grid>
+                {img && <img src={img} className={classes.cover} />}
               </Grid>
-              {img && <img src={img} className={classes.cover} />}
             </Grid>
           </Grid>
+          <Button
+            variant="contained"
+            color="primary"
+            size="large"
+            className={classes.proceedButton}
+            endIcon={<DoubleArrowIcon />}
+            onClick={handleSubmit}
+          >
+            Proceed
+          </Button>
         </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </div>
   );
 };
 

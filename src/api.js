@@ -119,6 +119,9 @@ const api = {
   submitQuizPlay: (qId, body) => {
     return axios.post(`${baseUrl}/quizzes/${qId}/responses/complete`, body);
   },
+  sumbitReviewRating: (qId, body) => {
+    return axios.post(`${baseUrl}/quizzes/${qId}/reviews`, body);
+  },
 
   //QuizResult api
   getQuizResult: qId => {

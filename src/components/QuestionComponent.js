@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect, useContext } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import { Container, TextField } from '@material-ui/core';
+import { Container, TextField, Typography } from '@material-ui/core';
 import Select from '@material-ui/core/Select';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
@@ -38,7 +38,14 @@ const useStyles = makeStyles(theme => ({
   },
   formControl: {
     margin: theme.spacing(1),
-    minWidth: 120,
+    width: 150,
+  },
+  pointStyle: {
+    margin: theme.spacing(1),
+    width: 150,
+  },
+  textFieldStyle: {
+    marginTop: theme.spacing(1),
   },
   selectEmpty: {
     marginTop: theme.spacing(2),
@@ -53,9 +60,7 @@ const useStyles = makeStyles(theme => ({
     alignItems: 'center',
     justifyItems: 'space-between',
   },
-  textFieldStyle: {
-    margin: '8px',
-  },
+
   questionStyle: {
     margin: theme.spacing(2),
     minHeight: theme.spacing(25),
@@ -63,6 +68,8 @@ const useStyles = makeStyles(theme => ({
   },
   container: {
     marginBottom: '50px',
+    marginLeft: '12px',
+    marginRight: '12px',
   },
   iconStyle: {
     cursor: 'pointer',
@@ -83,33 +90,39 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignContent: 'flex-start',
     '& > *': {
-      margin: theme.spacing(1),
+      margin: '12px 8px 10px 8px',
     },
   },
   imageStyle: {
-    height: '200px',
+    maxHeight: 400,
     width: '100%',
-    marginRight: theme.spacing(1),
   },
   questionContainer: {
-    paddingLeft: theme.spacing(5),
+    paddingLeft: theme.spacing(1),
   },
   floatingButton: {
     height: '50px',
     width: '50px',
     minHeight: '20px',
-    marginLeft: theme.spacing(3),
+    // marginLeft: theme.spacing(1),
   },
-  gridContainer: {
-    marginLeft: theme.spacing(2),
-    marginTop: theme.spacing(2),
+  fullPaper: {
+    paddingTop: theme.spacing(2),
+    paddingLeft: theme.spacing(2),
+  },
+  leftContainer: {
+    flexDirection: 'column',
   },
 }));
 
 export default function QuestionComponent(props) {
   let qHold = props.element;
-  let full = props.fullQues[props.stageId].questions[props.questionId];
-  console.log(full);
+  console.log(props);
+  const pos = props.fullQues.findIndex(i => i.stageId == props.stageId);
+  const quesPos = props.fullQues[pos].questions.findIndex(
+    i => i.questionId == props.questionId
+  );
+  let full = props.fullQues[pos].questions[quesPos];
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
 
@@ -117,14 +130,16 @@ export default function QuestionComponent(props) {
     stageId: props.stageId,
     questionId: props.questionId,
     title: full.title,
-    points: 10,
+    points: full.points,
     options: full.options,
     image: full.image,
     type: full.type,
   });
   let im = '';
-  if (full.image && full.image instanceof File) {
-    im = URL.createObjectURL(full.image);
+  if (full.image) {
+    if (full.image instanceof File) {
+      im = URL.createObjectURL(full.image);
+    } else im = full.image;
   }
 
   let optVal = '';
@@ -155,7 +170,8 @@ export default function QuestionComponent(props) {
   //jodit hook
   const editor = useRef(null);
   const [content, setContent] = useState('');
-
+  //point Hooks
+  const pointsValue = useRef(questionBody.current.points);
   const config = {
     readonly: false, // all options from https://xdsoft.net/jodit/doc/
   };
@@ -168,6 +184,11 @@ export default function QuestionComponent(props) {
 
   const deleteQuestion = i => {
     props.bodySetter.deleteQuestion(props.stageId, props.questionId);
+  };
+
+  const onPointChange = e => {
+    questionBody.current.points = e.target.value;
+    props.questionChange(questionBody.current);
   };
 
   const inputChange = e => {
@@ -315,7 +336,7 @@ export default function QuestionComponent(props) {
 
             <TextField
               style={{ width: '60%', margin: '8px' }}
-              variant="filled"
+              variant="outlined"
               required
               onKeyDown={keyPress}
               placeholder={placeholderRef.current}
@@ -373,7 +394,7 @@ export default function QuestionComponent(props) {
 
           <TextField
             style={{ width: '60%', margin: '8px' }}
-            variant="filled"
+            variant="outlined"
             required
             onKeyDown={keyPress}
             placeholder={placeholderRef.current}
@@ -431,7 +452,7 @@ export default function QuestionComponent(props) {
 
           <TextField
             style={{ width: '60%', margin: '8px' }}
-            variant="filled"
+            variant="outlined"
             required
             onKeyDown={keyPress}
             placeholder={placeholderRef.current}
@@ -446,138 +467,166 @@ export default function QuestionComponent(props) {
 
   return (
     <div className={classes.container}>
+      <Typography
+        style={{
+          fontSize: '1.2rem',
+          fontWeight: '500',
+          margin: '0px 0px -10px 16px',
+        }}
+      >
+        Question {props.arrayIndex + 1}
+      </Typography>
       <Paper className={classes.questionStyle} elevation={7}>
-        <div className={classes.iconContainer}>
-          <span>
-            {' '}
-            <AddCircleOutlineTwoToneIcon
-              className={classes.iconStyle}
-              onClick={addQuestion}
-              fontSize="large"
-              style={{ color: 'gray' }}
-            />
-            <DeleteOutlineTwoToneIcon
-              className={classes.iconStyle}
-              onClick={deleteQuestion}
-              fontSize="large"
-              style={{ color: 'gray' }}
-            />
-          </span>
-        </div>
-        <form
-          onSubmit={e => {
-            e.preventDefault();
-          }}
-        >
-          <Grid container spacing={2} className={classes.gridContainer}>
-            <Grid container justify="center" item sm={8}>
-              {/* <JoditEditor
-                ref={editor}
-                value={content}
-                config={config}
-                tabIndex={1} // tabIndex of textarea
-                onBlur={newContent => setContent(newContent)} // preferred to use only this option to update the content for performance reasons
-                onChange={newContent => {}}
-              /> */}
-              <TextField
-                className={classes.textFieldStyle}
-                variant="filled"
-                required
-                fullWidth
-                multiline
-                // id="email"
-                label="Question Title"
-                name="email"
-                // autoComplete="email"
-                autoFocus
-                // value={value}
-                // onChange={inputChange}
-                defaultValue={full.title || ''}
-                onChange={editTitle}
+        <div className={classes.fullPaper}>
+          <div className={classes.iconContainer}>
+            <span>
+              {' '}
+              <AddCircleOutlineTwoToneIcon
+                className={classes.iconStyle}
+                onClick={addQuestion}
+                fontSize="large"
+                style={{ color: 'gray' }}
               />
-            </Grid>
-            <Grid container justify="flex-end" item sm={3}>
-              <FormControl className={classes.formControl}>
-                <InputLabel id="demo-simple-select-filled-label">
-                  Type
-                </InputLabel>
-                <Select
-                  classes={{
-                    selectMenu: classes.selectStyle,
-                  }}
-                  placeholder="Type"
-                  value={selectType}
-                  onChange={handleSelect}
-                >
-                  <MenuItem value={'mcq'}>
-                    {' '}
-                    <RadioButtonCheckedIcon
-                      style={{ fontSize: '1.7rem' }}
-                    />{' '}
-                    Mcq
-                  </MenuItem>
-                  <MenuItem value={'trueOrFalse'}>
-                    {' '}
-                    <ToggleOffIcon style={{ fontSize: '1.7rem' }} /> True/false
-                  </MenuItem>
-                  <MenuItem value={'checkbox'}>
-                    <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
-                  </MenuItem>
-                </Select>
-              </FormControl>
-            </Grid>
-          </Grid>
+              <DeleteOutlineTwoToneIcon
+                className={classes.iconStyle}
+                onClick={deleteQuestion}
+                fontSize="large"
+                style={{ color: 'gray' }}
+              />
+            </span>
+          </div>
+          <form
+            onSubmit={e => {
+              e.preventDefault();
+            }}
+          >
+            <Grid container>
+              <Grid container item xs={6} lg={8} direction="column">
+                <TextField
+                  className={classes.textFieldStyle}
+                  variant="outlined"
+                  required
+                  fullWidth
+                  multiline
+                  // id="email"
+                  label="Question Title"
+                  name="email"
+                  // autoComplete="email"
+                  // autoFocus
+                  // value={value}
+                  // onChange={inputChange}
+                  defaultValue={full.title || ''}
+                  onChange={editTitle}
+                />
+                <div className={classes.imageContainer}>
+                  <input
+                    accept="image/*"
+                    className={classes.input}
+                    id={imageInputId}
+                    multiple
+                    type="file"
+                    onChange={handleImage}
+                  />
+                  {!img && (
+                    <div>
+                      <label htmlFor={imageInputId}>
+                        <Fab
+                          component="span"
+                          classes={{ root: classes.floatingButton }}
+                        >
+                          <AddPhotoAlternateIcon />
+                        </Fab>
+                      </label>
+                    </div>
+                  )}
 
-          <div className={classes.imageContainer}>
-            <input
-              accept="image/*"
-              className={classes.input}
-              id={imageInputId}
-              multiple
-              type="file"
-              onChange={handleImage}
-            />
-            {!img && (
-              <div>
-                <label htmlFor={imageInputId}>
-                  <Fab
-                    component="span"
-                    classes={{ root: classes.floatingButton }}
-                  >
-                    <AddPhotoAlternateIcon />
-                  </Fab>
-                </label>
-              </div>
-            )}
-
-            {img && (
-              <>
-                <div>
-                  <Fab
-                    component="span"
-                    classes={{ root: classes.floatingButton }}
-                    onClick={imageDelete}
-                  >
-                    <CloseIcon fontSize="large" />
-                  </Fab>
+                  {img && (
+                    <>
+                      <div>
+                        <Fab
+                          component="span"
+                          classes={{ root: classes.floatingButton }}
+                          onClick={imageDelete}
+                        >
+                          <CloseIcon fontSize="large" />
+                        </Fab>
+                      </div>
+                      <span>
+                        <img className={classes.imageStyle} src={img} />
+                      </span>
+                    </>
+                  )}
                 </div>
-                <span>
-                  <img className={classes.imageStyle} src={img} />
-                </span>
-              </>
-            )}
-          </div>
-          <div className={classes.questionContainer}>
-            {selectType == 'mcq' && mcqBuilder()}
+              </Grid>
 
-            {selectType == 'trueOrFalse' && tfBuilder()}
+              <Grid
+                container
+                alignItems="center"
+                item
+                xs={6}
+                lg={4}
+                direction="column"
+              >
+                <FormControl
+                  variant="outlined"
+                  size="medium"
+                  className={classes.formControl}
+                >
+                  <InputLabel id="demo-simple-select-filled-label">
+                    Type
+                  </InputLabel>
+                  <Select
+                    classes={{
+                      selectMenu: classes.selectStyle,
+                    }}
+                    placeholder="Type"
+                    label="Type"
+                    value={selectType}
+                    onChange={handleSelect}
+                  >
+                    <MenuItem value={'mcq'}>
+                      {' '}
+                      <RadioButtonCheckedIcon
+                        style={{ fontSize: '1.7rem' }}
+                      />{' '}
+                      Mcq
+                    </MenuItem>
+                    <MenuItem value={'trueOrFalse'}>
+                      {' '}
+                      <ToggleOffIcon style={{ fontSize: '1.7rem' }} />{' '}
+                      True/false
+                    </MenuItem>
+                    <MenuItem value={'checkbox'}>
+                      <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
+                    </MenuItem>
+                  </Select>
+                </FormControl>
 
-            {selectType == 'checkbox' && checkboxBuilder()}
-          </div>
-        </form>
+                <TextField
+                  className={classes.pointStyle}
+                  onChange={onPointChange}
+                  id="outlined-number"
+                  label="Point"
+                  type="number"
+                  size="medium"
+                  defaultValue={questionBody.current.points}
+                  variant="outlined"
+                />
+              </Grid>
+            </Grid>
 
-        {/* <p> {props.questionName}</p> */}
-        {/* <p> props stage is {props.stageId}</p> */}
+            <div className={classes.questionContainer}>
+              {selectType == 'mcq' && mcqBuilder()}
+
+              {selectType == 'trueOrFalse' && tfBuilder()}
+
+              {selectType == 'checkbox' && checkboxBuilder()}
+            </div>
+          </form>
+
+          {/* <p> {props.questionName}</p> */}
+          {/* <p> props stage is {props.stageId}</p> */}
+        </div>
       </Paper>
     </div>
   );
