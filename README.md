@@ -30,13 +30,13 @@
 
 - Handle time bound quiz
 - Handle scheduled quiz (set a restriction)
-- When the user has submitted, show him a confirmation dialog and THEN redirect to the quiz home
+- [x]When the user has submitted, show him a confirmation dialog and THEN redirect to the quiz home
 
 ## My Submission
 
 - Keep a back button (to go back to the quiz home)
 - Make the input elements un-clickable
-- Keep a header containing date of participation, quiz name, cover image, current stage, etc.
+- [x]Keep a header containing date of participation, quiz name, cover image, current stage, etc.
 
 ## Quiz Card
 

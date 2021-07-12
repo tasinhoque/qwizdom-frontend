@@ -44,7 +44,7 @@ const useStyles = makeStyles(theme => ({
   },
   barContainer: {
     width: '70%',
-    padding: theme.spacing(2, 0, 2, 0),
+    padding: theme.spacing(0, 0, 2, 0),
   },
 }));
 export default function QuizPlay(props) {
@@ -61,6 +61,7 @@ export default function QuizPlay(props) {
   // const [currentStage, setCurrentStage] = useState(null);
 
   const [open, setOpen] = useState(false);
+  const [quizInfo, setQuizInfo] = useState('');
 
   const currentStage = useRef('');
   const { id } = useParams();
@@ -133,13 +134,23 @@ export default function QuizPlay(props) {
         // draftState[1].done = true;
       });
 
+      setQuizInfo(props.info);
+
       fullQuiz.current = {
-        info: 'habijabi',
         stages: nextState,
       };
       setTotalPages(stages.length);
       setLoading(false);
     } else {
+      await api
+        .getQuiz(id)
+        .then(res => {
+          setQuizInfo(res.data);
+          console.log('quiz info', res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
       api
         .getCompleteQuiz(id)
         .then(res => {
@@ -188,9 +199,9 @@ export default function QuizPlay(props) {
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
                 <Grid container>
-                  {fullQuiz.current.coverImage && (
+                  {quizInfo.coverImage && (
                     <img
-                      src={fullQuiz.current.coverImage}
+                      src={quizInfo.coverImage}
                       className={classes.imageStyle}
                     />
                   )}
@@ -199,10 +210,10 @@ export default function QuizPlay(props) {
                 <Grid container justify="center">
                   <Grid container item xs={6} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
-                      Quiz : {fullQuiz.current.name}
+                      Quiz : {quizInfo.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
-                      Creator: {fullQuiz.current.creator.name}
+                      Creator: {quizInfo.creator.name}
                     </Typography>
                   </Grid>
                   <Grid
@@ -212,13 +223,15 @@ export default function QuizPlay(props) {
                     align="flex-end"
                     direction="column"
                   >
-                    <Typography
-                      gutterBottom
-                      className={classes.barStyle}
-                      align="right"
-                    >
-                      Total Point : {fullQuiz.current.totalPoints}
-                    </Typography>
+                    {quizInfo.totalPoints && (
+                      <Typography
+                        gutterBottom
+                        className={classes.barStyle}
+                        align="right"
+                      >
+                        Total Point : {quizInfo.totalPoints}
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               </Paper>
