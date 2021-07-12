@@ -132,6 +132,7 @@ export default function QuizHome(props) {
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState('');
   const [subbed, setSubbed] = useState(false);
+  const [published, setPublished] = useState(false);
   const { id } = useParams();
   const [quizzes, setQuizzes] = useState([]);
   const [creatorId, setCreatorId] = useState('');
@@ -160,6 +161,7 @@ export default function QuizHome(props) {
       let revs = await api.fetchReviews(id, revPage);
       console.log(quizData);
       setQuiz(quizData);
+      setPublished(quizData.isPublished);
       setCreatorId(quizData.creator.id);
       setReviews(revs.data.results);
       setTotalPages(revs.data.totalPages);
@@ -194,16 +196,36 @@ export default function QuizHome(props) {
         console.log(error.response.data.message);
       });
   };
+
+  const publish = async e => {
+    setPublished(!published);
+    const publishBody = {
+      isPublished: true,
+    };
+    let res = await api
+      .publishDraft(id, publishBody)
+      .then(res => {
+        console.log(res);
+        console.log(id);
+      })
+      .catch(error => {
+        console.log(error.response.data.message);
+      });
+  };
+
   const popDialog = () => {
     console.log('pop called');
     setOpen(true);
   };
+
   const startQuiz = () => {
     props.history.push(`/quiz-play/${id}`);
   };
+
   const quizResult = () => {
     props.history.push(`/quiz-result/${id}`);
   };
+
   const quizCreationRerouting = () => {
     props.history.push(`/edit-quiz/${id}`);
   };
@@ -263,9 +285,17 @@ export default function QuizHome(props) {
                     >
                       {subbed ? 'Unsubscribe' : 'Subscribe'}
                     </Button>
-                  ) : (
-                    <div></div>
-                  )}
+                  ) : !published ? (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.subscribeBtn}
+                      onClick={publish}
+                    >
+                      Publish
+                    </Button>
+                  ) : null}
                 </div>
               </Grid>
               <Grid container item md={12} xs={12} spacing={0}>

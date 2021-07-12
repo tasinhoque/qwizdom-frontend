@@ -45,4 +45,4 @@
 ## Minor Tasks
 
 - [x] Paginate feedbacks on quiz home
-- [ ] Publish button for drafted quizzes
+- [x] Publish button for drafted quizzes

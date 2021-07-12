@@ -139,6 +139,9 @@ const api = {
   fetchReviews: (qid, page) => {
     return axios.get(`${baseUrl}/quizzes/${qid}/reviews?page=${page}&limit=4`);
   },
+  publishDraft: (qid, body) => {
+    return axios.patch(`${baseUrl}/quizzes/${qid}`, body);
+  },
 };
 
 export default api;
