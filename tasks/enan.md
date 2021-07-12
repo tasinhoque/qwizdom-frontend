@@ -35,4 +35,3 @@
 - [ ] Add some more categories in the database
 - [x] Add dashboard header
 - [ ] Send default image when user hasn't chosen any image
-- [ ] Add end date picker

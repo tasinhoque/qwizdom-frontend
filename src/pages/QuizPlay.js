@@ -29,6 +29,11 @@ const useStyles = makeStyles(theme => ({
     marginTop: '10px',
     marginBottom: '-14px',
   },
+  imageStyle: {
+    width: '100%',
+    maxHeight: 250,
+    objectFit: 'cover',
+  },
   questionStyle: {
     width: '70%',
   },
@@ -182,6 +187,15 @@ export default function QuizPlay(props) {
 
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
+                <Grid container>
+                  {fullQuiz.current.coverImage && (
+                    <img
+                      src={fullQuiz.current.coverImage}
+                      className={classes.imageStyle}
+                    />
+                  )}
+                </Grid>
+
                 <Grid container justify="center">
                   <Grid container item xs={6} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>

@@ -38,6 +38,7 @@ const useStyles = makeStyles(theme => ({
   imageStyle: {
     width: '100%',
     maxHeight: 250,
+    objectFit: 'cover',
   },
   quizName: {
     // margin: theme.spacing(3, 0, 0, 1),

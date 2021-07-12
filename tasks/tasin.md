@@ -27,3 +27,7 @@
 ## Notification
 
 - [ ] Implement push notification APIs
+
+# Monday, 12 July
+
+- Send default image when user hasn't chosen any image

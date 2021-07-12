@@ -188,7 +188,7 @@ export default function PlayQuestion(props) {
           <Typography
             style={{ fontWeight: '400', fontSize: '1.2rem', margin: '16px ' }}
           >
-            {question.points} point
+            {element.points}/{question.points} point
           </Typography>
         </div>
         <form>

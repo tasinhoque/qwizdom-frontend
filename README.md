@@ -3,11 +3,11 @@
 ## Quiz Creation Basic
 
 - If survey, remove the evaluation field
+- If unscheduled, remove the time picker and duration field
 - Check garbage input in duration, or better put restriction (only number will be allowed)
 - Add some more categories in the database
 - Add dashboard header
 - Send default image when user hasn't chosen any image
-- Add end date picker
 
 ## Quiz Creation
 
