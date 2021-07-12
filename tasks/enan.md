@@ -32,6 +32,5 @@
 - [x] If survey, remove the evaluation field
 - [x] Check garbage input in duration, or better put restriction
       (only number will be allowed)
-- [ ] Add some more categories in the database
 - [x] Add dashboard header
 - [ ] Send default image when user hasn't chosen any image
