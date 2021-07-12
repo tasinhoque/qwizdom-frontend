@@ -108,6 +108,18 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     borderRadius: '5px',
   },
+  feedbackBtn: {
+    position: 'absolute',
+    top: '2%',
+    right: '2%',
+    backgroundColor: '#555',
+    color: 'white',
+    fontSize: '12px',
+    padding: '8px 12px',
+    border: 'none',
+    cursor: 'pointer',
+    borderRadius: '5px',
+  },
   buttons: {
     justifyContent: 'center',
     fontSize: '12px',
@@ -296,6 +308,17 @@ export default function QuizHome(props) {
                       Publish
                     </Button>
                   ) : null}
+                  {creatorId !== user.id ? (
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.feedbackBtn}
+                      onClick={popDialog}
+                    >
+                      Give feedback
+                    </Button>
+                  ) : null}
                 </div>
               </Grid>
               <Grid container item md={12} xs={12} spacing={0}>
@@ -457,21 +480,6 @@ export default function QuizHome(props) {
               />
             </Grid>
           </Grid>
-
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            style={{
-              height: 'fit-content',
-              width: 'fit-content',
-              marginLeft: '18px',
-            }}
-            className={classes.buttons}
-            onClick={popDialog}
-          >
-            Give feedback
-          </Button>
 
           <Grid
             container
