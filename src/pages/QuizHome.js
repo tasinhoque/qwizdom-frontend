@@ -160,6 +160,8 @@ export default function QuizHome(props) {
   const [reviews, setReviews] = useState(null);
   const [revPage, setRevPage] = useState(1);
 
+  const [diff, setDiff] = useState(null);
+
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
     if (!signedIn) {
@@ -168,6 +170,7 @@ export default function QuizHome(props) {
 
     try {
       setLoading(true);
+
       // updateQueryString();
       const response = await api.getSubbedQuizzes();
       const { data: quizData } = await api.getQuiz(id);
@@ -179,6 +182,21 @@ export default function QuizHome(props) {
       setReviews(revs.data.results);
       setTotalPages(revs.data.totalPages);
 
+      var now = new Date().getTime();
+      var st = new Date(quizData.startTime).getTime();
+      var diff = st - now;
+      setDiff({
+        raw: diff,
+        days: Math.floor(diff / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+        minutes: Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((diff % (1000 * 60)) / 1000),
+      });
+      // days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      // hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      // minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+      // seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
       setQuizzes(response.data.results);
       response.data.results.map((e, i) => {
         if (e.id === id) {
@@ -186,6 +204,7 @@ export default function QuizHome(props) {
           // console.log(e.id);
         }
       });
+
       setLoading(false);
     } catch (error) {
       console.log(error);
@@ -453,7 +472,9 @@ export default function QuizHome(props) {
                       }}
                       component="p"
                     >
-                      1 month ago
+                      {!quiz.isScheduled
+                        ? diff.days + ' days ' + diff.hours + ' hours '
+                        : null}
                     </Typography>
                   </Grid>
                 </Grid>
