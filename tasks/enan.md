@@ -16,7 +16,6 @@
 - [x] Fix bug: When user uploads a picture, it doesn't get saved.
 - [x] Remove the textfields in viewing mode (keep only text)
 - [x] Remove the image upload button in viewing mode
-- [ ] Add fields (no need to integrate with backend for now)
   - Profession
   - Bio
   - Education (e.g. CSE, BUET)
@@ -37,23 +36,32 @@
 
 # July 12
 
-## Major Tasks
+- [x] Paginate feedbacks on quiz home
+- [x] Publish button for drafted quizzes
+
+# July 15, Thursday
+
+## Quiz home
+
+- [x] ~1 month ago~ current time - start time
+
+## Creation Basic
+
+- [-] Check if duration undefined (empty).
+- [x] Take radio input to know if quiz is scheduled.
+      - If scheduled, just take duration, because it's obviously time-bound.
+- [x] If not scheduled, take radio input to know if quiz is time-bound.
+      - If time-bound, take duration.
+- [x] If not scheduled or not time-bound, hide duration field.
+
+
+
+# Major Tasks
 
 - [ ] All submissions of a quiz
 - [ ] Forum
 
-## Minor Tasks
+# Backlog
 
-- [x] Paginate feedbacks on quiz home
-- [x] Publish button for drafted quizzes
-
-## July 15, Thursday
-
-- [x] Quiz home: ~1 month ago~ current time - start time
-- Creation Basic
-  - [ ] Check if duration undefined (empty)
-  - [ ] Take radio input to know if quiz is scheduled
-        - If scheduled, just take duration, because it's obviously time-bound
-  - [ ] If not scheduled, take radio input to know if quiz is time-bound
-        - If time-bound, take duration
-  - [ ] If not scheduled or not time-bound, hide duration field.
+- [ ] Creation basic: check if duration undefined (empty)
+- [ ] Profile: add fields like biography, education, etc.

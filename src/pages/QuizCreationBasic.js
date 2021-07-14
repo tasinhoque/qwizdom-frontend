@@ -99,6 +99,8 @@ function getStyles(name, personName, theme) {
 const QuizCreationBasic = () => {
   const classes = useStyles();
   const [isTest, setTest] = useState(true);
+  const [isScheduled, setScheduled] = useState(true);
+  const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
   const [name, setName] = useState('');
   const cover = useRef(null);
@@ -135,6 +137,14 @@ const QuizCreationBasic = () => {
 
   const handleTypeChange = ({ target: { value } }) => {
     setTest(value === 'test');
+  };
+
+  const handleScheduled = ({ target: { value } }) => {
+    setScheduled(value === 'yes');
+  };
+
+  const handleTimeBound = ({ target: { value } }) => {
+    setTimebound(value === 'yes');
   };
 
   const handleEvaluationChange = ({ target: { value } }) => {
@@ -208,25 +218,71 @@ const QuizCreationBasic = () => {
               <Grid item>
                 <Typography variant="h4">Quiz Settings</Typography>
               </Grid>
-              <Grid item>
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Type</FormLabel>
-                  <RadioGroup
-                    value={isTest ? 'test' : 'survey'}
-                    onChange={handleTypeChange}
-                  >
-                    <FormControlLabel
-                      value="test"
-                      control={<Radio />}
-                      label="Test"
-                    />
-                    <FormControlLabel
-                      value="survey"
-                      control={<Radio />}
-                      label="Survey"
-                    />
-                  </RadioGroup>
-                </FormControl>
+              <Grid container spacing={5} item>
+                <Grid item>
+                  <FormControl component="fieldset">
+                    <FormLabel component="legend">Type</FormLabel>
+                    <RadioGroup
+                      value={isTest ? 'test' : 'survey'}
+                      onChange={handleTypeChange}
+                    >
+                      <FormControlLabel
+                        value="test"
+                        control={<Radio />}
+                        label="Test"
+                      />
+                      <FormControlLabel
+                        value="survey"
+                        control={<Radio />}
+                        label="Survey"
+                      />
+                    </RadioGroup>
+                  </FormControl>
+                </Grid>
+                <Grid item>
+                  {isTest ? (
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Scheduled</FormLabel>
+                      <RadioGroup
+                        value={isScheduled ? 'yes' : 'no'}
+                        onChange={handleScheduled}
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio />}
+                          label="No"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  ) : null}
+                </Grid>
+                <Grid item>
+                  {isTest && !isScheduled ? (
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Time bound</FormLabel>
+                      <RadioGroup
+                        value={isTimebound ? 'yes' : 'no'}
+                        onChange={handleTimeBound}
+                      >
+                        <FormControlLabel
+                          value="yes"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="no"
+                          control={<Radio />}
+                          label="No"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  ) : null}
+                </Grid>
               </Grid>
               <Grid item>
                 <TextField
@@ -248,7 +304,7 @@ const QuizCreationBasic = () => {
                   className={classes.textField}
                 />
               </Grid>
-              {isTest ? (
+              {isTest && (isScheduled || isTimebound) ? (
                 <Grid item>
                   <TextField
                     variant="outlined"
@@ -365,35 +421,6 @@ const QuizCreationBasic = () => {
                       </Grid>
                     </Grid>
                   </MuiPickersUtilsProvider>
-                  {/* <MuiPickersUtilsProvider utils={DateFnsUtils}> */}
-                  {/*   <Grid container justify="space-around" direction="column"> */}
-                  {/*     <Grid item> */}
-                  {/*       <KeyboardDatePicker */}
-                  {/*         margin="normal" */}
-                  {/*         id="date-picker-end" */}
-                  {/*         label="End Date" */}
-                  {/*         format="MM/dd/yyyy" */}
-                  {/*         value={endDate} */}
-                  {/*         onChange={handleEndDate} */}
-                  {/*         KeyboardButtonProps={{ */}
-                  {/*           'aria-label': 'change date', */}
-                  {/*         }} */}
-                  {/*       /> */}
-                  {/*     </Grid> */}
-                  {/*     <Grid item> */}
-                  {/*       <KeyboardTimePicker */}
-                  {/*         margin="normal" */}
-                  {/*         id="time-picker-end" */}
-                  {/*         label="End Time" */}
-                  {/*         value={endDate} */}
-                  {/*         onChange={handleEndDate} */}
-                  {/*         KeyboardButtonProps={{ */}
-                  {/*           'aria-label': 'change time', */}
-                  {/*         }} */}
-                  {/*       /> */}
-                  {/*     </Grid> */}
-                  {/*   </Grid> */}
-                  {/* </MuiPickersUtilsProvider> */}
                 </Grid>
               ) : (
                 <div></div>
