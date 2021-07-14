@@ -196,7 +196,7 @@ export default function PlayQuestion(props) {
               Question {props.qId + 1}
             </Typography>
             <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
-              {element.points.toFixed(2)}/{question.points} point
+              {element.points.toFixed(2)}/{question.points} points
             </Typography>
           </div>
           <div style={{ padding: '20px 0px 0px 20px' }}>

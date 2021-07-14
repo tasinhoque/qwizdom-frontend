@@ -262,7 +262,7 @@ export default function QuizPlay(props) {
                         className={classes.barStyle}
                         align="right"
                       >
-                        Total Point : {quizInfo.totalPoints}
+                        Total Points : {quizInfo.totalPoints}
                       </Typography>
                     )}
                   </Grid>

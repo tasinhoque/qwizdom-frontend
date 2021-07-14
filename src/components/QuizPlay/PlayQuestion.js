@@ -230,7 +230,7 @@ export default function PlayQuestion(props) {
                 fontSize: '1.2rem',
               }}
             >
-              {question.points} point
+              {question.points} points
             </Typography>
           </div>
           <div style={{ padding: '20px 0px 0px 20px' }}>
