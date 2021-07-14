@@ -8,3 +8,4 @@ export { default as QuizCreationBasic } from './QuizCreationBasic';
 export { default as QuizPlay } from './QuizPlay';
 export { default as Leaderboard } from './Leaderboard';
 export { default as ResultPage } from './ResultPage';
+export { default as AllSubmissions } from './AllSubmissions';
