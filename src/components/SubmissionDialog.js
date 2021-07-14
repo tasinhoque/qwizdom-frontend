@@ -41,7 +41,8 @@ export default function SubmissionDialog({ id, open, setOpen, caller }) {
     await api
       .sumbitReviewRating(id, postBody)
       .then(res => {
-        // console.log(res);
+        console.log('post done');
+
         history.push(`/quiz-home/${id}`);
       })
       .catch(err => {

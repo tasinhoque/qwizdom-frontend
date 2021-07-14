@@ -45,19 +45,22 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
     maxWidth: '50%',
   },
-  questionContainer: {
-    paddingLeft: theme.spacing(2),
-  },
   floatingButton: {
     height: '50px',
     width: '50px',
     minHeight: '20px',
+  },
+  paperItemStyle: {
+    padding: theme.spacing(4, 4, 3, 4),
   },
   typoStyle: {
     fontSize: '1.2rem',
     // paddingTop: '1.2rem',
     marginBottom: '5px',
     // fontWeight: '500',
+  },
+  optionContainer: {
+    padding: theme.spacing(2, 2, 0, 6),
   },
 }));
 
@@ -112,10 +115,7 @@ export default function PlayQuestion(props) {
   const mcqBuilder = () => {
     return (
       <div>
-        <Typography className={classes.typoStyle}>
-          {' '}
-          Q : {question.title}
-        </Typography>
+        <Typography className={classes.typoStyle}>{question.title}</Typography>
         {question.image && (
           <div className={classes.imageContainer}>
             <img className={classes.imageStyle} src={img} />
@@ -151,26 +151,28 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={img} />
           </div>
         )}
-        <FormGroup value={option}>
-          {optionArray.map((r, i) => {
-            return (
-              <div key={i}>
-                <FormControlLabel
-                  value={r.text}
-                  label={r.text}
-                  control={
-                    <Checkbox
-                      checked={r.isAnswer}
-                      onChange={e => {
-                        handleOption(e, i);
-                      }}
-                    />
-                  }
-                />
-              </div>
-            );
-          })}
-        </FormGroup>
+        <div className={classes.optionContainer}>
+          <FormGroup value={option}>
+            {optionArray.map((r, i) => {
+              return (
+                <div key={i}>
+                  <FormControlLabel
+                    value={r.text}
+                    label={r.text}
+                    control={
+                      <Checkbox
+                        checked={r.isAnswer}
+                        onChange={e => {
+                          handleOption(e, i);
+                        }}
+                      />
+                    }
+                  />
+                </div>
+              );
+            })}
+          </FormGroup>
+        </div>
       </div>
     );
   };
@@ -183,25 +185,27 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={img} />
           </div>
         )}
-        <FormGroup>
-          {optionArray.map((r, i) => {
-            return (
-              <div key={i}>
-                <FormControlLabel
-                  label={r.text}
-                  control={
-                    <Switch
-                      checked={r.isAnswer}
-                      onChange={e => {
-                        handleOption(e, i);
-                      }}
-                    />
-                  }
-                />
-              </div>
-            );
-          })}
-        </FormGroup>
+        <div className={classes.optionContainer}>
+          <FormGroup>
+            {optionArray.map((r, i) => {
+              return (
+                <div key={i}>
+                  <FormControlLabel
+                    label={r.text}
+                    control={
+                      <Switch
+                        checked={r.isAnswer}
+                        onChange={e => {
+                          handleOption(e, i);
+                        }}
+                      />
+                    }
+                  />
+                </div>
+              );
+            })}
+          </FormGroup>
+        </div>
       </div>
     );
   };
@@ -209,36 +213,36 @@ export default function PlayQuestion(props) {
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography
-            style={{
-              padding: '16px 0px 0px 16px',
-              fontWeight: '400',
-              fontSize: '1.4rem',
-            }}
-          >
-            Question {props.qId + 1}
-          </Typography>
-          <Typography
-            style={{
-              fontWeight: '420',
-              fontSize: '1.2rem',
-              padding: '16px 10px 0px 16px',
-            }}
-          >
-            {question.points} point
-          </Typography>
-        </div>
-        <form>
-          <div className={classes.questionContainer}>
-            {question.type == 'mcq' && mcqBuilder()}
-            {question.type == 'trueOrFalse' && tfBuilder()}
-            {question.type == 'checkbox' && checkboxBuilder()}
+        <div className={classes.paperItemStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              style={{
+                fontWeight: '400',
+                fontSize: '1.4rem',
+              }}
+            >
+              Question {props.qId + 1}
+            </Typography>
+            <Typography
+              style={{
+                fontWeight: '420',
+                fontSize: '1.2rem',
+              }}
+            >
+              {question.points} point
+            </Typography>
           </div>
-        </form>
+          <form>
+            <div>
+              {question.type == 'mcq' && mcqBuilder()}
+              {question.type == 'trueOrFalse' && tfBuilder()}
+              {question.type == 'checkbox' && checkboxBuilder()}
+            </div>
+          </form>
 
-        {/* <p> {props.questionName}</p> */}
-        {/* <p> props stage is {props.stageId}</p> */}
+          {/* <p> {props.questionName}</p> */}
+          {/* <p> props stage is {props.stageId}</p> */}
+        </div>
       </Paper>
     </div>
   );

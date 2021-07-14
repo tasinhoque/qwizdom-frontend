@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import produce from 'immer';
-
+import TimerIcon from '@material-ui/icons/Timer';
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import SubmissionDialog from '../components/SubmissionDialog';
@@ -26,13 +26,15 @@ const useStyles = makeStyles(theme => ({
   stageTitle: {
     fontWeight: '420',
     fontSize: '1.7em',
-    marginTop: '10px',
-    marginBottom: '-14px',
+    marginTop: '13px',
+    marginBottom: '-8px',
   },
   imageStyle: {
     width: '100%',
-    maxHeight: 250,
+    maxHeight: 280,
     objectFit: 'cover',
+    borderTopLeftRadius: '6px',
+    borderTopRightRadius: '6px',
   },
   questionStyle: {
     width: '70%',
@@ -44,6 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
   barContainer: {
     width: '70%',
+    marginTop: '16px',
     padding: theme.spacing(0, 0, 2, 0),
   },
 }));
@@ -207,7 +210,7 @@ export default function QuizPlay(props) {
                   )}
                 </Grid>
 
-                <Grid container justify="center">
+                <Grid container justify="center" style={{ marginTop: '10px' }}>
                   <Grid container item xs={6} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
                       Quiz : {quizInfo.name}

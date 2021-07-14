@@ -18,8 +18,15 @@ const useStyles = makeStyles(theme => ({
     color: 'white',
     'background-color': '#333f46',
   },
-  headerStyle: {
+  barContainer: {
     width: '70%',
+    marginTop: '16px',
+    padding: theme.spacing(0, 0, 2, 0),
+  },
+  barStyle: {
+    fontWeight: '450',
+    fontSize: '1.25rem',
+    margin: theme.spacing(0, 2, 0, 2),
   },
   questionContainer: {
     display: 'flex',
@@ -29,8 +36,8 @@ const useStyles = makeStyles(theme => ({
   stageTitle: {
     fontWeight: '420',
     fontSize: '1.7em',
-    marginTop: '10px',
-    marginBottom: '-14px',
+    marginTop: '13px',
+    marginBottom: '-8px',
   },
   questionStyle: {
     width: '70%',
@@ -39,6 +46,8 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     maxHeight: 250,
     objectFit: 'cover',
+    borderTopLeftRadius: '6px',
+    borderTopRightRadius: '6px',
   },
   quizName: {
     // margin: theme.spacing(3, 0, 0, 1),
@@ -97,8 +106,8 @@ export default function ResultPage() {
           </div>
         ) : (
           <div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <Paper className={classes.headerStyle} elevation={7}>
+            <Grid container justify="center">
+              <Paper className={classes.barContainer} elevation={7}>
                 <Grid container>
                   {fullQuiz.current.quiz.coverImage && (
                     <img
@@ -107,40 +116,25 @@ export default function ResultPage() {
                     />
                   )}
                 </Grid>
-                <Grid container>
-                  <Grid
-                    container
-                    style={{ marginTop: '10px' }}
-                    item
-                    xs={6}
-                    direction="column"
-                  >
-                    <Typography
-                      variant="h6"
-                      gutterBottom
-                      className={classes.quizName}
-                    >
+                <Grid container justify="center" style={{ marginTop: '10px' }}>
+                  <Grid container item xs={6} direction="column">
+                    <Typography gutterBottom className={classes.barStyle}>
                       Quiz : {fullQuiz.current.quiz.name}
                     </Typography>
-                    <Typography
-                      variant="h6"
-                      gutterBottom
-                      className={classes.quizName}
-                    >
+                    <Typography gutterBottom className={classes.barStyle}>
                       Creator: {fullQuiz.current.quiz.creator.name}
                     </Typography>
                   </Grid>
                   <Grid
                     container
-                    style={{ marginTop: '10px ' }}
                     item
                     xs={6}
+                    align="flex-end"
                     direction="column"
                   >
                     <Typography
-                      variant="h6"
                       gutterBottom
-                      className={classes.quizName}
+                      className={classes.barStyle}
                       align="right"
                     >
                       Point : {fullQuiz.current.totalPoints}/
@@ -149,7 +143,7 @@ export default function ResultPage() {
                   </Grid>
                 </Grid>
               </Paper>
-            </div>
+            </Grid>
             <div
               style={{
                 display: 'flex',
