@@ -18,7 +18,7 @@
 
 ## Quiz Responses
 
-- [ ] Get all responses for a quiz (for all participants)
+- [x] Get all responses for a quiz (for all participants)
 
 ## Leaderboard
 
@@ -31,3 +31,10 @@
 # Monday, 12 July
 
 - Send default image when user hasn't chosen any image
+
+# Thursday, 15 July
+
+## Leaderboard API and Page
+
+- [ ] Write necessary APIs
+- [ ] Complete page
