@@ -90,7 +90,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignContent: 'flex-start',
     '& > *': {
-      margin: '12px 8px 10px 8px',
+      margin: '12px 8px 10px 0px',
     },
   },
   imageStyle: {
@@ -107,8 +107,9 @@ const useStyles = makeStyles(theme => ({
     // marginLeft: theme.spacing(1),
   },
   fullPaper: {
-    paddingTop: theme.spacing(2),
-    paddingLeft: theme.spacing(2),
+    paddingTop: theme.spacing(3),
+    paddingLeft: theme.spacing(4),
+    paddingBottom: theme.spacing(3),
   },
   leftContainer: {
     flexDirection: 'column',
@@ -467,15 +468,6 @@ export default function QuestionComponent(props) {
 
   return (
     <div className={classes.container}>
-      <Typography
-        style={{
-          fontSize: '1.2rem',
-          fontWeight: '500',
-          margin: '0px 0px -10px 16px',
-        }}
-      >
-        Question {props.arrayIndex + 1}
-      </Typography>
       <Paper className={classes.questionStyle} elevation={7}>
         <div className={classes.fullPaper}>
           <div className={classes.iconContainer}>
@@ -500,6 +492,15 @@ export default function QuestionComponent(props) {
               e.preventDefault();
             }}
           >
+            <Typography
+              style={{
+                fontSize: '1.3rem',
+                fontWeight: '500',
+                margin: '0px 0px 5px 0px',
+              }}
+            >
+              Question {props.arrayIndex + 1}
+            </Typography>
             <Grid container>
               <Grid container item xs={6} lg={8} direction="column">
                 <TextField
@@ -606,7 +607,7 @@ export default function QuestionComponent(props) {
                   className={classes.pointStyle}
                   onChange={onPointChange}
                   id="outlined-number"
-                  label="Point"
+                  label="Points"
                   type="number"
                   size="medium"
                   defaultValue={questionBody.current.points}

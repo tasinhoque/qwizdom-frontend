@@ -27,6 +27,7 @@
     "react-dom": "latest",
     "react-router-dom": "^5.2.0",
     "react-scripts": "latest",
+    "react-timer-hook": "^3.0.4",
     "redux": "^4.1.0"
   },
   "browserslist": {

@@ -41,10 +41,11 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
+    paddingBottom: theme.spacing(2),
   },
   imageStyle: {
     height: 'auto',
-    marginRight: theme.spacing(1),
+    margin: theme.spacing(1),
     maxWidth: '50%',
   },
   questionContainer: {
@@ -58,6 +59,12 @@ const useStyles = makeStyles(theme => ({
     height: '50px',
     width: '50px',
     minHeight: '20px',
+  },
+  paperItemStyle: {
+    padding: theme.spacing(4, 4, 3, 4),
+  },
+  optionContainer: {
+    padding: theme.spacing(0, 2, 0, 0),
   },
   typoStyle: {
     fontSize: '1.2rem',
@@ -125,20 +132,22 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={question.image} />
           </div>
         )}
-        <FormGroup>
-          {optionArray.map((r, i) => {
-            return (
-              <div key={i} className={classes.optionStyle}>
-                <FormControlLabel
-                  value={r.text}
-                  label={r.text}
-                  control={<Checkbox checked={element.options[i]} />}
-                />
-                {r.isAnswer && <CheckIcon style={{ color: 'green' }} />}
-              </div>
-            );
-          })}
-        </FormGroup>
+        <div className={classes.optionContainer}>
+          <FormGroup>
+            {optionArray.map((r, i) => {
+              return (
+                <div key={i} className={classes.optionStyle}>
+                  <FormControlLabel
+                    value={r.text}
+                    label={r.text}
+                    control={<Checkbox checked={element.options[i]} />}
+                  />
+                  {r.isAnswer && <CheckIcon style={{ color: 'green' }} />}
+                </div>
+              );
+            })}
+          </FormGroup>
+        </div>
       </div>
     );
   };
@@ -151,53 +160,53 @@ export default function PlayQuestion(props) {
             <img className={classes.imageStyle} src={question.image} />
           </div>
         )}
-
-        <FormGroup>
-          {optionArray.map((r, i) => {
-            return (
-              <div key={i} className={classes.optionStyle}>
-                <FormControlLabel
-                  label={r.text}
-                  control={<Switch checked={element.options[i]} />}
-                />
-                {r.isAnswer == element.options[i] ? (
-                  <CheckIcon style={{ color: 'green' }} />
-                ) : (
-                  <CloseIcon style={{ color: 'red' }} />
-                )}
-              </div>
-            );
-          })}
-        </FormGroup>
+        <div className={classes.optionContainer}>
+          <FormGroup>
+            {optionArray.map((r, i) => {
+              return (
+                <div key={i} className={classes.optionStyle}>
+                  <FormControlLabel
+                    label={r.text}
+                    control={<Switch checked={element.options[i]} />}
+                  />
+                  {r.isAnswer == element.options[i] ? (
+                    <CheckIcon style={{ color: 'green' }} />
+                  ) : (
+                    <CloseIcon style={{ color: 'red' }} />
+                  )}
+                </div>
+              );
+            })}
+          </FormGroup>
+        </div>
       </div>
     );
   };
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
-        <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Typography
-            style={{
-              padding: '16px 0px 0px 16px',
-              fontWeight: '400',
-              fontSize: '1.4rem',
-            }}
-          >
-            Question {props.qId + 1}
-          </Typography>
-          <Typography
-            style={{ fontWeight: '400', fontSize: '1.2rem', margin: '16px ' }}
-          >
-            {element.points}/{question.points} point
-          </Typography>
-        </div>
-        <form>
-          <div className={classes.questionContainer}>
-            {question.type == 'mcq' && mcqBuilder()}
-            {question.type == 'trueOrFalse' && tfBuilder()}
-            {question.type == 'checkbox' && checkboxBuilder()}
+        <div className={classes.paperItemStyle}>
+          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <Typography
+              style={{
+                fontWeight: '400',
+                fontSize: '1.4rem',
+              }}
+            >
+              Question {props.qId + 1}
+            </Typography>
+            <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
+              {element.points.toFixed(2)}/{question.points} points
+            </Typography>
           </div>
-        </form>
+          <div style={{ padding: '20px 0px 0px 20px' }}>
+            <form>
+              {question.type == 'mcq' && mcqBuilder()}
+              {question.type == 'trueOrFalse' && tfBuilder()}
+              {question.type == 'checkbox' && checkboxBuilder()}
+            </form>
+          </div>
+        </div>
       </Paper>
     </div>
   );

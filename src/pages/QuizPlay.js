@@ -9,10 +9,13 @@ import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import produce from 'immer';
-
+import TimerIcon from '@material-ui/icons/Timer';
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import SubmissionDialog from '../components/SubmissionDialog';
+import { useTimer } from 'react-timer-hook';
+import MyTimer from '../components/QuizPlay/MyTimer';
+
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -26,13 +29,15 @@ const useStyles = makeStyles(theme => ({
   stageTitle: {
     fontWeight: '420',
     fontSize: '1.7em',
-    marginTop: '10px',
-    marginBottom: '-14px',
+    marginTop: '13px',
+    marginBottom: '-8px',
   },
   imageStyle: {
     width: '100%',
-    maxHeight: 250,
+    maxHeight: 280,
     objectFit: 'cover',
+    borderTopLeftRadius: '6px',
+    borderTopRightRadius: '6px',
   },
   questionStyle: {
     width: '70%',
@@ -44,7 +49,21 @@ const useStyles = makeStyles(theme => ({
   },
   barContainer: {
     width: '70%',
-    padding: theme.spacing(2, 0, 2, 0),
+    marginTop: '16px',
+    padding: theme.spacing(0, 0, 2, 0),
+  },
+  timerContainer: {
+    position: 'fixed',
+    right: '5%',
+    top: '40%',
+    border: '3px solid black',
+    height: '100px',
+    width: '85px',
+    borderRadius: '10%',
+    paddingTop: '7px',
+  },
+  timerSize: {
+    fontSize: '3.5rem',
   },
 }));
 export default function QuizPlay(props) {
@@ -61,6 +80,7 @@ export default function QuizPlay(props) {
   // const [currentStage, setCurrentStage] = useState(null);
 
   const [open, setOpen] = useState(false);
+  const [quizInfo, setQuizInfo] = useState('');
 
   const currentStage = useRef('');
   const { id } = useParams();
@@ -69,6 +89,9 @@ export default function QuizPlay(props) {
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
   };
+  const [duration, setDuration] = useState(null);
+  const time = new Date();
+
   const allFunctions = {
     questionChange: (qId, message) => {
       fullQuiz.current.stages[currentPageNum].questions[qId] = message;
@@ -133,13 +156,28 @@ export default function QuizPlay(props) {
         // draftState[1].done = true;
       });
 
+      setQuizInfo(props.info);
+
       fullQuiz.current = {
-        info: 'habijabi',
         stages: nextState,
       };
       setTotalPages(stages.length);
+      time.setSeconds(time.getSeconds() + props.info.duration * 60);
+      setDuration(time);
       setLoading(false);
     } else {
+      await api
+        .getQuiz(id)
+        .then(res => {
+          setQuizInfo(res.data);
+          time.setSeconds(time.getSeconds() + res.data.duration * 60);
+          setDuration(time);
+
+          console.log('quiz info', res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
       api
         .getCompleteQuiz(id)
         .then(res => {
@@ -159,7 +197,6 @@ export default function QuizPlay(props) {
           currentStage.current = res.data.stages[0];
           setTotalPages(res.data.stages.length);
 
-          // console.log(fullQuiz.current.stages[currentPageNum].questions);
           setLoading(false);
         })
         .catch(error => {
@@ -184,25 +221,32 @@ export default function QuizPlay(props) {
               setOpen={setOpen}
               caller="quizPlay"
             />
+            <div className={classes.timerContainer}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {' '}
+                <TimerIcon classes={{ root: classes.timerSize }} />
+              </div>
+              <MyTimer expiryTimestamp={duration} expireFunc={handleSubmit} />{' '}
+            </div>
 
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
                 <Grid container>
-                  {fullQuiz.current.coverImage && (
+                  {quizInfo.coverImage && (
                     <img
-                      src={fullQuiz.current.coverImage}
+                      src={quizInfo.coverImage}
                       className={classes.imageStyle}
                     />
                   )}
                 </Grid>
 
-                <Grid container justify="center">
+                <Grid container justify="center" style={{ marginTop: '10px' }}>
                   <Grid container item xs={6} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
-                      Quiz : {fullQuiz.current.name}
+                      Quiz : {quizInfo.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
-                      Creator: {fullQuiz.current.creator.name}
+                      Creator: {quizInfo.creator.name}
                     </Typography>
                   </Grid>
                   <Grid
@@ -212,13 +256,15 @@ export default function QuizPlay(props) {
                     align="flex-end"
                     direction="column"
                   >
-                    <Typography
-                      gutterBottom
-                      className={classes.barStyle}
-                      align="right"
-                    >
-                      Total Point : {fullQuiz.current.totalPoints}
-                    </Typography>
+                    {quizInfo.totalPoints && (
+                      <Typography
+                        gutterBottom
+                        className={classes.barStyle}
+                        align="right"
+                      >
+                        Total Points : {quizInfo.totalPoints}
+                      </Typography>
+                    )}
                   </Grid>
                 </Grid>
               </Paper>

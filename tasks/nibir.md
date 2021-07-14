@@ -33,4 +33,4 @@
 
 -[x] Show subscriber count, participant count, average rating (these fields will be in the quiz instance)
 
-- Fix the time of publication (use package for formatting time if necessary, e.g. `moment`): There's a `createdAt` field in the quiz instance. Format this and show it as the time of publication.
+-Fix the time of publication (use package for formatting time if necessary, e.g. `moment`): There's a `createdAt` field in the quiz instance. Format this and show it as the time of publication.

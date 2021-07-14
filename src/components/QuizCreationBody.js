@@ -37,6 +37,7 @@ export default function QuizCreationBody(props) {
   const [preview, setPreview] = useState(false);
   const [previewBody, setPreviewBody] = useState(false);
 
+  const [quizInfo, setQuizInfo] = useState('');
   const classes = useStyles();
   const history = useHistory();
 
@@ -45,6 +46,27 @@ export default function QuizCreationBody(props) {
   const location = useLocation();
 
   const fileStorage = [];
+
+  const store = useRef([
+    {
+      stageId: 0,
+      questions: [
+        {
+          stageId: 0,
+          questionId: 0,
+          title: '',
+          points: 10,
+        },
+      ],
+    },
+  ]);
+
+  const [quizBody, setQuizBody] = useState([
+    {
+      stageId: 0,
+      questions: [],
+    },
+  ]);
 
   const handleSubmit = async isPublished => {
     console.log('store is', store.current);
@@ -102,36 +124,16 @@ export default function QuizCreationBody(props) {
       });
   };
 
-  // 'store useref' is the storage for all stages and quizzes.
-  // userefs don't get rendered if any change happens
-  // so while typing in textfield it won't get rendered after every stroke
-
-  //  But after new stage or delete stage we need to render again, so
-  //  another usestate container quizbody is tracked simultaneously holding
-  //  only array size and question size  . it gets updated only  add or delete stage,questions
-  //  also renders
-
-  const store = useRef([
-    {
-      stageId: 0,
-      questions: [
-        {
-          stageId: 0,
-          questionId: 0,
-          title: '',
-          points: '10',
-        },
-      ],
-    },
-  ]);
-
-  const [quizBody, setQuizBody] = useState([
-    {
-      stageId: 0,
-      questions: [],
-    },
-  ]);
   useEffect(async () => {
+    await api
+      .getQuiz(id)
+      .then(res => {
+        setQuizInfo(res.data);
+        console.log('quiz info', res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
     if (location.pathname.includes('edit')) {
       console.log('edit');
       api.getCompleteQuiz(id).then(res => {
@@ -201,7 +203,7 @@ export default function QuizCreationBody(props) {
               stageId: newId,
               questionId: 0,
               title: 'new one',
-              points: '10',
+              points: 10,
             },
           ],
         };
@@ -306,7 +308,7 @@ export default function QuizCreationBody(props) {
           {preview ? (
             <div className={classes.previewStyle}>
               {' '}
-              <QuizPlay body={previewBody} />;
+              <QuizPlay body={previewBody} info={quizInfo} />;
             </div>
           ) : (
             store.current.map((stage, i) => {

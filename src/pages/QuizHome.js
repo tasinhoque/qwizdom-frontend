@@ -231,6 +231,10 @@ export default function QuizHome(props) {
   };
 
   const startQuiz = () => {
+    // if (!quiz.isScheduled) {
+    //   alert('quiz will start on schedule');
+    //   return;
+    // }
     props.history.push(`/quiz-play/${id}`);
   };
 
