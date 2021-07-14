@@ -39,6 +39,7 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
+    paddingBottom: theme.spacing(2),
   },
   imageStyle: {
     minHeight: 220,
@@ -60,7 +61,7 @@ const useStyles = makeStyles(theme => ({
     // fontWeight: '500',
   },
   optionContainer: {
-    padding: theme.spacing(2, 2, 0, 6),
+    padding: theme.spacing(0, 2, 0, 0),
   },
 }));
 
@@ -232,13 +233,15 @@ export default function PlayQuestion(props) {
               {question.points} point
             </Typography>
           </div>
-          <form>
-            <div>
-              {question.type == 'mcq' && mcqBuilder()}
-              {question.type == 'trueOrFalse' && tfBuilder()}
-              {question.type == 'checkbox' && checkboxBuilder()}
-            </div>
-          </form>
+          <div style={{ padding: '20px 0px 0px 20px' }}>
+            <form>
+              <div>
+                {question.type == 'mcq' && mcqBuilder()}
+                {question.type == 'trueOrFalse' && tfBuilder()}
+                {question.type == 'checkbox' && checkboxBuilder()}
+              </div>
+            </form>
+          </div>
 
           {/* <p> {props.questionName}</p> */}
           {/* <p> props stage is {props.stageId}</p> */}

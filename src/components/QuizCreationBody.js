@@ -55,7 +55,7 @@ export default function QuizCreationBody(props) {
           stageId: 0,
           questionId: 0,
           title: '',
-          points: '10',
+          points: 10,
         },
       ],
     },
@@ -203,7 +203,7 @@ export default function QuizCreationBody(props) {
               stageId: newId,
               questionId: 0,
               title: 'new one',
-              points: '10',
+              points: 10,
             },
           ],
         };

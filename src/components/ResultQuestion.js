@@ -41,6 +41,7 @@ const useStyles = makeStyles(theme => ({
   imageContainer: {
     display: 'flex',
     justifyContent: 'center',
+    paddingBottom: theme.spacing(2),
   },
   imageStyle: {
     height: 'auto',
@@ -63,7 +64,7 @@ const useStyles = makeStyles(theme => ({
     padding: theme.spacing(4, 4, 3, 4),
   },
   optionContainer: {
-    padding: theme.spacing(2, 2, 0, 6),
+    padding: theme.spacing(0, 2, 0, 0),
   },
   typoStyle: {
     fontSize: '1.2rem',
@@ -195,16 +196,16 @@ export default function PlayQuestion(props) {
               Question {props.qId + 1}
             </Typography>
             <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
-              {element.points}/{question.points} point
+              {element.points.toFixed(2)}/{question.points} point
             </Typography>
           </div>
-          <form>
-            <div>
+          <div style={{ padding: '20px 0px 0px 20px' }}>
+            <form>
               {question.type == 'mcq' && mcqBuilder()}
               {question.type == 'trueOrFalse' && tfBuilder()}
               {question.type == 'checkbox' && checkboxBuilder()}
-            </div>
-          </form>
+            </form>
+          </div>
         </div>
       </Paper>
     </div>

@@ -137,7 +137,7 @@ export default function ResultPage() {
                       className={classes.barStyle}
                       align="right"
                     >
-                      Point : {fullQuiz.current.totalPoints}/
+                      Point : {fullQuiz.current.totalPoints.toFixed(2)}/
                       {fullQuiz.current.quiz.totalPoints}
                     </Typography>
                   </Grid>

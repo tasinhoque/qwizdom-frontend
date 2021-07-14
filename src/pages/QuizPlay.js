@@ -13,6 +13,9 @@ import TimerIcon from '@material-ui/icons/Timer';
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import SubmissionDialog from '../components/SubmissionDialog';
+import { useTimer } from 'react-timer-hook';
+import MyTimer from '../components/QuizPlay/MyTimer';
+
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -49,6 +52,19 @@ const useStyles = makeStyles(theme => ({
     marginTop: '16px',
     padding: theme.spacing(0, 0, 2, 0),
   },
+  timerContainer: {
+    position: 'fixed',
+    right: '5%',
+    top: '40%',
+    border: '3px solid black',
+    height: '100px',
+    width: '85px',
+    borderRadius: '10%',
+    paddingTop: '7px',
+  },
+  timerSize: {
+    fontSize: '3.5rem',
+  },
 }));
 export default function QuizPlay(props) {
   const [previewState, setPreviewState] = useState(props.body ? true : false);
@@ -73,6 +89,9 @@ export default function QuizPlay(props) {
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
   };
+  const [duration, setDuration] = useState(null);
+  const time = new Date();
+
   const allFunctions = {
     questionChange: (qId, message) => {
       fullQuiz.current.stages[currentPageNum].questions[qId] = message;
@@ -143,12 +162,17 @@ export default function QuizPlay(props) {
         stages: nextState,
       };
       setTotalPages(stages.length);
+      time.setSeconds(time.getSeconds() + props.info.duration * 60);
+      setDuration(time);
       setLoading(false);
     } else {
       await api
         .getQuiz(id)
         .then(res => {
           setQuizInfo(res.data);
+          time.setSeconds(time.getSeconds() + res.data.duration * 60);
+          setDuration(time);
+
           console.log('quiz info', res);
         })
         .catch(err => {
@@ -173,7 +197,6 @@ export default function QuizPlay(props) {
           currentStage.current = res.data.stages[0];
           setTotalPages(res.data.stages.length);
 
-          // console.log(fullQuiz.current.stages[currentPageNum].questions);
           setLoading(false);
         })
         .catch(error => {
@@ -198,6 +221,13 @@ export default function QuizPlay(props) {
               setOpen={setOpen}
               caller="quizPlay"
             />
+            <div className={classes.timerContainer}>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                {' '}
+                <TimerIcon classes={{ root: classes.timerSize }} />
+              </div>
+              <MyTimer expiryTimestamp={duration} expireFunc={handleSubmit} />{' '}
+            </div>
 
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
