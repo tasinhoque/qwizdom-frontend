@@ -109,6 +109,7 @@ const useStyles = makeStyles(theme => ({
     borderRadius: '5px',
   },
   feedbackBtn: {
+    display: 'none',
     position: 'absolute',
     top: '2%',
     right: '2%',
