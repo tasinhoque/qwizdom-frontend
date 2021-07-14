@@ -46,3 +46,16 @@
 
 - [x] Paginate feedbacks on quiz home
 - [x] Publish button for drafted quizzes
+
+## July 15, Thursday
+
+- [ ] Quiz home: ~1 month ago~ current time - start time
+- Creation Basic
+  - [ ] Take radio input to know if quiz is scheduled
+        - If scheduled, just take duration, because it's obviously time-bound
+        - [ ] Check if duration undefined (empty)
+  - [ ] If not scheduled, take radio input to know if quiz is time-bound
+        - If time-bound, take duration
+        - [ ] Check if duration undefined (empty)
+  - [ ] If not scheduled or not time-bound, hide duration field.
+

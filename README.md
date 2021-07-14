@@ -106,5 +106,3 @@
 - Manual Evaluation: Nibir
 
 ## Minor Tasks
-
-- Scheduled quiz handling
