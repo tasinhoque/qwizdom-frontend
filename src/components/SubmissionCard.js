@@ -12,7 +12,9 @@ import Button from '@material-ui/core/Button';
 import Moment from 'moment';
 import FormatListBulletedIcon from '@material-ui/icons/FormatListBulleted';
 import IconButton from '@material-ui/core/IconButton';
+import { useParams, useHistory } from 'react-router';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import { withRouter } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -60,8 +62,14 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SubmissionCard(props) {
+export default withRouter(function SubmissionCard(props) {
   const classes = useStyles();
+
+  const { id } = useParams();
+
+  const handlePending = () => {
+    props.history.push(`/${props.quizid}/evaluate-quiz/${props.userid}`);
+  };
 
   return (
     <Card className={classes.root}>
@@ -140,6 +148,7 @@ export default function SubmissionCard(props) {
               type="submit"
               variant="contained"
               style={{ backgroundColor: '#f44336', color: 'white' }}
+              onClick={handlePending}
             >
               Pending
             </Button>
@@ -158,7 +167,11 @@ export default function SubmissionCard(props) {
               <CheckCircleIcon />
             </IconButton>
           ) : (
-            <IconButton size="small" style={{ color: '#f44336' }}>
+            <IconButton
+              size="small"
+              style={{ color: '#f44336' }}
+              onClick={handlePending}
+            >
               <FormatListBulletedIcon />
             </IconButton>
           )}
@@ -166,4 +179,4 @@ export default function SubmissionCard(props) {
       </Grid>
     </Card>
   );
-}
+});

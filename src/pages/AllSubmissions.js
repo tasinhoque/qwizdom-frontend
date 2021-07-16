@@ -191,6 +191,8 @@ export default function AllSubmissions() {
                 key={i}
                 name={e.responder.name}
                 avatar={e.responder.avatar}
+                userid={e.responder.id}
+                quizid={e.quiz.id}
                 date={e.createdAt}
                 evaluated={e.isEvaluated}
                 marks={e.totalPoints}
