@@ -12,6 +12,8 @@ import { ReactComponent as ReactLogo } from './../assets/check.svg';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
+import TextField from '@material-ui/core/TextField';
+import { Grid } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -36,7 +38,7 @@ const useStyles = makeStyles(theme => ({
   container: {
     display: 'flex',
     justifyContent: 'center',
-    marginBottom: '50px',
+    marginBottom: '35px',
   },
 
   imageContainer: {
@@ -73,8 +75,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '5px',
     fontWeight: '400',
   },
+  pointStyle: {
+    width: '100%',
+  },
 }));
-export default function PlayQuestion(props) {
+export default function EvaluateQuestion(props) {
   const element = props.element;
   const question = props.element.question;
   let dummy = '';
@@ -85,104 +90,14 @@ export default function PlayQuestion(props) {
       }
     });
   }
-  const [option, setOption] = useState(dummy);
-  const [optionArray, setOptionArray] = useState(question.options);
 
   console.log(props);
   const classes = useStyles();
-  const mcqBuilder = () => {
-    return (
-      <div>
-        <Typography className={classes.typoStyle}> {question.title}</Typography>
-        {question.image && (
-          <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
-          </div>
-        )}
-        <div className={classes.optionContainer}>
-          <RadioGroup value={option}>
-            {optionArray.map((r, i) => {
-              return (
-                <div className={classes.optionStyle} key={i}>
-                  <FormControlLabel
-                    value={r.text}
-                    label={r.text}
-                    control={<Radio />}
-                  />
-                  {r.isAnswer == true && (
-                    <CheckIcon style={{ color: 'green' }} />
-                  )}
-                  {element.options[i] == true && r.isAnswer == false && (
-                    <CloseIcon style={{ color: 'red' }} />
-                  )}
-                </div>
-              );
-            })}
-          </RadioGroup>
-        </div>
-      </div>
-    );
+  const onPointChange = e => {
+    element.points = e.target.value;
+    props.allFunctions.questionChange(props.qId, element.points);
   };
 
-  const checkboxBuilder = () => {
-    return (
-      <div>
-        <Typography className={classes.typoStyle}> {question.title}</Typography>
-        {question.image && (
-          <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
-          </div>
-        )}
-        <div className={classes.optionContainer}>
-          <FormGroup>
-            {optionArray.map((r, i) => {
-              return (
-                <div key={i} className={classes.optionStyle}>
-                  <FormControlLabel
-                    value={r.text}
-                    label={r.text}
-                    control={<Checkbox checked={element.options[i]} />}
-                  />
-                  {r.isAnswer && <CheckIcon style={{ color: 'green' }} />}
-                </div>
-              );
-            })}
-          </FormGroup>
-        </div>
-      </div>
-    );
-  };
-  const tfBuilder = () => {
-    return (
-      <div>
-        <Typography className={classes.typoStyle}>{question.title}</Typography>
-        {question.image && (
-          <div className={classes.imageContainer}>
-            <img className={classes.imageStyle} src={question.image} />
-          </div>
-        )}
-        <div className={classes.optionContainer}>
-          <FormGroup>
-            {optionArray.map((r, i) => {
-              return (
-                <div key={i} className={classes.optionStyle}>
-                  <FormControlLabel
-                    label={r.text}
-                    control={<Switch checked={element.options[i]} />}
-                  />
-                  {r.isAnswer == element.options[i] ? (
-                    <CheckIcon style={{ color: 'green' }} />
-                  ) : (
-                    <CloseIcon style={{ color: 'red' }} />
-                  )}
-                </div>
-              );
-            })}
-          </FormGroup>
-        </div>
-      </div>
-    );
-  };
   const paragraphBuilder = () => {
     return (
       <>
@@ -216,6 +131,7 @@ export default function PlayQuestion(props) {
           aria-label="minimum height"
           value={element.text}
           readOnly
+          disabled
         />
       </>
     );
@@ -234,16 +150,35 @@ export default function PlayQuestion(props) {
               Question {props.qId + 1}
             </Typography>
             <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
-              {element.points}/{question.points} points
+              {question.points} points
             </Typography>
           </div>
           <div style={{ padding: '20px 0px 0px 20px' }}>
-            <form>
-              {question.type == 'mcq' && mcqBuilder()}
-              {question.type == 'trueOrFalse' && tfBuilder()}
-              {question.type == 'checkbox' && checkboxBuilder()}
-              {question.type == 'text' && paragraphBuilder()}
-            </form>
+            <form>{question.type == 'text' && paragraphBuilder()}</form>
+            <Grid
+              container
+              style={{ marginTop: '3px' }}
+              spacing={3}
+              alignItems="center"
+            >
+              <Grid item>
+                <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
+                  Score{' '}
+                </Typography>
+              </Grid>
+              <Grid item style={{ flexGrow: '1' }}>
+                <TextField
+                  className={classes.pointStyle}
+                  onChange={onPointChange}
+                  id="outlined-number"
+                  type="number"
+                  size="medium"
+                  defaultValue={element.points}
+                  variant="outlined"
+                  InputProps={{ inputProps: { min: 0, max: question.points } }}
+                />
+              </Grid>
+            </Grid>
           </div>
         </div>
       </Paper>
