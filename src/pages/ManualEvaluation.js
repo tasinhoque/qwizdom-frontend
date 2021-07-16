@@ -3,13 +3,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Header } from '../components';
+import { Header, EvaluateQuestion } from '../components';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Height } from '@material-ui/icons';
+import Button from '@material-ui/core/Button';
+
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
     color: 'white',
@@ -56,26 +58,50 @@ export default function ManualEvaluation() {
   const { quizId, userId } = useParams();
   console.log('quizId', quizId);
   console.log('userId', userId);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPageNum, setCurrentPageNum] = useState(0);
 
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const history = useHistory();
   const fullQuiz = useRef(null);
 
+  const handleSubmit = () => {
+    const pointArray = [];
+    fullQuiz.current.stageResponses.map((e, i) => {
+      e.responses.map((r, j) => {
+        const temp = { questionResponseId: r.id, points: r.points };
+        pointArray.push(temp);
+      });
+    });
+    console.log(pointArray);
+    api.submitEvaluation(fullQuiz.current.id, pointArray).then(res => {
+      console.log(res);
+    });
+  };
+  const pageChange = (_event, num) => {
+    setCurrentPageNum(num - 1);
+    // console.log(fullQuiz.current.stages[num - 1]);
+  };
+  const allFunctions = {
+    questionChange: (qId, point) => {
+      fullQuiz.current.stageResponses[currentPageNum].responses[qId].points =
+        point;
+      console.log(fullQuiz.current);
+    },
+  };
   useEffect(async () => {
     api
       .getEvaluationScript(quizId, userId)
       .then(res => {
         console.log(res);
-        //   res.data.stages.map((e, i) => {
-        //     e.questions.map((q, j) => {
-        //       if (q.options) {
-        //         q.options.map((o, k) => {
-        //           res.data.stages[i].questions[j].options[k].isAnswer = false;
-        //         });
-        //       }
-        //     });
-        //   });
+        res.data.stageResponses.map((e, i) => {
+          e.responses.map((q, j) => {
+            if (q.question.type != 'text') {
+              res.data.stageResponses[i].responses.splice(j, 1);
+            }
+          });
+        });
         fullQuiz.current = res.data;
         console.log(fullQuiz.current);
         setTotalPages(res.data.stageResponses.length);
@@ -113,7 +139,7 @@ export default function ManualEvaluation() {
                       Quiz : {fullQuiz.current.quiz.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
-                      Creator: {fullQuiz.current.quiz.creator.name}
+                      Participant: {fullQuiz.current.quiz.creator.name}
                     </Typography>
                   </Grid>
                   <Grid
@@ -123,14 +149,14 @@ export default function ManualEvaluation() {
                     align="flex-end"
                     direction="column"
                   >
-                    <Typography
+                    {/* <Typography
                       gutterBottom
                       className={classes.barStyle}
                       align="right"
                     >
                       Points : {fullQuiz.current.totalPoints.toFixed(2)}/
                       {fullQuiz.current.quiz.totalPoints}
-                    </Typography>
+                    </Typography> */}
                   </Grid>
                 </Grid>
               </Paper>
@@ -153,15 +179,37 @@ export default function ManualEvaluation() {
             {fullQuiz.current.stageResponses[currentPageNum].responses.map(
               (element, index) => {
                 return (
-                  <ResultQuestion
+                  <EvaluateQuestion
                     key={
                       `StageId ${currentPageNum}index${index} ` + Math.random()
                     }
                     qId={index}
                     element={element}
+                    allFunctions={allFunctions}
                   />
                 );
               }
+            )}
+            {currentPageNum + 1 == totalPages && (
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'flex-end',
+                    width: '70%',
+                  }}
+                >
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSubmit}
+                    style={{ marginBottom: '10px' }}
+                  >
+                    {' '}
+                    Submit Evaluation
+                  </Button>
+                </div>
+              </div>
             )}
 
             <Pagination

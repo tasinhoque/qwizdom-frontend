@@ -133,6 +133,9 @@ const api = {
       `${baseUrl}/quizzes/${quizId}/responses/complete/${userId}`
     );
   },
+  submitEvaluation: (responseId, body) => {
+    return axios.patch(`${baseUrl}/quiz-responses/${responseId}`, body);
+  },
   getSubbedQuizzes: () => {
     return axios.get(`${baseUrl}/quizzes/subscribed?page=1&limit=100`);
   },
