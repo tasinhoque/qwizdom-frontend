@@ -206,6 +206,7 @@ export default function PlayQuestion(props) {
         </div> */}
         <TextareaAutosize
           style={{
+            cursor: 'default',
             marginTop: '8px',
             resize: 'none',
             width: '100%',
