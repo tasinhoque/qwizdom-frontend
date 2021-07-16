@@ -127,6 +127,15 @@ const api = {
   getQuizResult: qId => {
     return axios.get(`${baseUrl}/quizzes/${qId}/responses/complete`);
   },
+  //ManualEvaluation
+  getEvaluationScript: (quizId, userId) => {
+    return axios.get(
+      `${baseUrl}/quizzes/${quizId}/responses/complete/${userId}`
+    );
+  },
+  submitEvaluation: (responseId, body) => {
+    return axios.patch(`${baseUrl}/quiz-responses/${responseId}`, body);
+  },
   getSubbedQuizzes: () => {
     return axios.get(`${baseUrl}/quizzes/subscribed?page=1&limit=100`);
   },

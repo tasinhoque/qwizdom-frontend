@@ -28,8 +28,9 @@ import DeleteOutlineTwoToneIcon from '@material-ui/icons/DeleteOutlineTwoTone';
 import Grid from '@material-ui/core/Grid';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import Fab from '@material-ui/core/Fab';
-
+import ViewHeadlineIcon from '@material-ui/icons/ViewHeadline';
 import HighlightOffIcon from '@material-ui/icons/HighlightOff';
+import Divider from '@material-ui/core/Divider';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -205,6 +206,7 @@ export default function QuestionComponent(props) {
   };
   const handleSelect = e => {
     setType(e.target.value);
+    console.log(e.target.value);
 
     if (
       questionBody.current.type &&
@@ -466,6 +468,28 @@ export default function QuestionComponent(props) {
     );
   };
 
+  const paragraphBuilder = () => {
+    return (
+      <>
+        <Grid container>
+          <Grid item xs={8}>
+            <TextField
+              autoFocus
+              disabled
+              margin="dense"
+              id="name"
+              type="email"
+              fullWidth
+              multiline
+              value="User will write in this textfield"
+              rows={5}
+              variant="outlined"
+            />
+          </Grid>
+        </Grid>
+      </>
+    );
+  };
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
@@ -600,6 +624,9 @@ export default function QuestionComponent(props) {
                     <MenuItem value={'checkbox'}>
                       <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
                     </MenuItem>
+                    <MenuItem value={'text'}>
+                      <ViewHeadlineIcon /> Paragraph
+                    </MenuItem>
                   </Select>
                 </FormControl>
 
@@ -622,6 +649,7 @@ export default function QuestionComponent(props) {
               {selectType == 'trueOrFalse' && tfBuilder()}
 
               {selectType == 'checkbox' && checkboxBuilder()}
+              {selectType == 'text' && paragraphBuilder()}
             </div>
           </form>
 
