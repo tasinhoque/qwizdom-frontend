@@ -9,6 +9,10 @@ import Switch from '@material-ui/core/Switch';
 import Paper from '@material-ui/core/Paper';
 import Typography from '@material-ui/core/Typography';
 import submissionDialog from '../SubmissionDialog';
+import { Editor } from 'react-draft-wysiwyg';
+import { EditorState } from 'draft-js';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -90,6 +94,18 @@ export default function PlayQuestion(props) {
   }
   const [option, setOption] = useState(dummy);
   const [optionArray, setOptionArray] = useState(question.options);
+  const textHandler = e => {
+    question.text = e.target.value;
+    props.allFunctions.questionChange(props.qId, question);
+  };
+  const [editorState, setEditorState] = useState('');
+  useEffect(() => {
+    // const contentRaw = convertToRaw(editorState.getCurrentContent());
+
+    const p = JSON.stringify(editorState);
+    // console.log(contentRaw);
+  }, [editorState]);
+
   // console.log(question);
 
   const handleOption = (e, i) => {
@@ -210,7 +226,36 @@ export default function PlayQuestion(props) {
       </div>
     );
   };
-
+  const paragraphBuilder = () => {
+    return (
+      <>
+        <Typography className={classes.typoStyle}>{question.title}</Typography>
+        {/* <div
+          style={{
+            border: '1px solid black',
+            padding: '2px',
+            minHeight: '400px',
+          }}
+        >
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={setEditorState}
+          />
+        </div> */}
+        <TextareaAutosize
+          style={{
+            resize: 'vertical',
+            width: '100%',
+            minHeight: '150px',
+            padding: '10px',
+            marginTop: '10px',
+          }}
+          aria-label="minimum height"
+          onChange={textHandler}
+        />
+      </>
+    );
+  };
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
@@ -239,6 +284,7 @@ export default function PlayQuestion(props) {
                 {question.type == 'mcq' && mcqBuilder()}
                 {question.type == 'trueOrFalse' && tfBuilder()}
                 {question.type == 'checkbox' && checkboxBuilder()}
+                {question.type == 'text' && paragraphBuilder()}
               </div>
             </form>
           </div>

@@ -100,7 +100,6 @@ export default function QuizPlay(props) {
   };
   const handleSubmit = async e => {
     if (previewState) return;
-    console.log('before response', fullQuiz.current);
     const stageResponses = [];
     fullQuiz.current.stages.map((el, i) => {
       const stage = { stageId: el.stage.id };
@@ -110,7 +109,9 @@ export default function QuizPlay(props) {
         const question = {
           questionId: q.id,
         };
-        if (q.options) {
+        if (q.text) {
+          question.text = q.text;
+        } else if (q.options) {
           q.options.map(o => {
             options.push(o.isAnswer);
           });
@@ -126,7 +127,7 @@ export default function QuizPlay(props) {
     const postBody = {
       stageResponses: stageResponses,
     };
-    console.log(postBody);
+    console.log('postbody is', postBody);
     setOpen(true);
 
     await api

@@ -11,6 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { ReactComponent as ReactLogo } from './../assets/check.svg';
 import CloseIcon from '@material-ui/icons/Close';
 import CheckIcon from '@material-ui/icons/Check';
+import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -182,6 +183,42 @@ export default function PlayQuestion(props) {
       </div>
     );
   };
+  const paragraphBuilder = () => {
+    return (
+      <>
+        <Typography className={classes.typoStyle}>{question.title}</Typography>
+        {question.image && (
+          <div className={classes.imageContainer}>
+            <img className={classes.imageStyle} src={question.image} />
+          </div>
+        )}
+        {/* <div
+          style={{
+            border: '1px solid black',
+            padding: '2px',
+            minHeight: '400px',
+          }}
+        >
+          <Editor
+            editorState={editorState}
+            onEditorStateChange={setEditorState}
+          />
+        </div> */}
+        <TextareaAutosize
+          style={{
+            marginTop: '8px',
+            resize: 'none',
+            width: '100%',
+            minHeight: '150px',
+            padding: '10px',
+          }}
+          aria-label="minimum height"
+          value={element.text}
+          readOnly
+        />
+      </>
+    );
+  };
   return (
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
@@ -204,6 +241,7 @@ export default function PlayQuestion(props) {
               {question.type == 'mcq' && mcqBuilder()}
               {question.type == 'trueOrFalse' && tfBuilder()}
               {question.type == 'checkbox' && checkboxBuilder()}
+              {question.type == 'text' && paragraphBuilder()}
             </form>
           </div>
         </div>
