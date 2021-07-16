@@ -9,6 +9,7 @@ import Rating from '@material-ui/lab/Rating';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
+import Moment from 'moment';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -55,8 +56,22 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function SubmissionCard() {
+function formatDate(date) {
+  var rawDate = new Date(date).getTime();
+  var _date = {
+    raw: rawDate,
+    year: Math.floor(rawDate / (1000 * 60 * 60)),
+    days: Math.floor(rawDate / (1000 * 60 * 60 * 24)),
+    hours: Math.floor((rawDate % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+    minutes: Math.floor((rawDate % (1000 * 60 * 60)) / (1000 * 60)),
+    seconds: Math.floor((rawDate % (1000 * 60)) / 1000),
+  };
+  return _date;
+}
+
+export default function SubmissionCard(props) {
   const classes = useStyles();
+
   return (
     <Card className={classes.root}>
       <Grid
@@ -68,11 +83,12 @@ export default function SubmissionCard() {
         <Grid container item md={3} sm={2}>
           <div className={classes.user}>
             <Avatar
-              src="/assets/images/marcos.png"
               className={classes.avatar}
+              // src="/assets/images/marcos.png"
+              src={props.avatar}
             ></Avatar>
             <Typography variant="body2" color="textPrimary">
-              Marcos
+              {props.name}
             </Typography>
           </div>
         </Grid>
@@ -85,7 +101,8 @@ export default function SubmissionCard() {
           style={{ justifyContent: 'center' }}
         >
           <Typography variant="body2" color="textPrimary">
-            Submission Date
+            {/* {new Date(props.date).getTime()} */}
+            {Moment(props.date).format('DD-MM-YYYY')}
           </Typography>
         </Grid>
         <Grid
@@ -96,7 +113,7 @@ export default function SubmissionCard() {
           style={{ justifyContent: 'center' }}
         >
           <Typography variant="body2" color="textPrimary">
-            Total Marks
+            {props.totalMarks}
           </Typography>
         </Grid>
         <Grid
@@ -107,7 +124,7 @@ export default function SubmissionCard() {
           style={{ justifyContent: 'center' }}
         >
           <Typography variant="body2" color="textPrimary">
-            Obtained Marks
+            {props.marks}
           </Typography>
         </Grid>
 
@@ -135,7 +152,25 @@ export default function SubmissionCard() {
         </Grid>
 
         <Grid container item md={2} sm={3} style={{ justifyContent: 'center' }}>
-          <Button>Pending</Button>
+          {props.isEvaluated ? (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: '#4caf50', color: 'white' }}
+            >
+              Evaluated
+            </Button>
+          ) : (
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              style={{ backgroundColor: '#f44336', color: 'white' }}
+            >
+              Pending
+            </Button>
+          )}
         </Grid>
       </Grid>
     </Card>

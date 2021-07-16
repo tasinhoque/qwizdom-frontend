@@ -23,6 +23,7 @@
     "date-fns": "^2.22.1",
     "immer": "^9.0.3",
     "lodash": "^4.17.21",
+    "moment": "^2.29.1",
     "react": "latest",
     "react-dom": "latest",
     "react-router-dom": "^5.2.0",

@@ -142,6 +142,11 @@ const api = {
   publishDraft: (qid, body) => {
     return axios.patch(`${baseUrl}/quizzes/${qid}`, body);
   },
+  getAllSubs: qid => {
+    return axios.get(
+      `${baseUrl}/quizzes/${qid}/responses/complete/all?type=all`
+    );
+  },
 };
 
 export default api;

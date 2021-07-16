@@ -85,6 +85,29 @@ const useStyles = makeStyles(theme => ({
 
 export default function AllSubmissions() {
   const classes = useStyles();
+
+  const [loading, setLoading] = useState(true);
+  const [subs, setSubs] = useState(null);
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (!signedIn) {
+      props.history.push('/');
+    }
+
+    try {
+      setLoading(true);
+
+      const response = await api.getAllSubs('60e9a8f77eccf615e19b60f4');
+      setSubs(response.data.results);
+      // console.log(response.data.results);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
+
   return (
     <>
       <Header />
@@ -175,11 +198,20 @@ export default function AllSubmissions() {
           </Grid>
         </Card>
 
-        <SubmissionCard />
-        <SubmissionCard />
-        <SubmissionCard />
-        <SubmissionCard />
-        <SubmissionCard />
+        {subs != null &&
+          subs.map((e, i) => {
+            return (
+              <SubmissionCard
+                key={i}
+                name={e.responder.name}
+                avatar={e.responder.avatar}
+                date={e.createdAt}
+                evaluated={e.isEvaluated}
+                marks={e.totalPoints}
+                totalMarks={e.quiz.totalPoints}
+              />
+            );
+          })}
       </div>
     </>
   );
