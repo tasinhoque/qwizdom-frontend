@@ -42,7 +42,7 @@ const useStyles = makeStyles(theme => ({
     width: '60%',
     margin: theme.spacing(1, 5, 1, 5),
     padding: theme.spacing(2, 2, 2, 2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       width: '100%',
       margin: theme.spacing(1, 1, 1, 1),
       padding: theme.spacing(1, 1, 1, 1),
@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
   avatar: {
     backgroundColor: red[500],
     margin: theme.spacing(0, 2, 0, 0),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       margin: theme.spacing(0, 0, 0, 0),
     },
   },
@@ -63,16 +63,16 @@ const useStyles = makeStyles(theme => ({
   user: {
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     marginLeft: theme.spacing(2),
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
       marginLeft: theme.spacing(0),
     },
   },
-  hiddenSM: {
-    [theme.breakpoints.down('sm')]: {
+  hiddenXS: {
+    [theme.breakpoints.down('xs')]: {
       display: 'none',
     },
   },
@@ -113,13 +113,8 @@ export default function AllSubmissions() {
       <Header />
       <div className={classes.root}>
         <Card className={classes.subTitle}>
-          <Grid
-            container
-            direction="row"
-            spacing={0}
-            className={classes.titleContainer}
-          >
-            <Grid container item md={3} sm={3}>
+          <Grid container spacing={0} className={classes.titleContainer}>
+            <Grid container item md={3} xs={3}>
               <div className={classes.user}>
                 <Typography variant="body2" color="textPrimary">
                   Participant
@@ -131,18 +126,20 @@ export default function AllSubmissions() {
               container
               item
               md={3}
-              className={classes.hiddenSM}
+              xs={4}
+              // className={classes.hiddenXS}
               style={{ justifyContent: 'center' }}
             >
               <Typography variant="body2" color="textPrimary">
-                Submission Date
+                Date
               </Typography>
             </Grid>
+
             <Grid
               container
               item
-              md={3}
-              className={classes.hiddenSM}
+              md={2}
+              className={classes.hiddenXS}
               style={{ justifyContent: 'center' }}
             >
               <Typography variant="body2" color="textPrimary">
@@ -152,8 +149,8 @@ export default function AllSubmissions() {
             <Grid
               container
               item
-              md={3}
-              className={classes.hiddenSM}
+              md={2}
+              className={classes.hiddenXS}
               style={{ justifyContent: 'center' }}
             >
               <Typography variant="body2" color="textPrimary">
@@ -164,18 +161,7 @@ export default function AllSubmissions() {
             <Grid
               container
               item
-              sm={3}
-              className={classes.hiddenMD}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                Date
-              </Typography>
-            </Grid>
-            <Grid
-              container
-              item
-              sm={3}
+              xs={3}
               className={classes.hiddenMD}
               style={{ justifyContent: 'center' }}
             >
@@ -188,7 +174,7 @@ export default function AllSubmissions() {
               container
               item
               md={2}
-              sm={3}
+              xs={2}
               style={{ justifyContent: 'center' }}
             >
               <Typography variant="body2" color="textPrimary">
