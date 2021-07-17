@@ -1,8 +1,5 @@
-import React, { useContext, useEffect, useRef, useState } from 'react';
-import { stageContext } from '../contexts/stageContext';
+import React, { useEffect, useRef, useState } from 'react';
 import { QuizStage } from '.';
-import QuestionComponent from './QuestionComponent';
-import { isUndefined, cloneDeep } from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import Button from '@material-ui/core/Button';

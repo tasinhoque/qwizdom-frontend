@@ -156,6 +156,8 @@ const api = {
       `${baseUrl}/quizzes/${qid}/responses/complete/all?type=all`
     );
   },
+  getLeaderboard: quizId =>
+    axios.get(`${baseUrl}/quizzes/${quizId}/leaderboard`),
 };
 
 export default api;

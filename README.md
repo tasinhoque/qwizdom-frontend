@@ -2,11 +2,7 @@
 
 ## Quiz Creation Basic
 
-- If survey, remove the evaluation field
-- If unscheduled, remove the time picker and duration field
 - Send default image when user hasn't chosen any image
-- Add a section (radio button type) for schedule type selection
-- If the quiz type is test, we should let the creator choose whether stage shuffle should be available
 
 ## Quiz Creation
 
@@ -30,13 +26,11 @@
 
 - Handle time bound quiz
 - Handle scheduled quiz (set a restriction)
-- [x]When the user has submitted, show him a confirmation dialog and THEN redirect to the quiz home
 
 ## My Submission
 
 - Keep a back button (to go back to the quiz home)
 - Make the input elements un-clickable
-- [x]Keep a header containing date of participation, quiz name, cover image, current stage, etc.
 
 ## Quiz Card
 
@@ -66,10 +60,6 @@
 
 - Complete the view, follow facebook
 
-## Leaderboard
-
-- [backend] Write necessary APIs
-- Complete the view
 
 ## Notification
 
@@ -77,25 +67,11 @@
 - Fetch notifications for a user
 - Facebook style
 
-## Review
-
-- Let the user give feedback on a quiz
 
 ## 12 July
 
-- While posting a complete quiz, frontend should send points of number type, not string.
 - "Q : dfsd": Remove the "Q : " part
-- Rename:
-  - point to Points
-  - Total Point to Total Points
-- "Stage 1 of 1": Add bottom margin
-- Quiz play header
-  - Add top margin
-  - Remove space between the cover image and the top line of the card
-  - Make the top line of the card rounded
-- Remove Time filter from dashboard
 - Add Upload cover photo button (remove the text), basic quiz creation page
-- Keep "Stage 1" title outside of the stage card
 
 ## Major tasks
 
@@ -106,3 +82,31 @@
 - Manual Evaluation: Nibir
 
 ## Minor Tasks
+
+### Features
+
+- [ ] Show categories for quiz in quiz home.
+- [ ] Rename: paragraph to descriptive (question type)
+- [ ] Add explanation text field in descriptive type question
+- [ ] Scheduled quiz should have some restrictions. 
+- [ ] Remove the remember me checkbox from sign in page
+- [ ] Show subscriber count in quiz home
+- [ ] Remove the forgot password link (sign in)
+- [ ] Remove the copyright text (sign in)
+- [ ] Start the date picker from today and start the time picker from present
+  time
+- [ ] Show error if the creator doesn't choose correct answer for MCQ/Checkbox
+  in case of Test
+
+### Bugfixes
+
+- [x] In quiz home, the pagination component is not getting displayed on the
+  next line. It's on the same line with the review component in some cases.
+- [ ] In quiz creation, we're not restricting the creator. We shouldn't let the
+  creator use descriptive format for questions while creating a quiz with auto
+  evaluation.
+- [ ] Creation basic: Handle invalid start dates.
+- [ ] Change serial: The first question a new stage should have serial 1.
+- [x] Remove date picker if the quiz is unscheduled
+- [ ] Draft quiz shouldn't be displayed in dashboard
+- [ ] Show correct average rating and participant count
