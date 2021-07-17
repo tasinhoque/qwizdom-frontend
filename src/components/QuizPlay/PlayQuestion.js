@@ -159,10 +159,7 @@ export default function PlayQuestion(props) {
   const checkboxBuilder = () => {
     return (
       <div>
-        <Typography className={classes.typoStyle}>
-          {' '}
-          Q : {question.title}
-        </Typography>
+        <Typography className={classes.typoStyle}> {question.title}</Typography>
         {question.image && (
           <div className={classes.imageContainer}>
             <img className={classes.imageStyle} src={img} />
