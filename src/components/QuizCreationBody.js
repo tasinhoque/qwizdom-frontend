@@ -4,7 +4,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import Button from '@material-ui/core/Button';
 import { useParams } from 'react-router';
-import { Grid } from '@material-ui/core';
+import { Grid, Paper } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 import { QuizPlay } from '../pages';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -39,6 +39,7 @@ export default function QuizCreationBody(props) {
   const history = useHistory();
 
   const [submitVal, setSubmit] = useState('halt');
+  const [error, setError] = useState(false);
   const { id } = useParams();
   const location = useLocation();
 
@@ -64,8 +65,36 @@ export default function QuizCreationBody(props) {
       questions: [],
     },
   ]);
+  const errorChecker = () => {
+    let flag = true;
+    store.current.map((st, i) => {
+      st.questions.map((q, j) => {
+        if (q.type != 'text') {
+          let val = false;
+          q.options.map(opt => {
+            console.log(opt);
+            val = val || opt.isAnswer;
+          });
+          if (val == false) {
+            store.current[i].questions[j].uncheckedError = true;
+          } else {
+            store.current[i].questions[j].uncheckedError = false;
+          }
+          flag = flag && val;
+        }
+      });
+    });
+    console.log('flag is', flag);
+    return flag;
+  };
 
-  const handleSubmit = async isPublished => {
+  const handleSubmit = isPublished => {
+    const flag = errorChecker();
+    console.log('checker flag is', flag);
+    if (flag == false) {
+      setError(Math.random());
+      return;
+    }
     console.log('store is', store.current);
     var postBody = {
       stages: _.cloneDeep(store.current),
@@ -87,7 +116,7 @@ export default function QuizCreationBody(props) {
     });
     console.log('postbody is ', postBody);
 
-    await api
+    api
       .postCompleteQuiz(id, postBody)
       .then(res => {
         console.log('postbody response', res);
@@ -104,7 +133,7 @@ export default function QuizCreationBody(props) {
 
           fileUpload(id, formData);
         });
-        history.push(`/quiz-home/${id}`);
+        // history.push(`/quiz-home/${id}`);
       })
       .catch(error => {
         console.log(error);
@@ -199,7 +228,7 @@ export default function QuizCreationBody(props) {
             {
               stageId: newId,
               questionId: 0,
-              title: 'new one',
+              title: '',
               points: 10,
             },
           ],
@@ -258,7 +287,7 @@ export default function QuizCreationBody(props) {
       const newQuestion = {
         stageId: stageId,
         questionId: newId,
-        title: 'new one',
+        title: '',
         points: 10,
       };
 
@@ -317,6 +346,7 @@ export default function QuizCreationBody(props) {
                     arrayIndex={i}
                     fullQues={store.current}
                     bodySetter={allFunctions}
+                    quizInfo={quizInfo}
                   />
                 </Grid>
               );

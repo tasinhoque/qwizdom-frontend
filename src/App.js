@@ -34,6 +34,10 @@ const App = () => {
           path="/:quizId/evaluate-quiz/:userId"
           component={ManualEvaluation}
         />
+        <Route
+          path="/quiz/:id/user-submission/:userId"
+          component={ResultPage}
+        />
       </Switch>
     </main>
   );

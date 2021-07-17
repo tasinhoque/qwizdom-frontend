@@ -44,6 +44,24 @@ const useStyles = makeStyles(theme => ({
     fontWeight: '500',
     fontSize: '1.6rem',
   },
+  barTypoStyle: {
+    fontWeight: '500',
+    fontSize: '1.2rem',
+    padding: '25px',
+  },
+  barContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+  },
+  barStyle: {
+    backgroundColor: 'aliceBlue',
+    margin: '20px 0px 40px 0px',
+    width: '80%',
+    [theme.breakpoints.down('sm')]: {
+      width: '95%',
+    },
+  },
 
   iconContainer: {
     position: 'absolute',
@@ -58,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 export default function QuizStage(props) {
   const classes = useStyles();
 
-  // console.log(props);
+  console.log(props);
   const deleteStage = () => {
     props.bodySetter.deleteStage(props.stageId);
   };
@@ -68,24 +86,22 @@ export default function QuizStage(props) {
     props.bodySetter.addStage(props.stageId);
   };
 
-  const addQuestion = e => {
-    // const dummy = JSON.parse(JSON.stringify(value));
-    // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
-
-    const temp = props.questions.map(x => x.questionId);
-    const newId = Math.max(...temp) + 1;
-
-    const newQuestion = {
-      stageId: props.stageId,
-      questionId: newId,
-      title: 'new one',
-    };
-    props.bodySetter.addQuestion(newQuestion);
-  };
-
   if (props.questions != undefined) {
     return (
       <>
+        {props.arrayIndex == 0 && props.quizInfo.isTest && (
+          <div className={classes.root}>
+            <div className={classes.container}>
+              <Paper className={classes.paperStyle} elevation={5}>
+                <Typography align="center" className={classes.barTypoStyle}>
+                  Please check the correct answers of MCQ, Checkbox and
+                  True/False
+                </Typography>
+              </Paper>
+            </div>
+          </div>
+        )}
+
         <div className={classes.root}>
           <div className={classes.container}>
             <Paper className={classes.paperStyle} elevation={10}>
@@ -112,6 +128,7 @@ export default function QuizStage(props) {
                     bodySetter={props.bodySetter}
                     fullQues={props.fullQues}
                     arrayIndex={i}
+                    quizInfo={props.quizInfo}
                     key={
                       `qID ${q.questionId} sId ${props.stageId}   ` +
                       Math.random()

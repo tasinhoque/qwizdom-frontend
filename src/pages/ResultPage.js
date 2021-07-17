@@ -12,6 +12,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { Height } from '@material-ui/icons';
+import { useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   buttonStyle: {
@@ -61,8 +62,18 @@ export default function ResultPage() {
   const fullQuiz = useRef(null);
   const [currentPageNum, setCurrentPageNum] = useState(0);
   const [quizInfo, setQuizInfo] = useState('');
-  const { id } = useParams();
   const history = useHistory();
+  const { id, userId } = useParams();
+
+  const location = useLocation();
+  const path = location.pathname;
+  // if (path.includes('user-submission')) {
+  //   const { qId, userId } = useParams();
+  // } else {
+  //   const { id } = useParams();
+  //   console.log('id is', id);
+  // }
+
   // const id = '60dc856ecc4ccb376c3d034f';
 
   const pageChange = (_event, num) => {
@@ -70,6 +81,16 @@ export default function ResultPage() {
     // console.log(fullQuiz.current.stages[num - 1]);
   };
   useEffect(async () => {
+    if (path.includes('user-submission')) {
+      api.getEvaluationScript(id, userId).then(res => {
+        fullQuiz.current = res.data;
+        console.log(fullQuiz.current);
+        setTotalPages(res.data.stageResponses.length);
+
+        //   // console.log(fullQuiz.current.stages[currentPageNum].questions);
+        setLoading(false);
+      });
+    }
     api
       .getQuizResult(id)
       .then(res => {
