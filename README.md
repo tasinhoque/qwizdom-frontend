@@ -82,12 +82,11 @@
 - Manual Evaluation: Nibir
 
 ## Minor Tasks
-
 - In quiz home, the pagination component is not getting displayed on the next line. It's on the same line with the review component in some cases.
 - Show categories for quiz in quiz home.
-- In quiz creation, we're not restricting the creator. We shouldn't let the creator use descriptive format for questions while creating a quiz with auto evaluation.
+-[x] In quiz creation, we're not restricting the creator. We shouldn't let the creator use descriptive format for questions while creating a quiz with auto evaluation.
 - There should be some restrictions on date picking. For example, the creator shouldn't be able to pick a date older than the present.
-- Rename: paragraph to descriptive (question type)
+-[x] Rename: paragraph to descriptive (question type)
 - Add explanation text field in descriptive type question
 - Change serial: The first question a new stage should have serial 1.
 - Scheduled quiz should have some restrictions. 
@@ -99,4 +98,6 @@
 - Remove the forgot password link (sign in)
 - Remove the copyright text (sign in)
 - Start the date picker from today and start the time picker from present time
-- Show error if the creator doesn't choose correct answer for MCQ/Checkbox in case of Test
+-[x] Show error if the creator doesn't choose correct answer for MCQ/Checkbox in case of Test
+- disable textfield in preview
+- Route change on manual evaluation

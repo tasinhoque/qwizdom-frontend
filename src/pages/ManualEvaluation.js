@@ -86,7 +86,7 @@ export default function ManualEvaluation() {
   const allFunctions = {
     questionChange: (qId, point) => {
       fullQuiz.current.stageResponses[currentPageNum].responses[qId].points =
-        point;
+        Number(point);
       console.log(fullQuiz.current);
     },
   };

@@ -127,6 +127,13 @@ export default function QuestionComponent(props) {
   let full = props.fullQues[pos].questions[quesPos];
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
+  console.log('full is ', full);
+
+  let errorMessage = '';
+  if (full.uncheckedError) {
+    errorMessage = ' Please pick the correct answer and submit ';
+    console.log(errorMessage);
+  }
 
   const questionBody = useRef({
     stageId: props.stageId,
@@ -189,7 +196,7 @@ export default function QuestionComponent(props) {
   };
 
   const onPointChange = e => {
-    questionBody.current.points = e.target.value;
+    questionBody.current.points = Number(e.target.value);
     props.questionChange(questionBody.current);
   };
 
@@ -624,9 +631,11 @@ export default function QuestionComponent(props) {
                     <MenuItem value={'checkbox'}>
                       <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
                     </MenuItem>
-                    <MenuItem value={'text'}>
-                      <ViewHeadlineIcon /> Paragraph
-                    </MenuItem>
+                    {props.quizInfo.hasAutoEvaluation == false && (
+                      <MenuItem value={'text'}>
+                        <ViewHeadlineIcon /> Descriptive
+                      </MenuItem>
+                    )}
                   </Select>
                 </FormControl>
 
@@ -639,6 +648,7 @@ export default function QuestionComponent(props) {
                   size="medium"
                   defaultValue={questionBody.current.points}
                   variant="outlined"
+                  InputProps={{ inputProps: { min: 0 } }}
                 />
               </Grid>
             </Grid>
@@ -651,6 +661,17 @@ export default function QuestionComponent(props) {
               {selectType == 'checkbox' && checkboxBuilder()}
               {selectType == 'text' && paragraphBuilder()}
             </div>
+            {full.uncheckedError && (
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginLeft: '-32px',
+                }}
+              >
+                <p style={{ color: 'red' }}>{errorMessage}</p>
+              </div>
+            )}
           </form>
 
           {/* <p> {props.questionName}</p> */}
