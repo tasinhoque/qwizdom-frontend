@@ -107,6 +107,6 @@
   evaluation.
 - [ ] Creation basic: Handle invalid start dates.
 - [ ] Change serial: The first question a new stage should have serial 1.
-- [ ] Remove date picker if the quiz is unscheduled
+- [x] Remove date picker if the quiz is unscheduled
 - [ ] Draft quiz shouldn't be displayed in dashboard
 - [ ] Show correct average rating and participant count

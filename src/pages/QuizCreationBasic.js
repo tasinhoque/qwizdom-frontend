@@ -390,7 +390,7 @@ const QuizCreationBasic = () => {
               )}
             </Grid>
             <Grid item>
-              {isTest ? (
+              {isTest && isScheduled ? (
                 <Grid item>
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <Grid container justify="space-around" direction="column">
