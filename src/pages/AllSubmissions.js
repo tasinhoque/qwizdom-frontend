@@ -21,6 +21,7 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
 import { red } from '@material-ui/core/colors';
+import { useParams } from 'react-router';
 
 import api from '../api';
 import {
@@ -86,6 +87,7 @@ const useStyles = makeStyles(theme => ({
 export default function AllSubmissions() {
   const classes = useStyles();
 
+  const { id, userId } = useParams();
   const [loading, setLoading] = useState(true);
   const [subs, setSubs] = useState(null);
 
@@ -98,7 +100,8 @@ export default function AllSubmissions() {
     try {
       setLoading(true);
 
-      const response = await api.getAllSubs('60e9a8f77eccf615e19b60f4');
+      console.log(id);
+      const response = await api.getAllSubs(id);
       setSubs(response.data.results);
       // console.log(response.data.results);
 

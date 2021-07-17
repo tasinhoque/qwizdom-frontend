@@ -29,9 +29,9 @@ const App = () => {
         <Route path="/quiz-play/:id" component={QuizPlay} />
         <Route path="/quiz/:id/leaderboard" component={Leaderboard} />
         <Route path="/quiz-result/:id" component={ResultPage} />
+        <Route path="/all-submissions/:id" component={AllSubmissions} />
         <Route path="/creation/:id" component={QuizCreation} />
         <Route path="/edit-quiz/:id" component={QuizCreation} />
-        <Route path="/allsubs" component={AllSubmissions} />
         <Route
           path="/:quizId/evaluate-quiz/:userId"
           component={ManualEvaluation}

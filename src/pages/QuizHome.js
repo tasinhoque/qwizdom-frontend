@@ -258,6 +258,10 @@ export default function QuizHome(props) {
     props.history.push(`/quiz-result/${id}`);
   };
 
+  const allSubmissions = () => {
+    props.history.push(`/all-submissions/${id}`);
+  };
+
   const quizCreationRerouting = () => {
     props.history.push(`/edit-quiz/${id}`);
   };
@@ -423,6 +427,7 @@ export default function QuizHome(props) {
                       variant="contained"
                       color="primary"
                       className={classes.buttons}
+                      onClick={allSubmissions}
                     >
                       All Submissions
                     </Button>

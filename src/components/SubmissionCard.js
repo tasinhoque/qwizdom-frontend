@@ -71,6 +71,10 @@ export default withRouter(function SubmissionCard(props) {
     props.history.push(`/${props.quizid}/evaluate-quiz/${props.userid}`);
   };
 
+  const handleDone = () => {
+    props.history.push(`/quiz/${props.quizid}/user-submission/${props.userid}`);
+  };
+
   return (
     <Card className={classes.root}>
       <Grid container spacing={0} className={classes.titleContainer}>
@@ -140,6 +144,7 @@ export default withRouter(function SubmissionCard(props) {
               type="submit"
               variant="contained"
               style={{ backgroundColor: '#4caf50', color: 'white' }}
+              onClick={handleDone}
             >
               Evaluated
             </Button>
