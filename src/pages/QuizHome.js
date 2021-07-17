@@ -390,7 +390,7 @@ export default function QuizHome(props) {
                     color="primary"
                     className={classes.buttons}
                     onClick={() => {
-                      history.push('/leaderboard');
+                      history.push(`/quiz/${id}/leaderboard`);
                     }}
                   >
                     Leaderboard

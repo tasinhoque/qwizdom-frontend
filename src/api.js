@@ -151,6 +151,8 @@ const api = {
   publishDraft: (qid, body) => {
     return axios.patch(`${baseUrl}/quizzes/${qid}`, body);
   },
+  getLeaderboard: quizId =>
+    axios.get(`${baseUrl}/quizzes/${quizId}/leaderboard`),
 };
 
 export default api;

@@ -9,7 +9,6 @@ import {
   QuizCreationBasic,
   QuizPlay,
   Leaderboard,
-  Quiz,
   ResultPage,
   ManualEvaluation,
 } from './pages';
@@ -27,7 +26,7 @@ const App = () => {
         <Route path="/profile" component={Profile} />
         <Route path="/creation-basic" component={QuizCreationBasic} />
         <Route path="/quiz-play/:id" component={QuizPlay} />
-        <Route path="/leaderboard" component={Leaderboard} />
+        <Route path="/quiz/:id/leaderboard" component={Leaderboard} />
         <Route path="/quiz-result/:id" component={ResultPage} />
         <Route path="/creation/:id" component={QuizCreation} />
         <Route path="/edit-quiz/:id" component={QuizCreation} />
