@@ -515,18 +515,31 @@ export default function QuizHome(props) {
             spacing={3}
             className={classes.reviewGrid}
           >
-            {reviews.map((e, i) => {
-              return (
-                <Grid item md={6} xs={12} key={i}>
+            <Grid container item spacing={3}>
+              {reviews.length == 1 ? (
+                <Grid item md={12} xs={12}>
                   <QuizReviewCard
-                    name={e.user.name}
-                    avatar={e.user.avatar}
-                    rating={e.rating}
-                    text={e.text}
+                    name={reviews[0].user.name}
+                    avatar={reviews[0].user.avatar}
+                    rating={reviews[0].rating}
+                    text={reviews[0].text}
                   />
                 </Grid>
-              );
-            })}
+              ) : (
+                reviews.map((e, i) => {
+                  return (
+                    <Grid item md={6} xs={12} key={i}>
+                      <QuizReviewCard
+                        name={e.user.name}
+                        avatar={e.user.avatar}
+                        rating={e.rating}
+                        text={e.text}
+                      />
+                    </Grid>
+                  );
+                })
+              )}
+            </Grid>
             <Pagination
               count={totalPages}
               onChange={pageChange}

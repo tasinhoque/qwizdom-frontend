@@ -83,7 +83,7 @@
 
 ## Minor Tasks
 
-- [ ] In quiz home, the pagination component is not getting displayed on the
+- [x] In quiz home, the pagination component is not getting displayed on the
   next line. It's on the same line with the review component in some cases.
 - [ ] Show categories for quiz in quiz home.
 - [ ] In quiz creation, we're not restricting the creator. We shouldn't let the
