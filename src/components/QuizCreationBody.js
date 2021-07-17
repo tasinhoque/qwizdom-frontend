@@ -228,7 +228,7 @@ export default function QuizCreationBody(props) {
             {
               stageId: newId,
               questionId: 0,
-              title: 'new one',
+              title: '',
               points: 10,
             },
           ],
@@ -287,7 +287,7 @@ export default function QuizCreationBody(props) {
       const newQuestion = {
         stageId: stageId,
         questionId: newId,
-        title: 'new one',
+        title: '',
         points: 10,
       };
 

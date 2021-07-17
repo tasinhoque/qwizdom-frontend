@@ -86,21 +86,6 @@ export default function QuizStage(props) {
     props.bodySetter.addStage(props.stageId);
   };
 
-  const addQuestion = e => {
-    // const dummy = JSON.parse(JSON.stringify(value));
-    // const pos = dummy.findIndex((i) => i.stageId == props.stageId);
-
-    const temp = props.questions.map(x => x.questionId);
-    const newId = Math.max(...temp) + 1;
-
-    const newQuestion = {
-      stageId: props.stageId,
-      questionId: newId,
-      title: 'new one',
-    };
-    props.bodySetter.addQuestion(newQuestion);
-  };
-
   if (props.questions != undefined) {
     return (
       <>
