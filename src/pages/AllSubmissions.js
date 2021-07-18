@@ -114,97 +114,109 @@ export default function AllSubmissions() {
   return (
     <>
       <Header />
-      <div className={classes.root}>
-        <Card className={classes.subTitle}>
-          <Grid container spacing={0} className={classes.titleContainer}>
-            <Grid container item md={3} xs={3}>
-              <div className={classes.user}>
+      {loading ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '50px',
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <div className={classes.root}>
+          <Card className={classes.subTitle}>
+            <Grid container spacing={0} className={classes.titleContainer}>
+              <Grid container item md={3} xs={3}>
+                <div className={classes.user}>
+                  <Typography variant="body2" color="textPrimary">
+                    Participant
+                  </Typography>
+                </div>
+              </Grid>
+
+              <Grid
+                container
+                item
+                md={3}
+                xs={4}
+                // className={classes.hiddenXS}
+                style={{ justifyContent: 'center' }}
+              >
                 <Typography variant="body2" color="textPrimary">
-                  Participant
+                  Date
                 </Typography>
-              </div>
-            </Grid>
+              </Grid>
 
-            <Grid
-              container
-              item
-              md={3}
-              xs={4}
-              // className={classes.hiddenXS}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                Date
-              </Typography>
-            </Grid>
+              <Grid
+                container
+                item
+                md={2}
+                className={classes.hiddenXS}
+                style={{ justifyContent: 'center' }}
+              >
+                <Typography variant="body2" color="textPrimary">
+                  Total Marks
+                </Typography>
+              </Grid>
+              <Grid
+                container
+                item
+                md={2}
+                className={classes.hiddenXS}
+                style={{ justifyContent: 'center' }}
+              >
+                <Typography variant="body2" color="textPrimary">
+                  Obtained Marks
+                </Typography>
+              </Grid>
 
-            <Grid
-              container
-              item
-              md={2}
-              className={classes.hiddenXS}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                Total Marks
-              </Typography>
-            </Grid>
-            <Grid
-              container
-              item
-              md={2}
-              className={classes.hiddenXS}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                Obtained Marks
-              </Typography>
-            </Grid>
+              <Grid
+                container
+                item
+                xs={3}
+                className={classes.hiddenMD}
+                style={{ justifyContent: 'center' }}
+              >
+                <Typography variant="body2" color="textPrimary">
+                  Marks
+                </Typography>
+              </Grid>
 
-            <Grid
-              container
-              item
-              xs={3}
-              className={classes.hiddenMD}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                Marks
-              </Typography>
+              <Grid
+                container
+                item
+                md={2}
+                xs={2}
+                style={{ justifyContent: 'center' }}
+              >
+                <Typography variant="body2" color="textPrimary">
+                  State
+                </Typography>
+              </Grid>
             </Grid>
+          </Card>
 
-            <Grid
-              container
-              item
-              md={2}
-              xs={2}
-              style={{ justifyContent: 'center' }}
-            >
-              <Typography variant="body2" color="textPrimary">
-                State
-              </Typography>
-            </Grid>
-          </Grid>
-        </Card>
-
-        {subs != null &&
-          subs.map((e, i) => {
-            return (
-              <SubmissionCard
-                key={i}
-                name={e.responder.name}
-                avatar={e.responder.avatar}
-                userid={e.responder.id}
-                quizid={e.quiz.id}
-                date={e.createdAt}
-                isEvaluated={e.isEvaluated}
-                isAuto={e.quiz.hasAutoEvaluation}
-                marks={e.totalPoints}
-                totalMarks={e.quiz.totalPoints}
-              />
-            );
-          })}
-      </div>
+          {subs != null &&
+            subs.map((e, i) => {
+              return (
+                <SubmissionCard
+                  key={i}
+                  name={e.responder.name}
+                  avatar={e.responder.avatar}
+                  userid={e.responder.id}
+                  quizid={e.quiz.id}
+                  date={e.createdAt}
+                  isEvaluated={e.isEvaluated}
+                  isAuto={e.quiz.hasAutoEvaluation}
+                  marks={e.totalPoints}
+                  totalMarks={e.quiz.totalPoints}
+                />
+              );
+            })}
+        </div>
+      )}
     </>
   );
 }
