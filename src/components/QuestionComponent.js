@@ -119,11 +119,19 @@ const useStyles = makeStyles(theme => ({
 
 export default function QuestionComponent(props) {
   let qHold = props.element;
-  console.log(props);
+  // console.log(props);
   const pos = props.fullQues.findIndex(i => i.stageId == props.stageId);
   const quesPos = props.fullQues[pos].questions.findIndex(
     i => i.questionId == props.questionId
   );
+  let count = 1;
+  for (let i = 0; i < pos; i++) {
+    count += props.fullQues[i].questions.length;
+
+    console.log('length is', props.fullQues[i].questions.length);
+  }
+  console.log('pos quesPos', pos, quesPos);
+  count += quesPos;
   let full = props.fullQues[pos].questions[quesPos];
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
@@ -540,7 +548,7 @@ export default function QuestionComponent(props) {
                 margin: '0px 0px 5px 0px',
               }}
             >
-              Question {props.arrayIndex + 1}
+              Question {count}
             </Typography>
             <Grid container>
               <Grid container item xs={6} lg={8} direction="column">
@@ -645,25 +653,27 @@ export default function QuestionComponent(props) {
                     <MenuItem value={'checkbox'}>
                       <CheckBoxIcon style={{ fontSize: '1.7rem' }} /> Checkbox{' '}
                     </MenuItem>
-                    {props.quizInfo.hasAutoEvaluation == false && (
+                    {(props.quizInfo.isTest == false ||
+                      props.quizInfo.hasAutoEvaluation == false) && (
                       <MenuItem value={'text'}>
                         <ViewHeadlineIcon /> Descriptive
                       </MenuItem>
                     )}
                   </Select>
                 </FormControl>
-
-                <TextField
-                  className={classes.pointStyle}
-                  onChange={onPointChange}
-                  id="outlined-number"
-                  label="Points"
-                  type="number"
-                  size="medium"
-                  defaultValue={questionBody.current.points}
-                  variant="outlined"
-                  InputProps={{ inputProps: { min: 0 } }}
-                />
+                {props.quizInfo.isTest && (
+                  <TextField
+                    className={classes.pointStyle}
+                    onChange={onPointChange}
+                    id="outlined-number"
+                    label="Points"
+                    type="number"
+                    size="medium"
+                    defaultValue={questionBody.current.points}
+                    variant="outlined"
+                    InputProps={{ inputProps: { min: 0 } }}
+                  />
+                )}
               </Grid>
             </Grid>
 
