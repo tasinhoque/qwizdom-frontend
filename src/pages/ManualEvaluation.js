@@ -54,7 +54,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function ManualEvaluation() {
+export default function ManualEvaluation(props) {
   const { quizId, userId } = useParams();
   console.log('quizId', quizId);
   console.log('userId', userId);
@@ -75,9 +75,15 @@ export default function ManualEvaluation() {
       });
     });
     console.log(pointArray);
-    api.submitEvaluation(fullQuiz.current.id, pointArray).then(res => {
-      console.log(res);
-    });
+    api
+      .submitEvaluation(fullQuiz.current.id, pointArray)
+      .then(res => {
+        console.log(res);
+        props.history.push(`/all-submissions/${quizId}`);
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
   const pageChange = (_event, num) => {
     setCurrentPageNum(num - 1);
