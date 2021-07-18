@@ -12,6 +12,7 @@ import {
   Leaderboard,
   ResultPage,
   ManualEvaluation,
+  ForumPage,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -40,6 +41,7 @@ const App = () => {
           path="/quiz/:id/user-submission/:userId"
           component={ResultPage}
         />
+        <Route path="/quiz/:id/forum" component={ForumPage} />
       </Switch>
     </main>
   );

@@ -39,11 +39,6 @@
 
 - [x]  Show participant name in the bar of result page, evaluation script
 - [x]  Route after submission in manual evaluation
-- []  Handle Blank page in manual evaluation
+- [x]  Handle Blank page in manual evaluation
 - []  Duplicate in option Error
 - [x]  no point in survey
-
-## Backend check
-- [x]  After evaluation submit , still pending showing
-- []  IsPublished query not working 
-- []  Set default of totalParticipant count

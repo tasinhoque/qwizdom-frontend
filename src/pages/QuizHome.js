@@ -265,6 +265,9 @@ export default function QuizHome(props) {
   const quizCreationRerouting = () => {
     props.history.push(`/edit-quiz/${id}`);
   };
+  const forumRoute = () => {
+    history.push(`/quiz/${id}/forum`);
+  };
 
   const pageChange = (_event, num) => {
     setRevPage(num);
@@ -439,6 +442,7 @@ export default function QuizHome(props) {
                     variant="contained"
                     color="primary"
                     className={classes.buttons}
+                    onClick={forumRoute}
                   >
                     Forum
                   </Button>

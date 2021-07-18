@@ -10,3 +10,4 @@ export { default as Leaderboard } from './Leaderboard';
 export { default as ResultPage } from './ResultPage';
 export { default as AllSubmissions } from './AllSubmissions';
 export { default as ManualEvaluation } from './ManualEvaluation';
+export { default as ForumPage } from './ForumPage';

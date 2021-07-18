@@ -13,7 +13,6 @@ import TimerIcon from '@material-ui/icons/Timer';
 import store from '../components/QuizPlay/store';
 import { Grid, Paper, Typography } from '@material-ui/core';
 import SubmissionDialog from '../components/SubmissionDialog';
-import { useTimer } from 'react-timer-hook';
 import MyTimer from '../components/QuizPlay/MyTimer';
 
 const useStyles = makeStyles(theme => ({

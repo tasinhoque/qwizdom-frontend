@@ -111,3 +111,25 @@
 - [x] Remove date picker if the quiz is unscheduled
 - [ ] Draft quiz shouldn't be displayed in dashboard
 - [x] Show correct average rating and participant count
+
+## Backend check
+- [x]  After evaluation submit , still pending showing
+- []  IsPublished query not working for getting only pubished quizzes
+- []  Set a default  value for totalParticipant count for a quiz
+- []  Delete post
+- []  Delete comment 
+- []  Populate post creator info in forum APIs(username,id,avatar)
+- []  Task page APIs
+- []  Paginate all discussion thread api
+
+
+## Forum Tasks
+- []  Paginate all discussion threads 
+- []  Post new discussion thread
+      - [] Thread Topic
+      - [] Thread Content
+      - [] Image ????
+- []  A single page for each discussion thread. In that page, comments will be visible and 
+      people can post comments
+      - []  Limited number of comments(suppose 5) will be shown at first
+      - []  Buttons to show more comments, hide all comments  

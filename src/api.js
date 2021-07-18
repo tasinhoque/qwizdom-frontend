@@ -158,6 +158,26 @@ const api = {
   },
   getLeaderboard: quizId =>
     axios.get(`${baseUrl}/quizzes/${quizId}/leaderboard`),
+
+  //forum APIs
+  getAllDiscussionThread: quizId => {
+    return axios.get(`${baseUrl}/quizzes/${quizId}/discussion-threads`);
+  },
+  getSingleDiscussionThread: threadId => {
+    return axios.get(`${baseUrl}/discussion-threads/${threadId}`);
+  },
+  postDiscussionThread: (quizId, body) => {
+    return axios.post(`${baseUrl}/quizzes/${quizId}/discussion-threads`, body);
+  },
+  getThreadComments: threadId => {
+    return axios.get(`${baseUrl}/discussion-threads/${threadId}/comments`);
+  },
+  postComment: (threadId, body) => {
+    return axios.post(
+      `${baseUrl}/discussion-threads/${threadId}/comments`,
+      body
+    );
+  },
 };
 
 export default api;
