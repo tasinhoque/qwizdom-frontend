@@ -91,7 +91,7 @@ export default function EvaluateQuestion(props) {
     });
   }
 
-  console.log(props);
+  // console.log(props);
   const classes = useStyles();
   const onPointChange = e => {
     element.points = e.target.value;
@@ -127,6 +127,7 @@ export default function EvaluateQuestion(props) {
             width: '100%',
             minHeight: '150px',
             padding: '10px',
+            border: '2px solid black',
           }}
           aria-label="minimum height"
           value={element.text}
@@ -137,51 +138,56 @@ export default function EvaluateQuestion(props) {
     );
   };
   return (
-    <div className={classes.container}>
-      <Paper className={classes.questionStyle} elevation={7}>
-        <div className={classes.paperItemStyle}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Typography
-              style={{
-                fontWeight: '400',
-                fontSize: '1.4rem',
-              }}
-            >
-              Question {props.qId + 1}
-            </Typography>
-            <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
-              {question.points} points
-            </Typography>
-          </div>
-          <div style={{ padding: '20px 0px 0px 20px' }}>
-            <form>{question.type == 'text' && paragraphBuilder()}</form>
-            <Grid
-              container
-              style={{ marginTop: '3px' }}
-              spacing={3}
-              alignItems="center"
-            >
-              <Grid item>
-                <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
-                  Score{' '}
-                </Typography>
+    question.type == 'text' && (
+      <div className={classes.container}>
+        <Paper className={classes.questionStyle} elevation={7}>
+          <div className={classes.paperItemStyle}>
+            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+              <Typography
+                style={{
+                  fontWeight: '400',
+                  fontSize: '1.4rem',
+                }}
+              >
+                Question {question.serial + 1}
+              </Typography>
+              <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
+                {question.points} points
+              </Typography>
+            </div>
+            <div style={{ padding: '20px 0px 0px 20px' }}>
+              <form>{paragraphBuilder()}</form>
+
+              <Grid
+                container
+                style={{ marginTop: '3px' }}
+                spacing={3}
+                alignItems="center"
+              >
+                <Grid item>
+                  <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
+                    Score{' '}
+                  </Typography>
+                </Grid>
+                <Grid item style={{ flexGrow: '1' }}>
+                  <TextField
+                    className={classes.pointStyle}
+                    onChange={onPointChange}
+                    id="outlined-number"
+                    type="number"
+                    size="medium"
+                    defaultValue={element.points}
+                    variant="outlined"
+                    InputProps={{
+                      inputProps: { min: 0, max: question.points },
+                    }}
+                  />
+                </Grid>
               </Grid>
-              <Grid item style={{ flexGrow: '1' }}>
-                <TextField
-                  className={classes.pointStyle}
-                  onChange={onPointChange}
-                  id="outlined-number"
-                  type="number"
-                  size="medium"
-                  defaultValue={element.points}
-                  variant="outlined"
-                  InputProps={{ inputProps: { min: 0, max: question.points } }}
-                />
-              </Grid>
-            </Grid>
+            </div>
           </div>
-        </div>
-      </Paper>
-    </div>
+        </Paper>
+      </div>
+    )
   );
 }

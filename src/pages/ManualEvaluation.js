@@ -97,6 +97,7 @@ export default function ManualEvaluation(props) {
     },
   };
   useEffect(async () => {
+    const allTextQuestions = [];
     api
       .getEvaluationScript(quizId, userId)
       .then(res => {
@@ -105,9 +106,27 @@ export default function ManualEvaluation(props) {
           e.responses.map((q, j) => {
             if (q.question.type != 'text') {
               res.data.stageResponses[i].responses.splice(j, 1);
+            } else {
+              allTextQuestions.push(q);
             }
           });
         });
+        const quesPerPage = 2;
+        res.data.stageResponses = [];
+        const totalPageAll = Math.ceil(allTextQuestions.length / quesPerPage);
+        let responseArray = [];
+        if (allTextQuestions.length <= quesPerPage) {
+          res.data.stageResponses.push({ responses: allTextQuestions });
+        }
+        for (let i = 1; i <= allTextQuestions.length; i++) {
+          responseArray.push(allTextQuestions[i - 1]);
+
+          if (i % quesPerPage == 0) {
+            res.data.stageResponses.push({ responses: responseArray });
+            responseArray = [];
+          }
+        }
+        // console.log(res.data.stageResponses);
         fullQuiz.current = res.data;
         console.log(fullQuiz.current);
         setTotalPages(res.data.stageResponses.length);
@@ -142,7 +161,7 @@ export default function ManualEvaluation(props) {
                 <Grid container justify="center" style={{ marginTop: '10px' }}>
                   <Grid container item xs={6} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
-                      Quiz : {fullQuiz.current.quiz.name}
+                      Quiz: {fullQuiz.current.quiz.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
                       Participant: {fullQuiz.current.responder.name}
