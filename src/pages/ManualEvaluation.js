@@ -145,7 +145,7 @@ export default function ManualEvaluation(props) {
                       Quiz : {fullQuiz.current.quiz.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
-                      Participant: {fullQuiz.current.quiz.creator.name}
+                      Participant: {fullQuiz.current.responder.name}
                     </Typography>
                   </Grid>
                   <Grid

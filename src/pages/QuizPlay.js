@@ -170,9 +170,28 @@ export default function QuizPlay(props) {
       await api
         .getQuiz(id)
         .then(res => {
+          console.log(res);
           setQuizInfo(res.data);
-          time.setSeconds(time.getSeconds() + res.data.duration * 60);
-          setDuration(time);
+          if (res.data.isScheduled == true) {
+            const startTime = new Date(res.data.startTime);
+            console.log(time, startTime);
+            const endTime = new Date(
+              startTime.getTime() + res.data.duration * 60000
+            );
+            startTime.setMinutes(startTime.getMinutes + res.data.duration);
+            console.log(endTime);
+
+            const diff = Math.round((endTime - time) / 1000);
+            // // console.log(diff.getSeconds());
+            time.setSeconds(time.getSeconds() + diff);
+            setDuration(time);
+          } else if (
+            res.data.isScheduled == false &&
+            res.data.duration != undefined
+          ) {
+            time.setSeconds(time.getSeconds() + res.data.duration * 60);
+            setDuration(time);
+          }
 
           console.log('quiz info', res);
         })
@@ -222,13 +241,15 @@ export default function QuizPlay(props) {
               setOpen={setOpen}
               caller="quizPlay"
             />
-            <div className={classes.timerContainer}>
-              <div style={{ display: 'flex', justifyContent: 'center' }}>
-                {' '}
-                <TimerIcon classes={{ root: classes.timerSize }} />
+            {duration && (
+              <div className={classes.timerContainer}>
+                <div style={{ display: 'flex', justifyContent: 'center' }}>
+                  {' '}
+                  <TimerIcon classes={{ root: classes.timerSize }} />
+                </div>
+                <MyTimer expiryTimestamp={duration} expireFunc={handleSubmit} />{' '}
               </div>
-              <MyTimer expiryTimestamp={duration} expireFunc={handleSubmit} />{' '}
-            </div>
+            )}
 
             <Grid container justify="center">
               <Paper elevation={7} className={classes.barContainer}>
