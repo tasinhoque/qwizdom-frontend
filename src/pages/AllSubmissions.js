@@ -198,6 +198,7 @@ export default function AllSubmissions() {
                 quizid={e.quiz.id}
                 date={e.createdAt}
                 evaluated={e.isEvaluated}
+                isAuto={e.quiz.hasAutoEvaluation}
                 marks={e.totalPoints}
                 totalMarks={e.quiz.totalPoints}
               />
