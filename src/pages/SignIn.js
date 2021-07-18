@@ -122,10 +122,10 @@ export default function SignIn(props) {
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <p style={{ color: 'red' }}>{errorMessage.toString()}</p>
           </div>
-          <FormControlLabel
+          {/* <FormControlLabel
             control={<Checkbox value="remember" color="primary" />}
             label="Remember me"
-          />
+          /> */}
           <Button
             type="submit"
             fullWidth

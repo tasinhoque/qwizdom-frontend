@@ -65,23 +65,59 @@ export default function QuizCreationBody(props) {
       questions: [],
     },
   ]);
+  const dataFetch = useRef(false);
   const errorChecker = () => {
     let flag = true;
     store.current.map((st, i) => {
       st.questions.map((q, j) => {
-        if (q.type != 'text') {
-          let val = false;
-          q.options.map(opt => {
-            console.log(opt);
-            val = val || opt.isAnswer;
-          });
-          if (val == false) {
-            store.current[i].questions[j].uncheckedError = true;
-          } else {
-            store.current[i].questions[j].uncheckedError = false;
-          }
-          flag = flag && val;
+        let checkType = true,
+          val = true,
+          checkTitle = true,
+          checkVal = false;
+        if (q.title == '') {
+          store.current[i].questions[j].noTitleError = true;
+
+          checkTitle = false;
         }
+        if (q.type == undefined) {
+          console.log('type is ', q.type);
+          store.current[i].questions[j].noTypeError = true;
+          checkTitle = false;
+        } else if (q.type == 'text') {
+          checkVal = true;
+        } else if (q.options == undefined || q.options.length == 0) {
+          store.current[i].questions[j].noOptionError = true;
+        } else if (q.type == 'trueOrFalse') {
+          checkVal = true;
+        } else {
+          if (q.options.length == 1) {
+            store.current[i].questions[j].oneOptionError = true;
+          } else {
+            q.options.map(opt => {
+              console.log(opt);
+              checkVal = checkVal || opt.isAnswer;
+            });
+            if (checkVal == false) {
+              console.log('getting unchecked error');
+              store.current[i].questions[j].uncheckedError = true;
+            } else {
+              store.current[i].questions[j].uncheckedError = false;
+            }
+          }
+        }
+        console.log(
+          'ques ',
+          j,
+          'titleflag',
+          checkTitle,
+          'typeFlag',
+          checkType,
+          ' valFlag',
+          checkVal
+        );
+        val = checkTitle && checkType && checkVal;
+        flag = flag && val;
+        console.log('flag is ', flag);
       });
     });
     console.log('flag is', flag);
@@ -183,10 +219,13 @@ export default function QuizCreationBody(props) {
             useTemp[i].questions.push('h' + Math.random());
           });
         });
+        if (dataFetch.current == false) {
+          store.current = temp;
+          console.log('current is', store.current);
+          dataFetch.current = true;
+          setQuizBody(useTemp);
+        }
 
-        store.current = temp;
-        console.log('current is', store.current);
-        setQuizBody(useTemp);
         setEditMode(true);
         setLoading(false);
       });
@@ -274,7 +313,7 @@ export default function QuizCreationBody(props) {
       );
       store.current[pos].questions[quesPos] = message;
 
-      // console.log(store.current);
+      console.log(store.current);
     },
     addQuestion: (stageId, questionId) => {
       const pos = store.current.findIndex(i => i.stageId == stageId);

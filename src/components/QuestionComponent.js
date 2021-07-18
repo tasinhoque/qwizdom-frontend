@@ -130,8 +130,16 @@ export default function QuestionComponent(props) {
   console.log('full is ', full);
 
   let errorMessage = '';
-  if (full.uncheckedError) {
-    errorMessage = ' Please pick the correct answer and submit ';
+  if (full.noTitleError) {
+    errorMessage = 'Please give a title to the question';
+  } else if (full.noTypeError) {
+    errorMessage = 'Please select the question type';
+  } else if (full.noOptionError) {
+    errorMessage = 'Please add options ';
+  } else if (full.oneOptionError) {
+    errorMessage = 'Please add more options';
+  } else if (full.uncheckedError) {
+    errorMessage = ' Please pick the correct option and submit ';
     console.log(errorMessage);
   }
 
@@ -168,7 +176,7 @@ export default function QuestionComponent(props) {
   const [optionArray, setOptionArray] = useState(
     full.options ? full.options : []
   );
-  const optionHolder = useRef([]);
+  const optionHolder = useRef(full.options ? full.options : []);
   const addOptionRef = useRef('');
   const placeholderRef = useRef('Add option');
 
@@ -221,6 +229,7 @@ export default function QuestionComponent(props) {
     ) {
       setOptionArray([]);
       optionHolder.current = [];
+      questionBody.current.options = optionHolder.current;
     }
     questionBody.current.type = e.target.value;
     props.questionChange(questionBody.current);
@@ -269,8 +278,10 @@ export default function QuestionComponent(props) {
     //   placeholderRef.current = 'Please add a different option';
     // }
     setOptionArray(present => {
-      const body = [...optionArray, opt];
+      console.log('present array is ', present);
+      const body = [...present, opt];
       optionHolder.current.push(opt);
+      console.log('current optionHolder is', optionHolder.current);
       // allValueRef.current.push('holder');
       questionBody.current.options = optionHolder.current;
       props.questionChange(questionBody.current);
@@ -406,6 +417,7 @@ export default function QuestionComponent(props) {
             style={{ width: '60%', margin: '8px' }}
             variant="outlined"
             required
+            error={full['noOptionError']}
             onKeyDown={keyPress}
             placeholder={placeholderRef.current}
             inputRef={addOptionRef}
@@ -540,9 +552,11 @@ export default function QuestionComponent(props) {
                   required
                   fullWidth
                   multiline
+                  required
                   // id="email"
                   label="Question Title"
                   name="email"
+                  error={full['noTitleError']}
                   // autoComplete="email"
                   // autoFocus
                   // value={value}
@@ -603,6 +617,7 @@ export default function QuestionComponent(props) {
                   variant="outlined"
                   size="medium"
                   className={classes.formControl}
+                  required
                 >
                   <InputLabel id="demo-simple-select-filled-label">
                     Type
@@ -615,6 +630,7 @@ export default function QuestionComponent(props) {
                     label="Type"
                     value={selectType}
                     onChange={handleSelect}
+                    error={full['noTypeError']}
                   >
                     <MenuItem value={'mcq'}>
                       {' '}
@@ -661,7 +677,7 @@ export default function QuestionComponent(props) {
               {selectType == 'checkbox' && checkboxBuilder()}
               {selectType == 'text' && paragraphBuilder()}
             </div>
-            {full.uncheckedError && (
+            {errorMessage != '' && (
               <div
                 style={{
                   display: 'flex',

@@ -86,23 +86,24 @@
 ### Features
 
 - [ ] Show categories for quiz in quiz home.
-- [ ] Rename: paragraph to descriptive (question type)
+- [x] Rename: paragraph to descriptive (question type)
 - [ ] Add explanation text field in descriptive type question
 - [ ] Scheduled quiz should have some restrictions. 
 - [ ] Remove the remember me checkbox from sign in page
 - [ ] Show subscriber count in quiz home
-- [ ] Remove the forgot password link (sign in)
-- [ ] Remove the copyright text (sign in)
+- [x] Remove the forgot password link (sign in)
+- [x] Remove the copyright text (sign in)
 - [ ] Start the date picker from today and start the time picker from present
   time
-- [ ] Show error if the creator doesn't choose correct answer for MCQ/Checkbox
+- [x] Show error if the creator doesn't choose correct answer for MCQ/Checkbox
   in case of Test
+
 
 ### Bugfixes
 
 - [x] In quiz home, the pagination component is not getting displayed on the
   next line. It's on the same line with the review component in some cases.
-- [ ] In quiz creation, we're not restricting the creator. We shouldn't let the
+- [x] In quiz creation, we're not restricting the creator. We shouldn't let the
   creator use descriptive format for questions while creating a quiz with auto
   evaluation.
 - [ ] Creation basic: Handle invalid start dates.
