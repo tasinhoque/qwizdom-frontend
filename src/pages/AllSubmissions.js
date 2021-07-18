@@ -103,7 +103,7 @@ export default function AllSubmissions() {
       console.log(id);
       const response = await api.getAllSubs(id);
       setSubs(response.data.results);
-      // console.log(response.data.results);
+      console.log(response.data.results);
 
       setLoading(false);
     } catch (error) {
@@ -197,7 +197,7 @@ export default function AllSubmissions() {
                 userid={e.responder.id}
                 quizid={e.quiz.id}
                 date={e.createdAt}
-                evaluated={e.isEvaluated}
+                isEvaluated={e.isEvaluated}
                 isAuto={e.quiz.hasAutoEvaluation}
                 marks={e.totalPoints}
                 totalMarks={e.quiz.totalPoints}
