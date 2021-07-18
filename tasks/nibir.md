@@ -37,12 +37,12 @@
 
 ## Tasks pending
 
-- []  Show participant name in the bar of result page, evaluation script
+- [x]  Show participant name in the bar of result page, evaluation script
 - [x]  Route after submission in manual evaluation
 - []  Handle Blank page in manual evaluation
 - []  Duplicate in option Error
 - []  no point in survey
 
 ## Backend check
-- []  After evaluation submit , still pending showing
+- [x]  After evaluation submit , still pending showing
 - 

@@ -90,31 +90,32 @@ export default function ResultPage() {
         //   // console.log(fullQuiz.current.stages[currentPageNum].questions);
         setLoading(false);
       });
-    }
-    api
-      .getQuizResult(id)
-      .then(res => {
-        console.log(res);
-        //   res.data.stages.map((e, i) => {
-        //     e.questions.map((q, j) => {
-        //       if (q.options) {
-        //         q.options.map((o, k) => {
-        //           res.data.stages[i].questions[j].options[k].isAnswer = false;
-        //         });
-        //       }
-        //     });
-        //   });
-        fullQuiz.current = res.data;
-        console.log(fullQuiz.current);
-        setTotalPages(res.data.stageResponses.length);
+    } else {
+      api
+        .getQuizResult(id)
+        .then(res => {
+          console.log(res);
+          //   res.data.stages.map((e, i) => {
+          //     e.questions.map((q, j) => {
+          //       if (q.options) {
+          //         q.options.map((o, k) => {
+          //           res.data.stages[i].questions[j].options[k].isAnswer = false;
+          //         });
+          //       }
+          //     });
+          //   });
+          fullQuiz.current = res.data;
+          console.log(fullQuiz.current);
+          setTotalPages(res.data.stageResponses.length);
 
-        //   // console.log(fullQuiz.current.stages[currentPageNum].questions);
-        setLoading(false);
-      })
-      .catch(error => {
-        history.push(`/quiz-home/${id}`);
-        console.log(error);
-      });
+          //   // console.log(fullQuiz.current.stages[currentPageNum].questions);
+          setLoading(false);
+        })
+        .catch(error => {
+          history.push(`/quiz-home/${id}`);
+          console.log(error);
+        });
+    }
   }, []);
 
   return (
