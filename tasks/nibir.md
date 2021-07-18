@@ -41,4 +41,4 @@
 - []  Route after submission in manual evaluation
 - []  Handle Blank page in manual evaluation
 - []  Duplicate in option Error
-- []
+- []  no point in survey

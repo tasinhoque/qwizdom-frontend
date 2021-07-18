@@ -139,7 +139,7 @@ export default function QuestionComponent(props) {
   } else if (full.oneOptionError) {
     errorMessage = 'Please add more options';
   } else if (full.uncheckedError) {
-    errorMessage = ' Please pick the correct option and submit ';
+    errorMessage = ' Please pick the correct option ';
     console.log(errorMessage);
   }
 
@@ -274,9 +274,7 @@ export default function QuestionComponent(props) {
       isAnswer: false,
     };
     if (opt.text == '') return;
-    // if (optionArray.includes(opt)) {
-    //   placeholderRef.current = 'Please add a different option';
-    // }
+    console.log(optionHolder.current);
     setOptionArray(present => {
       console.log('present array is ', present);
       const body = [...present, opt];

@@ -72,6 +72,7 @@ const useStyles = makeStyles(theme => ({
 export default function PlayQuestion(props) {
   let im = '';
   const question = props.question;
+  const previewState = props.previewState;
   console.log('question is ', question);
   if (question.image instanceof File) {
     // console.log('this is file');
@@ -247,6 +248,7 @@ export default function PlayQuestion(props) {
             padding: '10px',
             marginTop: '10px',
           }}
+          disabled={previewState}
           aria-label="minimum height"
           onChange={textHandler}
         />
