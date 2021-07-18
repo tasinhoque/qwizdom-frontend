@@ -38,7 +38,7 @@ function createData(rank, name, avatar, date, points) {
   };
 }
 
-const useStyles = makeStyles({
+const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
   },
@@ -50,21 +50,37 @@ const useStyles = makeStyles({
     marginBottom: '10px',
   },
   quizName: {
-    marginBottom: '30px',
+    display: 'inline-block',
+    marginLeft: '10px',
   },
   image: {
     borderRadius: '50%',
   },
-});
+  coverImage: {
+    width: '100%',
+    height: '300px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+  },
+  paper: {
+    minWidth: '50%',
+    margin: theme.spacing(3, 0, 6, 0),
+  },
+  box: {
+    marginTop: '-20px',
+    padding: theme.spacing(0, 0, 2, 2),
+  },
+}));
 
 export default function Leaderboard() {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
+  const [quiz, setQuiz] = useState({});
   const { id } = useParams();
 
   useEffect(async () => {
     try {
-      const res = await api.getLeaderboard(id);
+      let res = await api.getLeaderboard(id);
       let tempRows = [];
 
       for (let i = 1; i <= res.data.length; i++) {
@@ -80,6 +96,9 @@ export default function Leaderboard() {
       }
 
       setRows(tempRows);
+
+      res = await api.getQuiz(id);
+      setQuiz(res.data);
     } catch (error) {
       console.log(error);
     }
@@ -89,12 +108,28 @@ export default function Leaderboard() {
     <>
       <Header />
       <Container>
-        <Typography variant="h3" className={classes.leaderboard}>
-          Leaderboard
-        </Typography>
-        <Typography variant="h6" className={classes.quizName}>
-          Web Development Fundamentals
-        </Typography>
+        <Paper className={classes.paper}>
+          <img
+            src={quiz.coverImage}
+            width="400px"
+            className={classes.coverImage}
+            alt=""
+          />
+          <div className={classes.box}>
+            <Typography variant="h4" className={classes.leaderboard}>
+              Leaderboard,
+              <Typography variant="h5" className={classes.quizName}>
+                {quiz.name}
+              </Typography>
+            </Typography>
+            <Typography className={classes.quizInfo}>
+              Total Points: {quiz.totalPoints}
+            </Typography>
+            <Typography className={classes.quizInfo}>
+              Total Participants: {quiz.totalParticipants}
+            </Typography>
+          </div>
+        </Paper>
         <Paper className={classes.root}>
           <TableContainer className={classes.container}>
             <Table stickyHeader aria-label="sticky table">
