@@ -197,9 +197,9 @@ export default function QuizCreationBody(props) {
         console.log(err);
       });
     if (location.pathname.includes('edit')) {
-      console.log('edit');
+      // console.log('edit');
       api.getCompleteQuiz(id).then(res => {
-        console.log('completeQuiz', res);
+        // console.log('completeQuiz', res);
         const useTemp = [];
         const temp = res.data.stages;
         temp.map((t, i) => {
@@ -221,7 +221,7 @@ export default function QuizCreationBody(props) {
         });
         if (dataFetch.current == false) {
           store.current = temp;
-          console.log('current is', store.current);
+          // console.log('current is', store.current);
           dataFetch.current = true;
           setQuizBody(useTemp);
         }
@@ -238,12 +238,6 @@ export default function QuizCreationBody(props) {
       // cleanup;
     };
   }, []);
-  const editChecker = () => {
-    if (editMode && !preview) {
-      console.log('edit checker called');
-      // window.scroll(0, 0);
-    }
-  };
 
   const allFunctions = {
     handleBodyChange: message => {
@@ -441,7 +435,6 @@ export default function QuizCreationBody(props) {
               save as draft
             </Button>
           </Grid>
-          {editChecker()}
         </Grid>
       </Grid>
     );

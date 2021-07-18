@@ -112,12 +112,14 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Radio />}
                   />
-                  {r.isAnswer == true && (
+                  {props.fullQuiz.isTest && r.isAnswer == true && (
                     <CheckIcon style={{ color: 'green' }} />
                   )}
-                  {element.options[i] == true && r.isAnswer == false && (
-                    <CloseIcon style={{ color: 'red' }} />
-                  )}
+                  {props.fullQuiz.isTest &&
+                    element.options[i] == true &&
+                    r.isAnswer == false && (
+                      <CloseIcon style={{ color: 'red' }} />
+                    )}
                 </div>
               );
             })}
@@ -146,7 +148,9 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Checkbox checked={element.options[i]} />}
                   />
-                  {r.isAnswer && <CheckIcon style={{ color: 'green' }} />}
+                  {props.fullQuiz.isTest && r.isAnswer && (
+                    <CheckIcon style={{ color: 'green' }} />
+                  )}
                 </div>
               );
             })}
@@ -173,11 +177,12 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Switch checked={element.options[i]} />}
                   />
-                  {r.isAnswer == element.options[i] ? (
-                    <CheckIcon style={{ color: 'green' }} />
-                  ) : (
-                    <CloseIcon style={{ color: 'red' }} />
-                  )}
+                  {props.fullQuiz.isTest &&
+                    (r.isAnswer == element.options[i] ? (
+                      <CheckIcon style={{ color: 'green' }} />
+                    ) : (
+                      <CloseIcon style={{ color: 'red' }} />
+                    ))}
                 </div>
               );
             })}
@@ -243,12 +248,14 @@ export default function PlayQuestion(props) {
             >
               Question {element.question.serial + 1}
             </Typography>
-            <Typography
-              align="right"
-              style={{ fontWeight: '400', fontSize: '1.2rem' }}
-            >
-              {element.points}/{question.points} points
-            </Typography>
+            {props.fullQuiz.isTest && (
+              <Typography
+                align="right"
+                style={{ fontWeight: '400', fontSize: '1.2rem' }}
+              >
+                {element.points}/{question.points} points
+              </Typography>
+            )}
           </div>
           <div style={{ padding: '20px 0px 0px 20px' }}>
             <form>

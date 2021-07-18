@@ -165,21 +165,25 @@ export default function ResultPage() {
                     align="flex-end"
                     direction="column"
                   >
-                    <Typography
-                      gutterBottom
-                      className={classes.barStyle}
-                      // align="right"
-                    >
-                      Points : {fullQuiz.current.totalPoints}/
-                      {fullQuiz.current.quiz.totalPoints}
-                    </Typography>
-                    <Typography
-                      gutterBottom
-                      className={classes.barStyle}
-                      // align="right"
-                    >
-                      Duration : {fullQuiz.current.quiz.duration} Min
-                    </Typography>
+                    {fullQuiz.current.isTest && (
+                      <>
+                        <Typography
+                          gutterBottom
+                          className={classes.barStyle}
+                          // align="right"
+                        >
+                          Points : {fullQuiz.current.totalPoints}/
+                          {fullQuiz.current.quiz.totalPoints}
+                        </Typography>
+                        <Typography
+                          gutterBottom
+                          className={classes.barStyle}
+                          // align="right"
+                        >
+                          Duration : {fullQuiz.current.quiz.duration} Min
+                        </Typography>
+                      </>
+                    )}
                   </Grid>
                 </Grid>
               </Paper>
@@ -208,6 +212,7 @@ export default function ResultPage() {
                     }
                     qId={index}
                     element={element}
+                    fullQuiz={fullQuiz.current}
                   />
                 );
               }

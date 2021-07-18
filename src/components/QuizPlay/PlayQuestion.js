@@ -269,14 +269,16 @@ export default function PlayQuestion(props) {
             >
               Question {question.serial + 1}
             </Typography>
-            <Typography
-              style={{
-                fontWeight: '420',
-                fontSize: '1.2rem',
-              }}
-            >
-              {question.points} points
-            </Typography>
+            {question.isTest && (
+              <Typography
+                style={{
+                  fontWeight: '420',
+                  fontSize: '1.2rem',
+                }}
+              >
+                {question.points} points
+              </Typography>
+            )}
           </div>
           <div style={{ padding: '20px 0px 0px 20px' }}>
             <form>

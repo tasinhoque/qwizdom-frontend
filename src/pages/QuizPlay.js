@@ -244,7 +244,7 @@ export default function QuizPlay(props) {
               setOpen={setOpen}
               caller="quizPlay"
             />
-            {duration && !previewState && (
+            {quizInfo.isTest && duration && !previewState && (
               <div className={classes.timerContainer}>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   {' '}
@@ -282,7 +282,7 @@ export default function QuizPlay(props) {
                     align="flex-end"
                     direction="column"
                   >
-                    {quizInfo.totalPoints && (
+                    {quizInfo.isTest && quizInfo.totalPoints && (
                       <Typography
                         gutterBottom
                         className={classes.barStyle}
