@@ -88,8 +88,8 @@
 - [ ] Show categories for quiz in quiz home.
 - [x] Rename: paragraph to descriptive (question type)
 - [ ] Add explanation text field in descriptive type question
-- [ ] Scheduled quiz should have some restrictions. 
-- [ ] Remove the remember me checkbox from sign in page
+- [] Scheduled quiz should have some restrictions. 
+- [x] Remove the remember me checkbox from sign in page
 - [ ] Show subscriber count in quiz home
 - [x] Remove the forgot password link (sign in)
 - [x] Remove the copyright text (sign in)
@@ -107,7 +107,7 @@
   creator use descriptive format for questions while creating a quiz with auto
   evaluation.
 - [ ] Creation basic: Handle invalid start dates.
-- [ ] Change serial: The first question a new stage should have serial 1.
+- [x] Change serial: The first question a new stage should have serial 1.
 - [x] Remove date picker if the quiz is unscheduled
 - [ ] Draft quiz shouldn't be displayed in dashboard
-- [ ] Show correct average rating and participant count
+- [x] Show correct average rating and participant count

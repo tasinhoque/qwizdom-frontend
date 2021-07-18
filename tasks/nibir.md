@@ -41,8 +41,9 @@
 - [x]  Route after submission in manual evaluation
 - []  Handle Blank page in manual evaluation
 - []  Duplicate in option Error
-- []  no point in survey
+- [x]  no point in survey
 
 ## Backend check
 - [x]  After evaluation submit , still pending showing
-- 
+- []  IsPublished query not working 
+- []  Set default of totalParticipant count

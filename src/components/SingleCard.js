@@ -96,7 +96,6 @@ export default withRouter(function SingleCard(props) {
   const [loading, setLoading] = useState(true);
 
   const classes = useStyles();
-  console.log();
   const rerouteQuiz = () => {
     props.history.push(`/quiz-home/${props.id}`);
   };
@@ -168,8 +167,15 @@ export default withRouter(function SingleCard(props) {
           }}
           borderColor="transparent"
         >
-          <Typography variant="body2">741 participants</Typography>
-          <Rating name="read-only" value={2} readOnly />
+          <Typography variant="body2">
+            {props.totalParticipants} participants
+          </Typography>
+          <Rating
+            name="read-only"
+            value={props.averageRating}
+            precision={0.5}
+            readOnly
+          />
         </Box>
       </div>
     </Card>
