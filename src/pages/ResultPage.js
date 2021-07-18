@@ -67,6 +67,12 @@ export default function ResultPage() {
 
   const location = useLocation();
   const path = location.pathname;
+  let sumbissionView = false;
+  if (path.includes('user-submission')) {
+    sumbissionView = true;
+  }
+  const [creatorViewState, setCreatorViewState] = useState(sumbissionView);
+
   // if (path.includes('user-submission')) {
   //   const { qId, userId } = useParams();
   // } else {
@@ -139,28 +145,40 @@ export default function ResultPage() {
                   )}
                 </Grid>
                 <Grid container justify="center" style={{ marginTop: '10px' }}>
-                  <Grid container item xs={6} direction="column">
+                  <Grid container item xs={12} md={8} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
-                      Quiz : {fullQuiz.current.quiz.name}
+                      Quiz: {fullQuiz.current.quiz.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
-                      Creator: {fullQuiz.current.quiz.creator.name}
+                      {creatorViewState ? (
+                        <>Participant: {fullQuiz.current.responder.name}</>
+                      ) : (
+                        <>Creator: {fullQuiz.current.quiz.creator.name}</>
+                      )}
                     </Typography>
                   </Grid>
                   <Grid
                     container
                     item
-                    xs={6}
+                    xs={12}
+                    md={4}
                     align="flex-end"
                     direction="column"
                   >
                     <Typography
                       gutterBottom
                       className={classes.barStyle}
-                      align="right"
+                      // align="right"
                     >
                       Points : {fullQuiz.current.totalPoints}/
                       {fullQuiz.current.quiz.totalPoints}
+                    </Typography>
+                    <Typography
+                      gutterBottom
+                      className={classes.barStyle}
+                      // align="right"
+                    >
+                      Duration : {fullQuiz.current.quiz.duration} Min
                     </Typography>
                   </Grid>
                 </Grid>

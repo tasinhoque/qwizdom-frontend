@@ -247,6 +247,7 @@ export default function PlayQuestion(props) {
             minHeight: '150px',
             padding: '10px',
             marginTop: '10px',
+            border: '2px solid black',
           }}
           disabled={previewState}
           aria-label="minimum height"
@@ -266,7 +267,7 @@ export default function PlayQuestion(props) {
                 fontSize: '1.4rem',
               }}
             >
-              Question {props.qId + 1}
+              Question {question.serial + 1}
             </Typography>
             <Typography
               style={{

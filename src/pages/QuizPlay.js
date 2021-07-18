@@ -143,8 +143,11 @@ export default function QuizPlay(props) {
   useEffect(async () => {
     if (previewState) {
       let stages = props.body;
+      let count = 0;
       stages.map((e, i) => {
         e.questions.map((q, j) => {
+          stages[i].questions[j].serial = count;
+          count++;
           if (q.options) {
             q.options.map((o, k) => {
               stages[i].questions[j].options[k].isAnswer = false;
@@ -241,7 +244,7 @@ export default function QuizPlay(props) {
               setOpen={setOpen}
               caller="quizPlay"
             />
-            {duration && (
+            {duration && !previewState && (
               <div className={classes.timerContainer}>
                 <div style={{ display: 'flex', justifyContent: 'center' }}>
                   {' '}
@@ -263,7 +266,7 @@ export default function QuizPlay(props) {
                 </Grid>
 
                 <Grid container justify="center" style={{ marginTop: '10px' }}>
-                  <Grid container item xs={6} direction="column">
+                  <Grid container item xs={12} md={8} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
                       Quiz : {quizInfo.name}
                     </Typography>
@@ -274,7 +277,8 @@ export default function QuizPlay(props) {
                   <Grid
                     container
                     item
-                    xs={6}
+                    xs={12}
+                    md={4}
                     align="flex-end"
                     direction="column"
                   >
@@ -282,9 +286,18 @@ export default function QuizPlay(props) {
                       <Typography
                         gutterBottom
                         className={classes.barStyle}
-                        align="right"
+                        // align="right"
                       >
                         Total Points : {quizInfo.totalPoints}
+                      </Typography>
+                    )}
+                    {quizInfo.duration && (
+                      <Typography
+                        gutterBottom
+                        className={classes.barStyle}
+                        // align="right"
+                      >
+                        Duration : {quizInfo.duration} Min
                       </Typography>
                     )}
                   </Grid>

@@ -63,6 +63,9 @@ const useStyles = makeStyles(theme => ({
   },
   paperItemStyle: {
     padding: theme.spacing(4, 4, 3, 4),
+    [theme.breakpoints.down('sm')]: {
+      padding: theme.spacing(2, 2, 2, 2),
+    },
   },
   optionContainer: {
     padding: theme.spacing(0, 2, 0, 0),
@@ -212,6 +215,7 @@ export default function PlayQuestion(props) {
             width: '100%',
             minHeight: '150px',
             padding: '10px',
+            border: '2px solid black',
           }}
           aria-label="minimum height"
           value={element.text}
@@ -224,16 +228,25 @@ export default function PlayQuestion(props) {
     <div className={classes.container}>
       <Paper className={classes.questionStyle} elevation={7}>
         <div className={classes.paperItemStyle}>
-          <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+            }}
+          >
             <Typography
               style={{
                 fontWeight: '400',
                 fontSize: '1.4rem',
               }}
             >
-              Question {props.qId + 1}
+              Question {element.question.serial + 1}
             </Typography>
-            <Typography style={{ fontWeight: '400', fontSize: '1.2rem' }}>
+            <Typography
+              align="right"
+              style={{ fontWeight: '400', fontSize: '1.2rem' }}
+            >
               {element.points}/{question.points} points
             </Typography>
           </div>
