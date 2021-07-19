@@ -83,6 +83,8 @@ export default function Dashboard() {
     setQueryString(str);
   };
 
+  updateQueryString();
+
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
     if (!signedIn) {
@@ -91,7 +93,6 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      updateQueryString();
       const response = await api.getQuizzes(queryString);
 
       setQuizzes(response.data.results);
