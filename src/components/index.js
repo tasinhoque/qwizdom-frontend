@@ -12,3 +12,4 @@ export { default as SubmissionQuestion } from './SubmissionDialog';
 export { default as SubmissionCard } from './SubmissionCard';
 export { default as EvaluateQuestion } from './EvaluateQuestion';
 export { default as ThreadCard } from './ThreadCard';
+export { default as Pie } from './Pie';
