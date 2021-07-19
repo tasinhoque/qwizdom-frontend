@@ -145,6 +145,9 @@ const api = {
   getDraftQuizzes: () => {
     return axios.get(`${baseUrl}/quizzes/draft`);
   },
+  getDoneQuizzes: () => {
+    return axios.get(`${baseUrl}/quizzes/participated-in`);
+  },
   fetchReviews: (qid, page) => {
     return axios.get(`${baseUrl}/quizzes/${qid}/reviews?page=${page}&limit=4`);
   },

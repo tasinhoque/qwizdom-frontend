@@ -89,6 +89,7 @@ export default function Profile() {
   const [loading, setLoading] = useState(true);
   const [subbedQuizzes, setSubbedQuizzes] = useState([]);
   const [draftQuizzes, setDraftQuizzes] = useState([]);
+  const [doneQuizzes, setDoneQuizzes] = useState([]);
   const [publishedQuizzes, setPublishedQuizzes] = useState([]);
   const [queryString, setQueryString] = useState(
     'isTimeBound=true&isScheduled=true&isTest=false'
@@ -186,6 +187,8 @@ export default function Profile() {
       setPublishedQuizzes(response.data.results);
       response = await api.getDraftQuizzes();
       setDraftQuizzes(response.data.results);
+      response = await api.getDoneQuizzes();
+      setDoneQuizzes(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -403,6 +406,48 @@ export default function Profile() {
                     return (
                       <GridListTile
                         key={q.id}
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'center',
+                          width: '500px',
+                        }}
+                      >
+                        <SingleCard {...q} key={q.id} />
+                      </GridListTile>
+                    );
+                  })}
+                  ;
+                </GridList>
+              </div>
+            </div>
+          ) : (
+            <div className={classes.root}></div>
+          )}
+        </div>
+        <div className={classes.root} style={{ width: '100%' }}>
+          {doneQuizzes.length != 0 ? (
+            <div className={classes.root}>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  marginTop: '100px',
+                  width: '100%',
+                }}
+              >
+                <Typography
+                  variant="h4"
+                  style={{ marginLeft: 10, marginBottom: 50 }}
+                >
+                  Participated Quizzes
+                </Typography>
+              </div>
+              <div className={classes.root}>
+                <GridList cellHeight={320} className={classes.gridList}>
+                  {doneQuizzes.map((q, k) => {
+                    return (
+                      <GridListTile
+                        key={k}
                         style={{
                           display: 'flex',
                           justifyContent: 'center',
