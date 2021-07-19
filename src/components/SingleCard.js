@@ -32,10 +32,11 @@ const useStyles = makeStyles(theme => ({
     marginBottom: 30,
   },
   media: {
-    height: 140,
+    height: '180px',
     // paddingTop: '56.25%', // 16:9
   },
   container: {
+    marginBottom: '8px',
     position: 'relative',
     width: '100%',
   },
@@ -66,6 +67,7 @@ const useStyles = makeStyles(theme => ({
     transform: 'rotate(180deg)',
   },
   avatar: {
+    marginLeft: '-8px',
     backgroundColor: red[500],
   },
   titleContainer: {
@@ -122,61 +124,52 @@ export default withRouter(function SingleCard(props) {
             image={props.coverImage}
           />
         </CardActionArea>
-        {/* <Button */}
-        {/*   type="submit" */}
-        {/*   variant="contained" */}
-        {/*   color="primary" */}
-        {/*   className={classes.subscribe} */}
-        {/*   onClick={subscribe} */}
-        {/* > */}
-        {/*   Subscribe */}
-        {/* </Button> */}
       </div>
-
-      <div style={{ padding: '5px' }}>
-        <Typography variant="h6" component="p">
-          {props.name}
-        </Typography>
-      </div>
-      <Box className={classes.chipStyle}>
-        {props.categories.map((category, i) => (
-          <Chip color="primary" label={category.name} key={i} />
-        ))}
-      </Box>
-
-      <div className={classes.titleContainer}>
-        <CardHeader
-          avatar={
-            <Avatar
-              // src="assets/images/marcos.png"
-              src={props.creator.avatar}
-              className={classes.avatar}
-            ></Avatar>
-          }
-          title={props.creator.name}
-          // subheader="September 14, 2016"
-        />
-
-        <Box
-          component="fieldset"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}
-          borderColor="transparent"
-        >
-          <Typography variant="body2">
-            {props.totalParticipants} participants
+      <div style={{ paddingLeft: '8px' }}>
+        <div style={{ padding: '5px' }}>
+          <Typography variant="h6" component="p">
+            {props.name}
           </Typography>
-          <Rating
-            name="read-only"
-            value={props.averageRating}
-            precision={0.5}
-            readOnly
-          />
+        </div>
+        <Box className={classes.chipStyle}>
+          {props.categories.map((category, i) => (
+            <Chip color="primary" label={category.name} key={i} />
+          ))}
         </Box>
+        <div className={classes.titleContainer}>
+          <CardHeader
+            avatar={
+              <Avatar
+                // src="assets/images/marcos.png"
+                src={props.creator.avatar}
+                className={classes.avatar}
+              ></Avatar>
+            }
+            title={props.creator.name}
+            // subheader="September 14, 2016"
+          />
+
+          <Box
+            component="fieldset"
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+            borderColor="transparent"
+          >
+            <Typography variant="body2">
+              {props.totalParticipants || 0} participants
+            </Typography>
+            <Rating
+              name="read-only"
+              value={props.averageRating}
+              precision={0.5}
+              readOnly
+            />
+          </Box>
+        </div>
       </div>
     </Card>
   );
