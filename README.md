@@ -132,3 +132,15 @@
       people can post comments
       - []  Limited number of comments(suppose 5) will be shown at first
       - []  Buttons to show more comments, hide all comments  
+
+## Meeting with Supervisor
+
+- Survey diagrams
+- Landing page
+- Notification
+- Stage shuffling
+- Forum
+- Global leaderboard
+- Rename stage to section
+- Single card refactoring in the dashboard: Make it small
+- Side panel refactoring: Redesign
