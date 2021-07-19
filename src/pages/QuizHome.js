@@ -526,7 +526,7 @@ export default function QuizHome(props) {
           <Grid container item md={12} xs={12} spacing={3}>
             <Grid container item md={12} xs={12} className={classes.avgRating}>
               <Typography component="p">
-                {quiz.totalParticipants} participant
+                {quiz.totalParticipants || 0} participant
               </Typography>
             </Grid>
             <Grid container item md={12} xs={12} className={classes.avgRating}>
