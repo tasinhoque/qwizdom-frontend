@@ -91,8 +91,9 @@ export default function ManualEvaluation(props) {
   };
   const allFunctions = {
     questionChange: (qId, point) => {
-      fullQuiz.current.stageResponses[currentPageNum].responses[qId].points =
-        Number(point);
+      fullQuiz.current.stageResponses[currentPageNum].responses[
+        qId
+      ].points = Number(point);
       console.log(fullQuiz.current);
     },
   };
@@ -179,7 +180,7 @@ export default function ManualEvaluation(props) {
                       className={classes.barStyle}
                       align="right"
                     >
-                      Points : {fullQuiz.current.totalPoints.toFixed(2)}/
+                      Points: {fullQuiz.current.totalPoints.toFixed(2)}/
                       {fullQuiz.current.quiz.totalPoints}
                     </Typography> */}
                   </Grid>
