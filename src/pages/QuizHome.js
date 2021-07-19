@@ -18,6 +18,7 @@ import { Grid } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
 import SubmissionDialog from '../components/SubmissionDialog';
 import Pagination from '@material-ui/lab/Pagination';
+import AlertDialog from '../components/QuizPlay/AlertDialog';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -151,6 +152,7 @@ export default function QuizHome(props) {
   const history = useHistory();
   const user = JSON.parse(localStorage.getItem('user'));
   const [open, setOpen] = useState(false);
+  const [text, setText] = useState('');
 
   const [totalPages, setTotalPages] = useState(0);
   const [reviews, setReviews] = useState(null);
@@ -243,10 +245,23 @@ export default function QuizHome(props) {
   };
 
   const startQuiz = () => {
-    // if (!quiz.isScheduled) {
-    //   alert('quiz will start on schedule');
-    //   return;
-    // }
+    if (quiz.isScheduled) {
+      console.log(quiz);
+      const startTime = new Date(quiz.startTime);
+      const endTime = new Date(startTime.getTime() + quiz.duration * 60000);
+      const time = new Date();
+      if (time < startTime) {
+        setText('Quiz will start on schedule');
+        setOpen(true);
+        // alert('quiz will start on schedule');
+        return;
+      }
+      if (time > endTime) {
+        setText('Quiz already finished');
+        setOpen(true);
+        return;
+      }
+    }
     props.history.push(`/quiz-play/${id}`);
   };
 
@@ -287,10 +302,10 @@ export default function QuizHome(props) {
   } else {
     return (
       <>
-        <SubmissionDialog
-          id={id}
+        <AlertDialog
           open={open}
           setOpen={setOpen}
+          text={text}
           caller="quizHome"
         />
 

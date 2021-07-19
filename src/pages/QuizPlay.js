@@ -176,7 +176,7 @@ export default function QuizPlay(props) {
           setQuizInfo(res.data);
           if (res.data.isScheduled == true) {
             const startTime = new Date(res.data.startTime);
-            console.log(time, startTime);
+            // console.log(time, startTime);
             const endTime = new Date(
               startTime.getTime() + res.data.duration * 60000
             );
