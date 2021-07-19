@@ -174,6 +174,8 @@ export default function QuizHome(props) {
       const { data: quizData } = await api.getQuiz(id);
       let revs = await api.fetchReviews(id, revPage);
       console.log(quizData);
+      quizData.startTime = new Date(quizData.startTime);
+
       setQuiz(quizData);
       setPublished(quizData.isPublished);
       setCreatorId(quizData.creator.id);
@@ -496,15 +498,17 @@ export default function QuizHome(props) {
                       }}
                       component="p"
                     >
-                      {/* {(quiz.startTime || new Date()).toLocaleDateString(
-                        'en-US',
-                        {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        }
-                      )} */}
-                      {/* {!quiz.isScheduled
+                      {quiz.isScheduled
+                        ? 'Start Time: ' +
+                          quiz.startTime.toLocaleDateString('en-US', {
+                            minute: '2-digit',
+                            hour: '2-digit',
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })
+                        : null}
+                      {/* {quiz.isScheduled
                         ? diff.days + ' days ' + diff.hours + ' hours '
                         : null} */}
                     </Typography>
@@ -522,7 +526,7 @@ export default function QuizHome(props) {
           <Grid container item md={12} xs={12} spacing={3}>
             <Grid container item md={12} xs={12} className={classes.avgRating}>
               <Typography component="p">
-                {quiz.totalParticipants} participant
+                {quiz.totalParticipants || 0} participant
               </Typography>
             </Grid>
             <Grid container item md={12} xs={12} className={classes.avgRating}>

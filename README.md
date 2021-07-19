@@ -132,3 +132,18 @@
       people can post comments
       - []  Limited number of comments(suppose 5) will be shown at first
       - []  Buttons to show more comments, hide all comments  
+
+## Meeting with Supervisor
+
+- Survey diagrams [Enan, 20 Nov]
+  - Survey API [Tasin]
+- Landing page 
+- Notification [Tasin, 20 Nov]
+- Stage shuffling
+- Forum [Nibir + Enan, 20 Nov]
+- Global leaderboard
+- Rename stage to section
+- Single card refactoring in the dashboard: Make it small
+- Side panel refactoring: Redesign
+- Show pending instead of 0 points
+  - total points = pending 

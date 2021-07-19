@@ -107,7 +107,7 @@ export default function Leaderboard() {
   return (
     <>
       <Header />
-      <Container>
+      <Container maxWidth="md">
         <Paper className={classes.paper}>
           <img
             src={quiz.coverImage}

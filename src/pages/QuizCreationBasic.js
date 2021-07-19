@@ -166,11 +166,6 @@ const QuizCreationBasic = () => {
     console.log(date);
   };
 
-  const handleEndDate = date => {
-    setEndDate(date);
-    console.log(date);
-  };
-
   const handleSubmit = async () => {
     try {
       const requestBody = {
@@ -181,8 +176,7 @@ const QuizCreationBasic = () => {
         description,
         duration,
         categories: categoryIds,
-        startTime:
-          startDate.getTime() === today.getTime() ? undefined : startDate,
+        startTime: startDate,
         coverImage:
           'https://user-images.githubusercontent.com/27550808/126111179-865576f5-5754-4403-87bb-2afc3f936aea.jpg',
       };
@@ -318,8 +312,19 @@ const QuizCreationBasic = () => {
               ) : (
                 <div></div>
               )}
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<DoubleArrowIcon />}
+                  onClick={handleSubmit}
+                >
+                  Proceed
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
+
           <Grid
             container
             direction="column"
@@ -448,16 +453,6 @@ const QuizCreationBasic = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.proceedButton}
-            endIcon={<DoubleArrowIcon />}
-            onClick={handleSubmit}
-          >
-            Proceed
-          </Button>
         </Grid>
       </Container>
     </div>
