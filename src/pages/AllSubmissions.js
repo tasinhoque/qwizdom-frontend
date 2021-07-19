@@ -1,6 +1,5 @@
 import { useRef, useState, useEffect } from 'react';
 import { SingleCard } from '../components';
-import { fade, makeStyles } from '@material-ui/core/styles';
 import { Grid } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
@@ -26,8 +25,9 @@ import GridListTile from '@material-ui/core/GridListTile';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Card from '@material-ui/core/Card';
 import CardHeader from '@material-ui/core/CardHeader';
-import { red } from '@material-ui/core/colors';
 import { useParams } from 'react-router';
+import { green, red, grey } from '@material-ui/core/colors';
+import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
 
 import api from '../api';
 import {
@@ -97,7 +97,6 @@ export default function AllSubmissions() {
   const [loading, setLoading] = useState(true);
   const [subs, setSubs] = useState(null);
   const [filter, setFilter] = useState(0);
-  // const [queryString, setQueryString] = useState('all');
 
   const handleFilter = () => {
     setFilter((filter + 1) % 3);
@@ -238,12 +237,18 @@ export default function AllSubmissions() {
               >
                 <Button
                   type="submit"
-                  variant="contained"
+                  variant="outlined"
                   size="small"
-                  // style={{ backgroundColor: '#f44336', color: 'white' }}
+                  style={
+                    filter == 0
+                      ? { borderColor: 'gray' }
+                      : filter == 1
+                      ? { borderColor: '#f44336' }
+                      : { borderColor: '#4caf50' }
+                  }
                   onClick={handleFilter}
                 >
-                  State
+                  {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
                 </Button>
               </Grid>
             </Grid>

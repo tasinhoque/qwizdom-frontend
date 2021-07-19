@@ -139,7 +139,7 @@ export default withRouter(function SubmissionCard(props) {
           style={{ justifyContent: 'center' }}
           className={classes.hiddenXS}
         >
-          {props.isEvaluated || props.isAuto ? (
+          {props.isEvaluated ? (
             <Button
               type="submit"
               variant="contained"
@@ -169,7 +169,7 @@ export default withRouter(function SubmissionCard(props) {
           style={{ justifyContent: 'center' }}
           className={classes.hiddenMD}
         >
-          {props.isEvaluated || props.isAuto ? (
+          {props.isEvaluated ? (
             <IconButton size="small" style={{ color: '#4caf50' }}>
               <CheckCircleIcon />
             </IconButton>
