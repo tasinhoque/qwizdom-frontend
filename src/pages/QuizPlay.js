@@ -267,7 +267,7 @@ export default function QuizPlay(props) {
                 <Grid container justify="center" style={{ marginTop: '10px' }}>
                   <Grid container item xs={12} md={8} direction="column">
                     <Typography gutterBottom className={classes.barStyle}>
-                      Quiz : {quizInfo.name}
+                      Quiz: {quizInfo.name}
                     </Typography>
                     <Typography gutterBottom className={classes.barStyle}>
                       Creator: {quizInfo.creator.name}
@@ -287,7 +287,7 @@ export default function QuizPlay(props) {
                         className={classes.barStyle}
                         // align="right"
                       >
-                        Total Points : {quizInfo.totalPoints}
+                        Total Points: {quizInfo.totalPoints}
                       </Typography>
                     )}
                     {quizInfo.duration && (
@@ -296,7 +296,7 @@ export default function QuizPlay(props) {
                         className={classes.barStyle}
                         // align="right"
                       >
-                        Duration : {quizInfo.duration} Min
+                        Duration: {quizInfo.duration} Min
                       </Typography>
                     )}
                   </Grid>

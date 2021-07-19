@@ -172,7 +172,7 @@ export default function ResultPage() {
                           className={classes.barStyle}
                           // align="right"
                         >
-                          Points : {fullQuiz.current.totalPoints}/
+                          Points: {fullQuiz.current.totalPoints}/
                           {fullQuiz.current.quiz.totalPoints}
                         </Typography>
                         <Typography
@@ -180,7 +180,7 @@ export default function ResultPage() {
                           className={classes.barStyle}
                           // align="right"
                         >
-                          Duration : {fullQuiz.current.quiz.duration} Min
+                          Duration: {fullQuiz.current.quiz.duration} Min
                         </Typography>
                       </>
                     )}

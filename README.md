@@ -70,7 +70,6 @@
 
 ## 12 July
 
-- "Q : dfsd": Remove the "Q : " part
 - Add Upload cover photo button (remove the text), basic quiz creation page
 
 ## Major tasks
