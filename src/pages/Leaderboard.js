@@ -126,7 +126,7 @@ export default function Leaderboard() {
               Total Points: {quiz.totalPoints}
             </Typography>
             <Typography className={classes.quizInfo}>
-              Total Participants: {quiz.totalParticipants}
+              Total Participants: {quiz.totalParticipants || 0}
             </Typography>
           </div>
         </Paper>

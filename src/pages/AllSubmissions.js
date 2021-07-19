@@ -72,7 +72,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'row',
     justifyContent: 'flex-start',
     alignItems: 'center',
-    marginLeft: theme.spacing(2),
+    marginLeft: theme.spacing(1),
     [theme.breakpoints.down('xs')]: {
       flexDirection: 'column',
       marginLeft: theme.spacing(0),
@@ -156,121 +156,124 @@ export default function AllSubmissions() {
   return (
     <>
       <Header />
-      {loading ? (
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            marginTop: '50px',
-          }}
-        >
-          <CircularProgress color="secondary" />
-        </div>
-      ) : (
-        <div className={classes.root}>
-          <Card className={classes.subTitle}>
-            <Grid container spacing={0} className={classes.titleContainer}>
-              <Grid container item md={3} xs={3}>
-                <div className={classes.user}>
-                  <Typography variant="body2" color="textPrimary">
-                    Participant
-                  </Typography>
-                </div>
-              </Grid>
-
-              <Grid
-                container
-                item
-                md={3}
-                xs={4}
-                // className={classes.hiddenXS}
-                style={{ justifyContent: 'center' }}
-              >
+      <div className={classes.root}>
+        <Card className={classes.subTitle}>
+          <Grid container spacing={0} className={classes.titleContainer}>
+            <Grid container item md={3} xs={3}>
+              <div className={classes.user}>
                 <Typography variant="body2" color="textPrimary">
-                  Date
+                  Participant
                 </Typography>
-              </Grid>
-
-              <Grid
-                container
-                item
-                md={2}
-                className={classes.hiddenXS}
-                style={{ justifyContent: 'center' }}
-              >
-                <Typography variant="body2" color="textPrimary">
-                  Total Marks
-                </Typography>
-              </Grid>
-              <Grid
-                container
-                item
-                md={2}
-                className={classes.hiddenXS}
-                style={{ justifyContent: 'center' }}
-              >
-                <Typography variant="body2" color="textPrimary">
-                  Obtained Marks
-                </Typography>
-              </Grid>
-
-              <Grid
-                container
-                item
-                xs={3}
-                className={classes.hiddenMD}
-                style={{ justifyContent: 'center' }}
-              >
-                <Typography variant="body2" color="textPrimary">
-                  Marks
-                </Typography>
-              </Grid>
-
-              <Grid
-                container
-                item
-                md={2}
-                xs={2}
-                style={{ justifyContent: 'center' }}
-              >
-                <Button
-                  type="submit"
-                  variant="outlined"
-                  size="small"
-                  style={
-                    filter == 0
-                      ? { borderColor: 'gray' }
-                      : filter == 1
-                      ? { borderColor: '#f44336' }
-                      : { borderColor: '#4caf50' }
-                  }
-                  onClick={handleFilter}
-                >
-                  {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
-                </Button>
-              </Grid>
+              </div>
             </Grid>
-          </Card>
 
-          {subs != null &&
-            subs.map((e, i) => {
-              return (
-                <SubmissionCard
-                  key={i}
-                  name={e.responder.name}
-                  avatar={e.responder.avatar}
-                  userid={e.responder.id}
-                  quizid={e.quiz.id}
-                  date={e.createdAt}
-                  isEvaluated={e.isEvaluated}
-                  isAuto={e.quiz.hasAutoEvaluation}
-                  marks={e.totalPoints}
-                  totalMarks={e.quiz.totalPoints}
-                />
-              );
-            })}
-        </div>
-      )}
+            <Grid
+              container
+              item
+              md={3}
+              xs={4}
+              // className={classes.hiddenXS}
+              style={{ justifyContent: 'center' }}
+            >
+              <Typography variant="body2" color="textPrimary">
+                Date
+              </Typography>
+            </Grid>
+
+            <Grid
+              container
+              item
+              md={2}
+              className={classes.hiddenXS}
+              style={{ justifyContent: 'center' }}
+            >
+              <Typography variant="body2" color="textPrimary">
+                Total Marks
+              </Typography>
+            </Grid>
+            <Grid
+              container
+              item
+              md={2}
+              className={classes.hiddenXS}
+              style={{ justifyContent: 'center' }}
+            >
+              <Typography variant="body2" color="textPrimary">
+                Obtained Marks
+              </Typography>
+            </Grid>
+
+            <Grid
+              container
+              item
+              xs={3}
+              className={classes.hiddenMD}
+              style={{ justifyContent: 'center' }}
+            >
+              <Typography variant="body2" color="textPrimary">
+                Marks
+              </Typography>
+            </Grid>
+
+            <Grid
+              container
+              item
+              md={2}
+              xs={2}
+              style={{ justifyContent: 'center' }}
+            >
+              <Button
+                type="submit"
+                variant="outlined"
+                size="small"
+                style={
+                  filter == 0
+                    ? { borderColor: 'gray' }
+                    : filter == 1
+                    ? { borderColor: '#f44336' }
+                    : { borderColor: '#4caf50' }
+                }
+                onClick={handleFilter}
+              >
+                {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
+              </Button>
+            </Grid>
+          </Grid>
+        </Card>
+
+        {!loading ? (
+          [
+            subs != null &&
+              subs.map((e, i) => {
+                return (
+                  <SubmissionCard
+                    key={i}
+                    name={e.responder.name}
+                    avatar={e.responder.avatar}
+                    userid={e.responder.id}
+                    quizid={e.quiz.id}
+                    date={e.createdAt}
+                    isEvaluated={e.isEvaluated}
+                    isAuto={e.quiz.hasAutoEvaluation}
+                    marks={e.totalPoints}
+                    totalMarks={e.quiz.totalPoints}
+                  />
+                );
+              }),
+          ]
+        ) : (
+          <div
+            style={{
+              width: '100%',
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '50px',
+            }}
+          >
+            <CircularProgress color="secondary" />
+          </div>
+        )}
+      </div>
     </>
   );
 }

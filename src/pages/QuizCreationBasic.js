@@ -107,8 +107,10 @@ const QuizCreationBasic = () => {
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
   const [img, setImg] = useState(null);
-  const [startDate, setStartDate] = useState(new Date('2021-1-1'));
-  const [endDate, setEndDate] = useState(new Date('2021-1-1'));
+
+  const today = new Date();
+  const [startDate, setStartDate] = useState(today);
+
   const history = useHistory();
   const [names, setNames] = useState([]);
   const [personName, setPersonName] = useState([]);
@@ -180,13 +182,9 @@ const QuizCreationBasic = () => {
         duration,
         categories: categoryIds,
         startTime:
-          startDate.getTime() === new Date('2021-1-1').getTime()
-            ? undefined
-            : startDate,
-        endTime:
-          startDate.getTime() === new Date('2021-1-1').getTime()
-            ? undefined
-            : endDate,
+          startDate.getTime() === today.getTime() ? undefined : startDate,
+        coverImage:
+          'https://user-images.githubusercontent.com/27550808/126111179-865576f5-5754-4403-87bb-2afc3f936aea.jpg',
       };
 
       const { data: quiz } = await api.postQuiz(requestBody);
