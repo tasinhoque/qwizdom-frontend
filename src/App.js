@@ -13,6 +13,7 @@ import {
   ResultPage,
   ManualEvaluation,
   ForumPage,
+  Stat,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 
@@ -42,6 +43,7 @@ const App = () => {
           component={ResultPage}
         />
         <Route path="/quiz/:id/forum" component={ForumPage} />
+        <Route path="/quiz/:id/stat-data" component={Stat} />
       </Switch>
     </main>
   );
