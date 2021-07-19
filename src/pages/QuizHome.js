@@ -40,11 +40,6 @@ const useStyles = makeStyles(theme => ({
   expandOpen: {
     transform: 'rotate(180deg)',
   },
-  quizImg: {
-    width: '100%',
-    height: 'auto',
-    flex: '1',
-  },
   avatar: {
     backgroundColor: red[500],
   },
@@ -94,6 +89,7 @@ const useStyles = makeStyles(theme => ({
   quizImage: {
     width: '100%',
     // height: 'auto',
+    objectFit: 'cover',
     maxHeight: 350,
   },
   subscribeBtn: {
