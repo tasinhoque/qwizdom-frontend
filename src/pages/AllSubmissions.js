@@ -9,7 +9,13 @@ import React from 'react';
 import Input from '@material-ui/core/Input';
 import InputLabel from '@material-ui/core/InputLabel';
 import TextField from '@material-ui/core/TextField';
-import FormControl from '@material-ui/core/FormControl';
+import {
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+} from '@material-ui/core';
 import EditIcon from '@material-ui/icons/Edit';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
@@ -40,7 +46,7 @@ const useStyles = makeStyles(theme => ({
   },
   subTitle: {
     // maxWidth: 400,
-    width: '60%',
+    width: theme.spacing(100),
     margin: theme.spacing(1, 5, 1, 5),
     padding: theme.spacing(2, 2, 2, 2),
     [theme.breakpoints.down('xs')]: {
@@ -90,6 +96,13 @@ export default function AllSubmissions() {
   const { id, userId } = useParams();
   const [loading, setLoading] = useState(true);
   const [subs, setSubs] = useState(null);
+  const [filter, setFilter] = useState(0);
+  // const [queryString, setQueryString] = useState('all');
+
+  const handleFilter = () => {
+    setFilter((filter + 1) % 3);
+    console.log(filter);
+  };
 
   useEffect(async () => {
     const signedIn = localStorage.getItem('refreshToken');
@@ -98,10 +111,11 @@ export default function AllSubmissions() {
     }
 
     try {
-      setLoading(true);
+      // NOTE: setLoading(true)
+      setLoading(false);
 
       console.log(id);
-      const response = await api.getAllSubs(id);
+      const response = await api.getAllSubs(id, 'all');
       setSubs(response.data.results);
       console.log(response.data.results);
 
@@ -110,6 +124,37 @@ export default function AllSubmissions() {
       console.log(error);
     }
   }, []);
+
+  useEffect(async () => {
+    const signedIn = localStorage.getItem('refreshToken');
+    var query;
+    if (filter == 0) {
+      query = 'all';
+    } else if (filter == 1) {
+      query = 'pending';
+    } else if (filter == 2) {
+      query = 'evaluated';
+    }
+    console.log(query);
+
+    if (!signedIn) {
+      props.history.push('/');
+    }
+
+    try {
+      // NOTE: setLoading(true)
+      setLoading(false);
+
+      console.log(id);
+      const response = await api.getAllSubs(id, query);
+      setSubs(response.data.results);
+      console.log(response.data.results);
+
+      setLoading(false);
+    } catch (error) {
+      console.log(error);
+    }
+  }, [filter]);
 
   return (
     <>
@@ -191,9 +236,15 @@ export default function AllSubmissions() {
                 xs={2}
                 style={{ justifyContent: 'center' }}
               >
-                <Typography variant="body2" color="textPrimary">
+                <Button
+                  type="submit"
+                  variant="contained"
+                  size="small"
+                  // style={{ backgroundColor: '#f44336', color: 'white' }}
+                  onClick={handleFilter}
+                >
                   State
-                </Typography>
+                </Button>
               </Grid>
             </Grid>
           </Card>
