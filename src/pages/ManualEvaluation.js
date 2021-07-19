@@ -91,9 +91,8 @@ export default function ManualEvaluation(props) {
   };
   const allFunctions = {
     questionChange: (qId, point) => {
-      fullQuiz.current.stageResponses[currentPageNum].responses[
-        qId
-      ].points = Number(point);
+      fullQuiz.current.stageResponses[currentPageNum].responses[qId].points =
+        Number(point);
       console.log(fullQuiz.current);
     },
   };
@@ -105,14 +104,16 @@ export default function ManualEvaluation(props) {
         console.log(res);
         res.data.stageResponses.map((e, i) => {
           e.responses.map((q, j) => {
-            if (q.question.type != 'text') {
-              res.data.stageResponses[i].responses.splice(j, 1);
-            } else {
-              allTextQuestions.push(q);
-            }
+            // if (q.question.type != 'text') {
+            //   res.data.stageResponses[i].responses.splice(j, 1);
+            // } else {
+            if (q.question.type == 'text') allTextQuestions.push(q);
+            // }
           });
         });
-        const quesPerPage = 2;
+        console.log(allTextQuestions);
+
+        const quesPerPage = 10;
         res.data.stageResponses = [];
         const totalPageAll = Math.ceil(allTextQuestions.length / quesPerPage);
         let responseArray = [];
@@ -127,9 +128,10 @@ export default function ManualEvaluation(props) {
             responseArray = [];
           }
         }
+
         // console.log(res.data.stageResponses);
         fullQuiz.current = res.data;
-        console.log(fullQuiz.current);
+        // console.log(fullQuiz.current);
         setTotalPages(res.data.stageResponses.length);
 
         //   // console.log(fullQuiz.current.stages[currentPageNum].questions);
