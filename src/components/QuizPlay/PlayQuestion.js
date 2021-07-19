@@ -269,7 +269,7 @@ export default function PlayQuestion(props) {
             >
               Question {question.serial + 1}
             </Typography>
-            {question.isTest && (
+            {props.quizInfo.isTest && (
               <Typography
                 style={{
                   fontWeight: '420',

@@ -331,6 +331,7 @@ export default function QuizPlay(props) {
                     qId={index}
                     question={element}
                     previewState={previewState}
+                    quizInfo={quizInfo}
                   />
                 );
               }
