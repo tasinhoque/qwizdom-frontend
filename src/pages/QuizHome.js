@@ -382,19 +382,27 @@ export default function QuizHome(props) {
                     </Button>
                   </Grid>
                 )}
-                <Grid container item md={3} xs={3} className={classes.buttons}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
+                {quiz.isTest && (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
                     className={classes.buttons}
-                    onClick={() => {
-                      history.push(`/quiz/${id}/leaderboard`);
-                    }}
                   >
-                    Leaderboard
-                  </Button>
-                </Grid>
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                      onClick={() => {
+                        history.push(`/quiz/${id}/leaderboard`);
+                      }}
+                    >
+                      Leaderboard
+                    </Button>
+                  </Grid>
+                )}
                 {quiz.creator.id != user.id ? (
                   <Grid
                     container
@@ -473,9 +481,14 @@ export default function QuizHome(props) {
                       }}
                       component="p"
                     >
-                      {!quiz.isScheduled
+                      {quiz.startTime.toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                      })}
+                      {/* {!quiz.isScheduled
                         ? diff.days + ' days ' + diff.hours + ' hours '
-                        : null}
+                        : null} */}
                     </Typography>
                   </Grid>
                 </Grid>
