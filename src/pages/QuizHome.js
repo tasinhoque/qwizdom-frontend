@@ -496,11 +496,14 @@ export default function QuizHome(props) {
                       }}
                       component="p"
                     >
-                      {quiz.startTime.toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'long',
-                        day: 'numeric',
-                      })}
+                      {(quiz.startTime || new Date()).toLocaleDateString(
+                        'en-US',
+                        {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                        }
+                      )}
                       {/* {!quiz.isScheduled
                         ? diff.days + ' days ' + diff.hours + ' hours '
                         : null} */}
