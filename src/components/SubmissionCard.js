@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton';
 import { useParams, useHistory } from 'react-router';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import { withRouter } from 'react-router-dom';
+import Tooltip from '@material-ui/core/Tooltip';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -140,25 +141,29 @@ export default withRouter(function SubmissionCard(props) {
           className={classes.hiddenXS}
         >
           {props.isEvaluated ? (
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              style={{ backgroundColor: '#4caf50', color: 'white' }}
-              onClick={handleDone}
-            >
-              Evaluated
-            </Button>
+            <Tooltip placement="right" title="Go to submission page">
+              <Button
+                type="submit"
+                variant="contained"
+                size="small"
+                style={{ backgroundColor: '#4caf50', color: 'white' }}
+                onClick={handleDone}
+              >
+                Evaluated
+              </Button>
+            </Tooltip>
           ) : (
-            <Button
-              type="submit"
-              variant="contained"
-              size="small"
-              style={{ backgroundColor: '#f44336', color: 'white' }}
-              onClick={handlePending}
-            >
-              Pending
-            </Button>
+            <Tooltip placement="right" title="Go to evaluation page">
+              <Button
+                type="submit"
+                variant="contained"
+                size="small"
+                style={{ backgroundColor: '#f44336', color: 'white' }}
+                onClick={handlePending}
+              >
+                Pending
+              </Button>
+            </Tooltip>
           )}
         </Grid>
 
@@ -170,17 +175,21 @@ export default withRouter(function SubmissionCard(props) {
           className={classes.hiddenMD}
         >
           {props.isEvaluated ? (
-            <IconButton size="small" style={{ color: '#4caf50' }}>
-              <CheckCircleIcon />
-            </IconButton>
+            <Tooltip placement="right" title="Go to submission page">
+              <IconButton size="small" style={{ color: '#4caf50' }}>
+                <CheckCircleIcon />
+              </IconButton>
+            </Tooltip>
           ) : (
-            <IconButton
-              size="small"
-              style={{ color: '#f44336' }}
-              onClick={handlePending}
-            >
-              <FormatListBulletedIcon />
-            </IconButton>
+            <Tooltip placement="right" title="Go to evaluation page">
+              <IconButton
+                size="small"
+                style={{ color: '#f44336' }}
+                onClick={handlePending}
+              >
+                <FormatListBulletedIcon />
+              </IconButton>
+            </Tooltip>
           )}
         </Grid>
       </Grid>

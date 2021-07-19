@@ -28,6 +28,7 @@ import CardHeader from '@material-ui/core/CardHeader';
 import { useParams } from 'react-router';
 import { green, red, grey } from '@material-ui/core/colors';
 import { fade, withStyles, makeStyles } from '@material-ui/core/styles';
+import Tooltip from '@material-ui/core/Tooltip';
 
 import api from '../api';
 import {
@@ -222,21 +223,23 @@ export default function AllSubmissions() {
               xs={2}
               style={{ justifyContent: 'center' }}
             >
-              <Button
-                type="submit"
-                variant="outlined"
-                size="small"
-                style={
-                  filter == 0
-                    ? { borderColor: 'gray' }
-                    : filter == 1
-                    ? { borderColor: '#f44336' }
-                    : { borderColor: '#4caf50' }
-                }
-                onClick={handleFilter}
-              >
-                {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
-              </Button>
+              <Tooltip placement="right" title="Filter Submissions">
+                <Button
+                  type="submit"
+                  variant="outlined"
+                  size="small"
+                  style={
+                    filter == 0
+                      ? { borderColor: 'gray' }
+                      : filter == 1
+                      ? { borderColor: '#f44336' }
+                      : { borderColor: '#4caf50' }
+                  }
+                  onClick={handleFilter}
+                >
+                  {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
+                </Button>
+              </Tooltip>
             </Grid>
           </Grid>
         </Card>
