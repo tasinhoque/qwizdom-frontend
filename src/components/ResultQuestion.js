@@ -112,10 +112,10 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Radio />}
                   />
-                  {props.fullQuiz.isTest && r.isAnswer == true && (
+                  {props.fullQuiz.quiz.isTest && r.isAnswer == true && (
                     <CheckIcon style={{ color: 'green' }} />
                   )}
-                  {props.fullQuiz.isTest &&
+                  {props.fullQuiz.quiz.isTest &&
                     element.options[i] == true &&
                     r.isAnswer == false && (
                       <CloseIcon style={{ color: 'red' }} />
@@ -148,7 +148,7 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Checkbox checked={element.options[i]} />}
                   />
-                  {props.fullQuiz.isTest && r.isAnswer && (
+                  {props.fullQuiz.quiz.isTest && r.isAnswer && (
                     <CheckIcon style={{ color: 'green' }} />
                   )}
                 </div>
@@ -177,7 +177,7 @@ export default function PlayQuestion(props) {
                     label={r.text}
                     control={<Switch checked={element.options[i]} />}
                   />
-                  {props.fullQuiz.isTest &&
+                  {props.fullQuiz.quiz.isTest &&
                     (r.isAnswer == element.options[i] ? (
                       <CheckIcon style={{ color: 'green' }} />
                     ) : (
@@ -248,7 +248,7 @@ export default function PlayQuestion(props) {
             >
               Question {element.question.serial + 1}
             </Typography>
-            {props.fullQuiz.isTest && (
+            {props.fullQuiz.quiz.isTest && (
               <Typography
                 align="right"
                 style={{ fontWeight: '400', fontSize: '1.2rem' }}

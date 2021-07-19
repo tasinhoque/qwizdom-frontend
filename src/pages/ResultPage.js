@@ -165,7 +165,7 @@ export default function ResultPage() {
                     align="flex-end"
                     direction="column"
                   >
-                    {fullQuiz.current.isTest && (
+                    {fullQuiz.current.quiz.isTest && (
                       <>
                         <Typography
                           gutterBottom
