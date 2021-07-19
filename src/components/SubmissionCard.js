@@ -19,7 +19,7 @@ import { withRouter } from 'react-router-dom';
 const useStyles = makeStyles(theme => ({
   root: {
     // maxWidth: 400,
-    width: '60%',
+    width: theme.spacing(100),
     margin: theme.spacing(1, 5, 1, 5),
     padding: theme.spacing(2, 2, 2, 2),
     [theme.breakpoints.down('xs')]: {
@@ -139,10 +139,11 @@ export default withRouter(function SubmissionCard(props) {
           style={{ justifyContent: 'center' }}
           className={classes.hiddenXS}
         >
-          {props.isEvaluated || props.isAuto ? (
+          {props.isEvaluated ? (
             <Button
               type="submit"
               variant="contained"
+              size="small"
               style={{ backgroundColor: '#4caf50', color: 'white' }}
               onClick={handleDone}
             >
@@ -152,6 +153,7 @@ export default withRouter(function SubmissionCard(props) {
             <Button
               type="submit"
               variant="contained"
+              size="small"
               style={{ backgroundColor: '#f44336', color: 'white' }}
               onClick={handlePending}
             >
@@ -167,7 +169,7 @@ export default withRouter(function SubmissionCard(props) {
           style={{ justifyContent: 'center' }}
           className={classes.hiddenMD}
         >
-          {props.isEvaluated || props.isAuto ? (
+          {props.isEvaluated ? (
             <IconButton size="small" style={{ color: '#4caf50' }}>
               <CheckCircleIcon />
             </IconButton>
