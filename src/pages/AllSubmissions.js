@@ -140,8 +140,7 @@ export default function AllSubmissions() {
     }
 
     try {
-      // NOTE: setLoading(true)
-      setLoading(false);
+      setLoading(true);
 
       console.log(id);
       const response = await api.getAllSubs(id, query);
