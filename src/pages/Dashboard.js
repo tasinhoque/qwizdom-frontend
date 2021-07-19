@@ -50,7 +50,7 @@ export default function Dashboard() {
   };
 
   const updateQueryString = () => {
-    let str = `page=${page}&limit=4`;
+    let str = `page=${page}&limit=4&isPublished=true`;
 
     if (testSelected) {
       str += '&isTest=true';
