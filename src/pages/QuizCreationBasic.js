@@ -187,6 +187,8 @@ const QuizCreationBasic = () => {
           startDate.getTime() === new Date('2021-1-1').getTime()
             ? undefined
             : endDate,
+        coverImage:
+          'https://user-images.githubusercontent.com/27550808/126110850-0658b74b-90e2-40bf-9464-bacc59472d52.jpg',
       };
 
       const { data: quiz } = await api.postQuiz(requestBody);
