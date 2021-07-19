@@ -312,8 +312,19 @@ const QuizCreationBasic = () => {
               ) : (
                 <div></div>
               )}
+              <Grid item>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  endIcon={<DoubleArrowIcon />}
+                  onClick={handleSubmit}
+                >
+                  Proceed
+                </Button>
+              </Grid>
             </Grid>
           </Grid>
+
           <Grid
             container
             direction="column"
@@ -442,16 +453,6 @@ const QuizCreationBasic = () => {
               </Grid>
             </Grid>
           </Grid>
-          <Button
-            variant="contained"
-            color="primary"
-            size="large"
-            className={classes.proceedButton}
-            endIcon={<DoubleArrowIcon />}
-            onClick={handleSubmit}
-          >
-            Proceed
-          </Button>
         </Grid>
       </Container>
     </div>
