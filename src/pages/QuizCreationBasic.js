@@ -114,7 +114,7 @@ const QuizCreationBasic = () => {
   const history = useHistory();
   const [names, setNames] = useState([]);
   const [personName, setPersonName] = useState([]);
-  const [categoryIds, setCategoryIds] = useState([]);
+  const [categoryIds, setCategoryIds] = useState(['60d1cd36bb5d6069d8149f42']);
 
   const theme = useTheme();
 
