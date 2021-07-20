@@ -62,8 +62,8 @@ const useStyles = makeStyles(theme => ({
 
 export default function Stat(props) {
   const classes = useStyles();
-  // const { id } = useParams();
-  const id = '60f6c14572c5f877f8f9c83a';
+  const { id } = useParams();
+  // const id = '60f6c14572c5f877f8f9c83a';
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
@@ -83,7 +83,7 @@ export default function Stat(props) {
     try {
       setLoading(true);
 
-      let response = await api.getPieInfo('60f6c14572c5f877f8f9c83a');
+      let response = await api.getPieInfo(id);
       response.data.map((elem, idx) => {
         elem.data.map((e, i) => {
           e.color = colors[i % 7];
