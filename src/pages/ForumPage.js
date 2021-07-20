@@ -6,7 +6,7 @@ import Avatar from '@material-ui/core/Avatar';
 import api from '../api';
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { CreationDialog, Header, ThreadCard } from '../components';
+import { CreationDialog, Header, QuizHeader, ThreadCard } from '../components';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
@@ -21,7 +21,7 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     marginBottom: '50px',
     '& > *': {
-      marginBottom: theme.spacing(4),
+      marginBottom: theme.spacing(3),
     },
   },
 
@@ -33,6 +33,7 @@ const useStyles = makeStyles(theme => ({
   },
   dummyContainer: {
     display: 'flex',
+    width: '100%',
     justifyContent: 'center',
     '& > *': {
       margin: '5px',
@@ -76,6 +77,7 @@ export default function ForumPage() {
   const [pageRefresher, setPageRefresher] = useState(9);
   const user = JSON.parse(localStorage.getItem('user'));
   const [open, setOpen] = useState(false);
+  const [quizInfo, setQuizInfo] = useState('');
 
   const postFieldRef = useRef('');
 
@@ -97,6 +99,10 @@ export default function ForumPage() {
 
   useEffect(() => {
     console.log('called');
+    api.getQuiz(id).then(res => {
+      console.log(res);
+      setQuizInfo(res.data);
+    });
     api
       .getAllDiscussionThread(id)
       .then(res => {
@@ -119,6 +125,11 @@ export default function ForumPage() {
       ) : (
         <div>
           <Header />
+          <Grid container justify="center" spacing={3}>
+            <Grid item md={8} sm={10}>
+              <QuizHeader quiz={quizInfo} />
+            </Grid>
+          </Grid>
           <CreationDialog
             id={id}
             open={open}
@@ -135,23 +146,33 @@ export default function ForumPage() {
               className={classes.container}
               md={8}
               sm={10}
-              spacing={3}
             >
-              <Grid item>
-                <Paper style={{ flexGrow: 1, padding: '15px' }}>
-                  <div className={classes.dummyContainer}>
-                    <Avatar alt={user.name} src={user.avatar} />
-                    <Container
-                      onClick={() => {
-                        setOpen(true);
-                      }}
-                      className={classes.dummyField}
-                    >
-                      Create your own thread
-                    </Container>
-                  </div>
-                </Paper>
-              </Grid>
+              {/* <Grid item> */}
+              <Paper
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexGrow: 1,
+                  padding: '10px 15px 10px 15px',
+                }}
+              >
+                <div className={classes.dummyContainer}>
+                  <Avatar
+                    style={{ width: '55px', height: '55px' }}
+                    alt={user.name}
+                    src={user.avatar}
+                  />
+                  <Container
+                    onClick={() => {
+                      setOpen(true);
+                    }}
+                    className={classes.dummyField}
+                  >
+                    Create your own thread
+                  </Container>
+                </div>
+              </Paper>
+              {/* </Grid> */}
               {allThread.map((th, index) => {
                 return (
                   <Grid item key={index}>
