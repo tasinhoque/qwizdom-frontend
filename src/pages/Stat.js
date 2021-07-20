@@ -20,15 +20,12 @@ import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(10),
-    paddingLeft: theme.spacing(10),
-    paddingLeft: theme.spacing(10),
+    paddingLeft: theme.spacing(20),
+    paddingLeft: theme.spacing(20),
   },
   container: {
-    height: '100px',
-    // paddingLeft: theme.spacing(10),
-    // paddingLeft: theme.spacing(10),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
   },
   questionTitle: {
     marginBottom: theme.spacing(5),
@@ -57,13 +54,19 @@ export default function Stat(props) {
     try {
       setLoading(true);
 
-      let response = await api.getPieInfo('60f54796ae87f5172830e0b0');
-      response.data[0].data.map((e, i) => {
-        e.color = colors[i % 7];
+      let response = await api.getPieInfo('60f6c14572c5f877f8f9c83a');
+      response.data.map((elem, idx) => {
+        elem.data.map((e, i) => {
+          e.color = colors[i % 7];
+        });
       });
 
+      // response.data[0].data.map((e, i) => {
+      //   e.color = colors[i % 7];
+      // });
+
       setData(response.data);
-      console.log(response.data[0].data);
+      console.log(response.data);
 
       setLoading(false);
     } catch (error) {
@@ -87,41 +90,50 @@ export default function Stat(props) {
         </div>
       ) : (
         <div className={classes.root}>
-          <Grid container className={classes.container}>
-            <Grid
-              container
-              direction="column"
-              item
-              md={6}
-              className={classes.question}
-            >
-              <Grid item className={classes.questionTitle}>
-                <Typography variant="h3" component="div">
-                  {/* Question title */}
-                  {data[0].question.title}
-                </Typography>
-              </Grid>
-              <Grid
-                container
-                direction="column"
-                item
-                className={classes.questionOptions}
-              >
-                {data[0].data.map((e, i) => {
-                  return (
-                    <Grid container item key={i}>
-                      <FiberManualRecordIcon style={{ color: colors[i] }} />
-                      <Typography component="div">
-                        {data[0].question.options[i].text}
+          <Grid container>
+            {data.map((elem, idx) => {
+              return (
+                <Grid container item className={classes.container} key={idx}>
+                  <Grid
+                    container
+                    direction="column"
+                    item
+                    md={6}
+                    className={classes.question}
+                  >
+                    <Grid item className={classes.questionTitle}>
+                      <Typography variant="h3" component="div">
+                        {elem.question.title}
                       </Typography>
                     </Grid>
-                  );
-                })}
-              </Grid>
-            </Grid>
-            <Grid item md={6} style={{ height: '250px', paddingTop: '20px' }}>
-              <StatPie data={data[0].data} />
-            </Grid>
+                    <Grid
+                      container
+                      direction="column"
+                      item
+                      className={classes.questionOptions}
+                    >
+                      {elem.data.map((e, i) => {
+                        return (
+                          <Grid container item key={i}>
+                            <FiberManualRecordIcon
+                              style={{ color: colors[i] }}
+                            />
+                            <Typography variant="body1">{e.title}</Typography>
+                          </Grid>
+                        );
+                      })}
+                    </Grid>
+                  </Grid>
+                  <Grid
+                    item
+                    md={6}
+                    style={{ height: '250px', paddingTop: '20px' }}
+                  >
+                    <StatPie data={elem.data} />
+                  </Grid>
+                </Grid>
+              );
+            })}
           </Grid>
         </div>
       )}
