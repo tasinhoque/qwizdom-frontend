@@ -139,6 +139,11 @@ const QuizCreationBasic = () => {
 
   const handleTypeChange = ({ target: { value } }) => {
     setTest(value === 'test');
+    if (value === 'survey') {
+      setScheduled(false);
+      setTimebound(false);
+      setAutoEvaluation(false);
+    }
   };
 
   const handleScheduled = ({ target: { value } }) => {
@@ -180,6 +185,8 @@ const QuizCreationBasic = () => {
         coverImage:
           'https://user-images.githubusercontent.com/27550808/126111179-865576f5-5754-4403-87bb-2afc3f936aea.jpg',
       };
+
+      // console.log(requestBody);
 
       const { data: quiz } = await api.postQuiz(requestBody);
 
