@@ -24,13 +24,16 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(20),
   },
   container: {
-    paddingTop: theme.spacing(10),
-    paddingBottom: theme.spacing(10),
+    paddingTop: theme.spacing(5),
+    // paddingBottom: theme.spacing(10),
   },
   questionTitle: {
     marginBottom: theme.spacing(5),
   },
   questionOptions: {},
+  question: {
+    justifyContent: 'center',
+  },
 }));
 
 export default function Stat(props) {
@@ -102,7 +105,7 @@ export default function Stat(props) {
                     className={classes.question}
                   >
                     <Grid item className={classes.questionTitle}>
-                      <Typography variant="h3" component="div">
+                      <Typography variant="h5" component="div">
                         {elem.question.title}
                       </Typography>
                     </Grid>

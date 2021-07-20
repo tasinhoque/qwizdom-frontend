@@ -56,9 +56,13 @@ export default function StatPie(props) {
         segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
         segmentsShift={index => (index === selected ? 3 : 1)}
         animate
-        label={({ dataEntry }) => `${Math.round(dataEntry.percentage)}%`}
+        label={({ dataEntry }) =>
+          dataEntry.percentage === 0
+            ? ``
+            : `${Math.round(dataEntry.percentage)}%`
+        }
         lineWidth={60}
-        labelPosition={110}
+        labelPosition={120}
         labelStyle={index => ({
           // fill: dataMock[index].color,
           fill: props.data[index].color,
