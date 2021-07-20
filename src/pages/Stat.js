@@ -16,12 +16,16 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { PieChart } from 'react-minimal-pie-chart';
 import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
+import Box from '@material-ui/core/Box';
+import Card from '@material-ui/core/Card';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    paddingTop: theme.spacing(5),
+    paddingBottom: theme.spacing(5),
     paddingLeft: theme.spacing(20),
-    paddingLeft: theme.spacing(20),
+    paddingRight: theme.spacing(20),
   },
   container: {
     paddingTop: theme.spacing(5),
@@ -34,14 +38,36 @@ const useStyles = makeStyles(theme => ({
   question: {
     justifyContent: 'center',
   },
+  quizheader: {
+    marginTop: theme.spacing(5),
+    marginBottom: theme.spacing(5),
+    paddingLeft: theme.spacing(5),
+    paddingRight: theme.spacing(5),
+  },
+  paper: {
+    minWidth: '80%',
+    margin: theme.spacing(3, 0, 6, 0),
+  },
+  coverImage: {
+    width: '100%',
+    height: '300px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+  },
+  box: {
+    // marginTop: '-20px',
+    padding: theme.spacing(2, 2, 2, 2),
+  },
 }));
 
 export default function Stat(props) {
   const classes = useStyles();
-  const { id } = useParams();
+  // const { id } = useParams();
+  const id = '60f6c14572c5f877f8f9c83a';
 
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState([]);
+  const [quiz, setQuiz] = useState({});
 
   const colors = [
     '#b58900',
@@ -64,12 +90,11 @@ export default function Stat(props) {
         });
       });
 
-      // response.data[0].data.map((e, i) => {
-      //   e.color = colors[i % 7];
-      // });
-
       setData(response.data);
       console.log(response.data);
+
+      let res = await api.getQuiz(id);
+      setQuiz(res.data);
 
       setLoading(false);
     } catch (error) {
@@ -93,6 +118,42 @@ export default function Stat(props) {
         </div>
       ) : (
         <div className={classes.root}>
+          <Paper className={classes.paper}>
+            <img
+              src={quiz.coverImage}
+              width="400px"
+              className={classes.coverImage}
+              alt=""
+            />
+            <Grid
+              container
+              justify="space-between"
+              alignItems="center"
+              className={classes.box}
+            >
+              <Grid container justify="flex-start" item md={6}>
+                <Typography
+                  variant="h4"
+                  component="div"
+                  className={classes.quizTitle}
+                >
+                  {quiz.name}
+                </Typography>
+              </Grid>
+              <Grid container direction="column" item md={6}>
+                <Grid container justify="flex-end" item>
+                  <Typography className={classes.quizInfo}>
+                    Creator: {quiz.creator.name}
+                  </Typography>
+                </Grid>
+                <Grid container justify="flex-end" item>
+                  <Typography className={classes.quizInfo}>
+                    Total Participants: {quiz.totalParticipants || 0}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Paper>
           <Grid container>
             {data.map((elem, idx) => {
               return (
@@ -101,7 +162,7 @@ export default function Stat(props) {
                     container
                     direction="column"
                     item
-                    md={6}
+                    md={8}
                     className={classes.question}
                   >
                     <Grid item className={classes.questionTitle}>
@@ -129,7 +190,7 @@ export default function Stat(props) {
                   </Grid>
                   <Grid
                     item
-                    md={6}
+                    md={4}
                     style={{ height: '250px', paddingTop: '20px' }}
                   >
                     <StatPie data={elem.data} />
