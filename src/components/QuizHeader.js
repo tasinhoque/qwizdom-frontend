@@ -36,7 +36,7 @@ const useStyles = makeStyles(theme => ({
   },
   paper: {
     minWidth: '80%',
-    margin: theme.spacing(3, 0, 6, 0),
+    margin: theme.spacing(3, 0, 1, 0),
   },
   coverImage: {
     width: '100%',
