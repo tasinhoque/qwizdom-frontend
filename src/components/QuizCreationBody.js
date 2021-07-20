@@ -92,7 +92,7 @@ export default function QuizCreationBody(props) {
         } else {
           if (q.options.length == 1) {
             store.current[i].questions[j].oneOptionError = true;
-          } else {
+          } else if (quizInfo.isTest) {
             q.options.map(opt => {
               console.log(opt);
               checkVal = checkVal || opt.isAnswer;
