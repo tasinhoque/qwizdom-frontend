@@ -311,10 +311,8 @@ export default function QuizHome(props) {
           caller="quizHome"
         />
 
+        <Header />
         <Grid container className={classes.root} spacing={0}>
-          <Grid item md={12} xs={12}>
-            <Header />
-          </Grid>
           <Grid
             container
             item
