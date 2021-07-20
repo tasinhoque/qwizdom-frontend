@@ -75,6 +75,7 @@ export default function ForumPage() {
   const [currentPageNum, setCurrentPageNum] = useState(0);
   const [pageRefresher, setPageRefresher] = useState(9);
   const user = JSON.parse(localStorage.getItem('user'));
+  const [open, setOpen] = useState(false);
 
   const postFieldRef = useRef('');
 
@@ -118,6 +119,12 @@ export default function ForumPage() {
       ) : (
         <div>
           <Header />
+          <CreationDialog
+            id={id}
+            open={open}
+            setOpen={setOpen}
+            setPageRefresher={setPageRefresher}
+          />
           <Grid style={{ paddingTop: '30px' }} container justify="center">
             <Grid
               container
@@ -134,7 +141,12 @@ export default function ForumPage() {
                 <Paper style={{ flexGrow: 1, padding: '15px' }}>
                   <div className={classes.dummyContainer}>
                     <Avatar alt={user.name} src={user.avatar} />
-                    <Container className={classes.dummyField}>
+                    <Container
+                      onClick={() => {
+                        setOpen(true);
+                      }}
+                      className={classes.dummyField}
+                    >
                       Create your own thread
                     </Container>
                   </div>

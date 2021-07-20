@@ -29,6 +29,7 @@ export default function ThreadCard(props) {
 
   return (
     <Paper className={classes.paperStyle} variant="outlined" square>
+      <Grid container></Grid>
       {thread.text}
     </Paper>
   );
