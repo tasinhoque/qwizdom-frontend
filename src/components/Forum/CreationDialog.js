@@ -58,7 +58,7 @@ export default function CreationDialog({
             We will send updates occasionally.
           </DialogContentText> */}
           <Grid container>
-            <Grid xs={2}>
+            <Grid item xs={2}>
               <div
                 style={{
                   display: 'flex',

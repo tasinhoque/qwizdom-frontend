@@ -137,7 +137,7 @@ export default function ForumPage() {
               sm={10}
               spacing={3}
             >
-              <Grid container item>
+              <Grid item>
                 <Paper style={{ flexGrow: 1, padding: '15px' }}>
                   <div className={classes.dummyContainer}>
                     <Avatar alt={user.name} src={user.avatar} />
