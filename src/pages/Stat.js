@@ -15,17 +15,20 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import { PieChart } from 'react-minimal-pie-chart';
+import FiberManualRecordIcon from '@material-ui/icons/FiberManualRecord';
 
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
-    marginTop: theme.spacing(10),
-    marginBottom: theme.spacing(10),
+    paddingTop: theme.spacing(10),
+    paddingBottom: theme.spacing(10),
+    paddingLeft: theme.spacing(10),
+    paddingLeft: theme.spacing(10),
   },
   container: {
     height: '100px',
-    paddingLeft: theme.spacing(10),
-    paddingLeft: theme.spacing(10),
+    // paddingLeft: theme.spacing(10),
+    // paddingLeft: theme.spacing(10),
   },
   questionTitle: {
     marginBottom: theme.spacing(5),
@@ -92,10 +95,20 @@ export default function Stat(props) {
                   {/* {data[0].question.title} */}
                 </Typography>
               </Grid>
-              <Grid item className={classes.questionOptions}>
-                <Typography component="div">Question option</Typography>
-                <Typography component="div">Question option</Typography>
-                <Typography component="div">Question option</Typography>
+              <Grid
+                container
+                direction="column"
+                item
+                className={classes.questionOptions}
+              >
+                {colors.map((e, i) => {
+                  return (
+                    <Grid container item>
+                      <FiberManualRecordIcon style={{ color: e }} />
+                      <Typography component="div">Question option</Typography>
+                    </Grid>
+                  );
+                })}
                 {/* {data[0].data.map((e, i) => { */}
                 {/*   return ( */}
                 {/*     <div className={classes.questionOption} key={i}> */}
