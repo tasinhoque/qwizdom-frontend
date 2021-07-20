@@ -10,6 +10,8 @@ const useStyles = makeStyles(theme => ({
   root: {},
   paperStyle: {
     minHeight: '200px',
+    flexGrow: 1,
+    padding: '15px',
   },
   typoStyle: {
     fontSize: '1.2rem',
@@ -26,10 +28,8 @@ export default function ThreadCard(props) {
   //   console.log(props);
 
   return (
-    <div>
-      <Paper className={classes.paperStyle} variant="outlined" square>
-        {thread.text}
-      </Paper>
-    </div>
+    <Paper className={classes.paperStyle} variant="outlined" square>
+      {thread.text}
+    </Paper>
   );
 }

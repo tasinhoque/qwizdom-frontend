@@ -1,16 +1,17 @@
 import { useState, useRef, useEffect } from 'react';
-import { Button, Grid, Paper, Typography } from '@material-ui/core';
+import { Button, Container, Paper, Typography } from '@material-ui/core';
+import Grid from '@material-ui/core/Grid';
+import Avatar from '@material-ui/core/Avatar';
+
 import api from '../api';
 import Pagination from '@material-ui/lab/Pagination';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Header, ThreadCard } from '../components';
+import { CreationDialog, Header, ThreadCard } from '../components';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
-
-import { ClassNames } from '@emotion/core';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -19,6 +20,9 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     justifyContent: 'center',
     marginBottom: '50px',
+    '& > *': {
+      marginBottom: theme.spacing(4),
+    },
   },
 
   typoStyle: {
@@ -27,11 +31,37 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '5px',
     // fontWeight: '500',
   },
+  dummyContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    '& > *': {
+      margin: '5px',
+    },
+  },
   textFieldStyle: {
-    resize: 'vertical',
-    width: '100%',
-    padding: '10px',
+    width: '70%',
     marginTop: '10px',
+    background: '#a079795!important',
+    border: '2px solid black',
+  },
+  dummyField: {
+    width: '70px',
+    background: '#b2bb9d57',
+    borderRadius: '8px',
+    flexGrow: 1,
+    color: 'gray',
+    fontWeight: '500',
+    display: 'flex',
+    alignItems: 'center',
+    cursor: 'pointer',
+    '&:hover': {
+      backgroundColor: '#60519833',
+    },
+  },
+  input: {
+    color: 'white',
+    // background: 'linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)',
+    background: '#A07979',
   },
 }));
 
@@ -44,6 +74,7 @@ export default function ForumPage() {
   const { id } = useParams();
   const [currentPageNum, setCurrentPageNum] = useState(0);
   const [pageRefresher, setPageRefresher] = useState(9);
+  const user = JSON.parse(localStorage.getItem('user'));
 
   const postFieldRef = useRef('');
 
@@ -58,6 +89,7 @@ export default function ForumPage() {
     const postBody = { text: postFieldRef.current.value };
     await api.postDiscussionThread(id, postBody).then(res => {
       console.log(res);
+      postFieldRef.current.value = '';
       setPageRefresher(Math.random());
     });
   };
@@ -84,27 +116,39 @@ export default function ForumPage() {
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <>
+        <div>
           <Header />
-          <Grid>
-            <Paper>
-              <TextField
-                className={classes.textFieldStyle}
-                inputRef={postFieldRef}
-                onChange={textHandler}
-                multiline
-                rows={4}
-                rowsMax={10}
-                variant="outlined"
-              />
-              <Button onClick={handlePost} color="primary" variant="contained">
-                Post
-              </Button>
-            </Paper>
-            {allThread.map((th, index) => {
-              return <ThreadCard thread={th} key={index}></ThreadCard>;
-            })}
-            forum page
+          <Grid style={{ paddingTop: '30px' }} container justify="center">
+            <Grid
+              container
+              justify="center"
+              direction="column"
+              item
+              // xs={10}
+              className={classes.container}
+              md={8}
+              sm={10}
+              spacing={3}
+            >
+              <Grid container item>
+                <Paper style={{ flexGrow: 1, padding: '15px' }}>
+                  <div className={classes.dummyContainer}>
+                    <Avatar alt={user.name} src={user.avatar} />
+                    <Container className={classes.dummyField}>
+                      Create your own thread
+                    </Container>
+                  </div>
+                </Paper>
+              </Grid>
+              {allThread.map((th, index) => {
+                return (
+                  <Grid item key={index}>
+                    <ThreadCard thread={th}></ThreadCard>
+                  </Grid>
+                );
+              })}
+              forum page
+            </Grid>
           </Grid>
 
           <div style={{ display: 'flex', justifyContent: 'center' }}>
@@ -116,7 +160,7 @@ export default function ForumPage() {
               color="secondary"
             />
           </div>
-        </>
+        </div>
       )}
     </>
   );

@@ -13,3 +13,4 @@ export { default as SubmissionCard } from './SubmissionCard';
 export { default as EvaluateQuestion } from './EvaluateQuestion';
 export { default as ThreadCard } from './ThreadCard';
 export { default as StatPie } from './StatPie';
+export { default as CreationDialog } from './Forum/CreationDialog';
