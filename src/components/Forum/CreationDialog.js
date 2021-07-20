@@ -17,7 +17,7 @@ export default function CreationDialog({
   setPageRefresher,
 }) {
   const [fullWidth, setFullWidth] = React.useState(true);
-  const [maxWidth, setMaxWidth] = React.useState('sm');
+  const [maxWidth, setMaxWidth] = React.useState('xs');
   const titleRef = useRef('');
   const bodyRef = useRef('');
 
@@ -58,7 +58,7 @@ export default function CreationDialog({
             We will send updates occasionally.
           </DialogContentText> */}
           <Grid container>
-            <Grid item xs={2}>
+            {/* <Grid item xs={2}>
               <div
                 style={{
                   display: 'flex',
@@ -68,22 +68,23 @@ export default function CreationDialog({
               >
                 <Typography align="center">Title</Typography>
               </div>
-            </Grid>
+            </Grid> */}
 
-            <Grid align=" center" item xs={10}>
+            <Grid align=" center" item xs={12}>
               <TextField
                 autoFocus
                 margin="dense"
                 id="name"
                 type="email"
                 fullWidth
-                variant="outlined"
+                variant="filled"
+                label="Title"
                 inputRef={titleRef}
               />
             </Grid>
 
             <Grid container style={{ paddingTop: '10px' }}>
-              <Grid item xs={2}>
+              {/* <Grid item xs={2}>
                 <div
                   style={{
                     display: 'flex',
@@ -93,18 +94,19 @@ export default function CreationDialog({
                 >
                   <Typography>Discussion Body</Typography>
                 </div>
-              </Grid>
-              <Grid item xs={10}>
+              </Grid> */}
+              <Grid item xs={12}>
                 <TextField
                   autoFocus
                   margin="dense"
                   id="name"
+                  label="Discussion Body"
                   multiline
                   rows={10}
                   rowsMax={10}
                   type="email"
                   fullWidth
-                  variant="outlined"
+                  variant="filled"
                   inputRef={bodyRef}
                 />
               </Grid>

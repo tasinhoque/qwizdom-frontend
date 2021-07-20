@@ -16,6 +16,7 @@ import {
   Stat,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
+import { FullThread } from './components';
 
 const App = () => {
   return (
@@ -44,7 +45,10 @@ const App = () => {
         />
         <Route path="/quiz/:id/forum" component={ForumPage} />
         <Route path="/quiz/:id/stat-data" component={Stat} />
-        <Route path="/stat" component={Stat} />
+        <Route
+          path="/quiz/:quizId/forum-thread/:threadId"
+          component={FullThread}
+        />
       </Switch>
     </main>
   );

@@ -2,12 +2,11 @@ import { useState, useRef, useEffect } from 'react';
 import { Grid, Paper, Typography, Container, Divider } from '@material-ui/core';
 import api from '../api';
 import { makeStyles } from '@material-ui/core/styles';
-import Card from '@material-ui/core/Card';
-import CardActions from '@material-ui/core/CardActions';
-import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Moment from 'moment';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
+import { useHistory, useLocation } from 'react-router-dom';
+import { useParams } from 'react-router';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -19,9 +18,10 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: '15px',
   },
-  dummyContainer: {
+  headerContainer: {
     display: 'flex',
     flexGrow: '1',
+    cursor: 'pointer',
     justifyContent: 'center',
     '& > *': {
       margin: '5px',
@@ -49,15 +49,20 @@ const useStyles = makeStyles(theme => ({
 
 export default function ThreadCard(props) {
   const classes = useStyles();
-
+  const history = useHistory();
   const thread = props.thread;
   console.log(props);
+  const { id } = useParams();
+
+  const routeFullThread = () => {
+    history.push(`/quiz/${id}/forum-thread/${thread.id}`);
+  };
 
   return (
     <Paper className={classes.paperStyle} variant="outlined" square>
       <Grid container style={{ borderRadius: '6px' }}>
         {/* <Paper style={{ flexGrow: 1, padding: '15px' }}> */}
-        <div className={classes.dummyContainer}>
+        <div className={classes.headerContainer} onClick={routeFullThread}>
           <Avatar alt={thread.user.name} src={thread.user.avatar} />
           <div
             style={{
@@ -83,7 +88,13 @@ export default function ThreadCard(props) {
         variant="fullWidth"
       />
 
-      <Grid style={{ margin: '15px 15px 25px 15px' }}>
+      <Grid
+        style={{
+          margin: '15px 15px 25px 15px',
+          whiteSpace: 'pre-line',
+          cursor: 'default',
+        }}
+      >
         <Typography style={{ marginBottom: '10px' }} variant="h6">
           {thread.title}
         </Typography>
@@ -96,7 +107,7 @@ export default function ThreadCard(props) {
         style={{ marginBottom: '13px' }}
         variant="fullWidth"
       />
-      <div className={classes.footer}>
+      <div className={classes.footer} onClick={routeFullThread}>
         <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
         <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
           20 Comments
