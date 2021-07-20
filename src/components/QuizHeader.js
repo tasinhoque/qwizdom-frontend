@@ -66,9 +66,17 @@ export default function QuizHeader(props) {
         container
         justify="space-between"
         alignItems="center"
+        direction="row"
         className={classes.box}
       >
-        <Grid container direction="column" justify="flex-start" item md={6}>
+        <Grid
+          container
+          direction="column"
+          justify="flex-start"
+          item
+          xs={12}
+          sm={6}
+        >
           <Typography
             variant="h4"
             component="div"
@@ -80,7 +88,7 @@ export default function QuizHeader(props) {
             Creator: {quiz.creator.name}
           </Typography>
         </Grid>
-        <Grid container direction="column" item md={6}>
+        <Grid container direction="column" item xs={12} sm={6}>
           <Grid container justify="flex-end" item>
             <Typography className={classes.quizInfo}>
               Total Participants: {quiz.totalParticipants || 0}

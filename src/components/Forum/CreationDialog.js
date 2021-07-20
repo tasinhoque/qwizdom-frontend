@@ -83,7 +83,7 @@ export default function CreationDialog({
             </Grid>
 
             <Grid container style={{ paddingTop: '10px' }}>
-              <Grid xs={2}>
+              <Grid item xs={2}>
                 <div
                   style={{
                     display: 'flex',
@@ -94,7 +94,7 @@ export default function CreationDialog({
                   <Typography>Discussion Body</Typography>
                 </div>
               </Grid>
-              <Grid xs={10}>
+              <Grid item xs={10}>
                 <TextField
                   autoFocus
                   margin="dense"

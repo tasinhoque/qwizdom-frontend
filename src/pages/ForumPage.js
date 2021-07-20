@@ -97,13 +97,13 @@ export default function ForumPage() {
     });
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     console.log('called');
-    api.getQuiz(id).then(res => {
+    await api.getQuiz(id).then(res => {
       console.log(res);
       setQuizInfo(res.data);
     });
-    api
+    await api
       .getAllDiscussionThread(id)
       .then(res => {
         console.log(res);
