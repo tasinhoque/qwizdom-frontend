@@ -131,7 +131,13 @@ export default function Stat(props) {
               alignItems="center"
               className={classes.box}
             >
-              <Grid container justify="flex-start" item md={6}>
+              <Grid
+                container
+                direction="column"
+                justify="flex-start"
+                item
+                md={6}
+              >
                 <Typography
                   variant="h4"
                   component="div"
@@ -139,13 +145,11 @@ export default function Stat(props) {
                 >
                   {quiz.name}
                 </Typography>
+                <Typography className={classes.quizInfo}>
+                  Creator: {quiz.creator.name}
+                </Typography>
               </Grid>
               <Grid container direction="column" item md={6}>
-                <Grid container justify="flex-end" item>
-                  <Typography className={classes.quizInfo}>
-                    Creator: {quiz.creator.name}
-                  </Typography>
-                </Grid>
                 <Grid container justify="flex-end" item>
                   <Typography className={classes.quizInfo}>
                     Total Participants: {quiz.totalParticipants || 0}
