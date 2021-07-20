@@ -181,6 +181,9 @@ const api = {
       body
     );
   },
+  getPieInfo: qid => {
+    return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
+  },
 };
 
 export default api;

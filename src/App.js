@@ -44,6 +44,7 @@ const App = () => {
         />
         <Route path="/quiz/:id/forum" component={ForumPage} />
         <Route path="/quiz/:id/stat-data" component={Stat} />
+        <Route path="/stat" component={Stat} />
       </Switch>
     </main>
   );
