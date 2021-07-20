@@ -49,9 +49,9 @@ export default function StatPie(props) {
             '"Nunito Sans", -apple-system, Helvetica, Arial, sans-serif',
           fontSize: '8px',
         }}
-        // data={props.data}
-        data={dataMock}
-        radius={40}
+        data={props.data}
+        // data={dataMock}
+        radius={30}
         // viewBoxSize={[100, 100]}
         segmentsStyle={{ transition: 'stroke .3s', cursor: 'pointer' }}
         segmentsShift={index => (index === selected ? 3 : 1)}
@@ -60,8 +60,8 @@ export default function StatPie(props) {
         lineWidth={60}
         labelPosition={110}
         labelStyle={index => ({
-          fill: dataMock[index].color,
-          // fill: props.data[index].color,
+          // fill: dataMock[index].color,
+          fill: props.data[index].color,
           fontSize: '8px',
           fontFamily: 'sans-serif',
         })}

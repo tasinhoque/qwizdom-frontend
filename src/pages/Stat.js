@@ -57,13 +57,13 @@ export default function Stat(props) {
     try {
       setLoading(true);
 
-      // let response = await api.getPieInfo('60f54796ae87f5172830e0b0');
-      // response.data[0].data.map((e, i) => {
-      //   e.color = colors[i % 7];
-      // });
+      let response = await api.getPieInfo('60f54796ae87f5172830e0b0');
+      response.data[0].data.map((e, i) => {
+        e.color = colors[i % 7];
+      });
 
-      // setData(response.data);
-      // console.log(response.data[0].data);
+      setData(response.data);
+      console.log(response.data[0].data);
 
       setLoading(false);
     } catch (error) {
@@ -76,7 +76,13 @@ export default function Stat(props) {
       <Header />
 
       {loading ? (
-        <div style={{ display: 'flex', justifyContent: 'center' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '100px',
+          }}
+        >
           <CircularProgress color="secondary" />
         </div>
       ) : (
@@ -91,8 +97,8 @@ export default function Stat(props) {
             >
               <Grid item className={classes.questionTitle}>
                 <Typography variant="h3" component="div">
-                  Question title
-                  {/* {data[0].question.title} */}
+                  {/* Question title */}
+                  {data[0].question.title}
                 </Typography>
               </Grid>
               <Grid
@@ -101,25 +107,20 @@ export default function Stat(props) {
                 item
                 className={classes.questionOptions}
               >
-                {colors.map((e, i) => {
+                {data[0].data.map((e, i) => {
                   return (
-                    <Grid container item>
-                      <FiberManualRecordIcon style={{ color: e }} />
-                      <Typography component="div">Question option</Typography>
+                    <Grid container item key={i}>
+                      <FiberManualRecordIcon style={{ color: colors[i] }} />
+                      <Typography component="div">
+                        {data[0].question.options[i].text}
+                      </Typography>
                     </Grid>
                   );
                 })}
-                {/* {data[0].data.map((e, i) => { */}
-                {/*   return ( */}
-                {/*     <div className={classes.questionOption} key={i}> */}
-                {/*       <Typography component="div">{e.title}</Typography> */}
-                {/*     </div> */}
-                {/*   ); */}
-                {/* })} */}
               </Grid>
             </Grid>
-            <Grid item md={6} style={{ height: '200px' }}>
-              <StatPie />
+            <Grid item md={6} style={{ height: '250px', paddingTop: '20px' }}>
+              <StatPie data={data[0].data} />
             </Grid>
           </Grid>
         </div>
