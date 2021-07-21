@@ -407,6 +407,7 @@ const QuizCreationBasic = () => {
                     <Grid container justify="space-around" direction="column">
                       <Grid item>
                         <KeyboardDatePicker
+                          disablePast
                           margin="normal"
                           id="date-picker-start"
                           label="Start Date"
