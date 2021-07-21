@@ -40,7 +40,7 @@
 - [x]  no point in survey
 - [x]  Shuffle
 - []  Task Page
-- []  Basic Info edit page
+- []  Quiz Basic Info edit page
 - []  Minimal Admin privelege
 - []  Forum pending task
 - []  Landing page

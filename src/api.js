@@ -184,6 +184,9 @@ const api = {
   patchDiscussionThread: (threadId, body) => {
     return axios.patch(`${baseUrl}/discussion-threads/${threadId}`, body);
   },
+  deleteDiscussionThread: threadId => {
+    return axios.delete(`${baseUrl}/discussion-threads/${threadId}`);
+  },
   getPieInfo: qid => {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },

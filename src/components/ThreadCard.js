@@ -12,6 +12,7 @@ import { Edit } from '@material-ui/icons';
 import Delete from '@material-ui/icons/Delete';
 import CreationDialog from './Forum/CreationDialog';
 import EditDialog from './Forum/EditDialog';
+import DeleteDialog from './Forum/DeleteDialog';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -59,6 +60,7 @@ export default function ThreadCard(props) {
   const { id } = useParams();
   const user = JSON.parse(localStorage.getItem('user'));
   const [open, setOpen] = useState(false);
+  const [delOpen, setDelOpen] = useState(false);
 
   const routeFullThread = () => {
     history.push(`/quiz/${id}/forum-thread/${thread.id}`);
@@ -70,6 +72,12 @@ export default function ThreadCard(props) {
         thread={thread}
         open={open}
         setOpen={setOpen}
+        setPageRefresher={props.setPageRefresher}
+      />
+      <DeleteDialog
+        delOpen={delOpen}
+        setDelOpen={setDelOpen}
+        threadId={thread.id}
         setPageRefresher={props.setPageRefresher}
       />
 
@@ -95,7 +103,10 @@ export default function ThreadCard(props) {
                     onClick={() => setOpen(true)}
                     style={{ cursor: 'pointer' }}
                   />
-                  <Delete style={{ cursor: 'pointer' }} />
+                  <Delete
+                    onClick={() => setDelOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                  />
                 </>
               )}
 
