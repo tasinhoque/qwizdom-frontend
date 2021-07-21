@@ -1,5 +1,12 @@
 import { useState, useRef, useEffect } from 'react';
-import { Grid, Paper, Typography, Container, Divider } from '@material-ui/core';
+import {
+  Grid,
+  Paper,
+  Typography,
+  Container,
+  Divider,
+  Button,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import Avatar from '@material-ui/core/Avatar';
 import Moment from 'moment';
@@ -8,6 +15,8 @@ import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import api from '../../api';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
+import TextField from '@material-ui/core/TextField';
+import Comment from './Comment';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -18,6 +27,24 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '200px',
     flexGrow: 1,
     padding: '15px',
+  },
+  dummyContainer: {
+    display: 'flex',
+    // width: '100%',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    // '& > *': {
+    //   margin: '5px',
+    // },
+  },
+  textFieldContainer: {
+    display: 'flex',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '& > *': {
+      margin: '5px',
+    },
   },
   headerContainer: {
     display: 'flex',
@@ -33,6 +60,11 @@ const useStyles = makeStyles(theme => ({
     // paddingTop: '1.2rem',
     marginBottom: '5px',
     // fontWeight: '500',
+  },
+  input: {
+    borderColor: '#60519833 !important',
+    background: '#60519833',
+    borderRadius: '10px',
   },
   footer: {
     width: 'fit-content',
@@ -54,8 +86,20 @@ export default function FullThread() {
   const [loading, setLoading] = useState(true);
   const [thread, setThread] = useState('');
   const user = JSON.parse(localStorage.getItem('user'));
+  const [threadComments, setThreadComments] = useState('');
+  const [pageRefresher, setPageRefresher] = useState(9);
+
+  const commentRef = useRef('');
 
   console.log('quizId ,threadid', quizId, threadId);
+  const handleSubmit = () => {
+    const postBody = { text: commentRef.current.value };
+    api.postComment(threadId, postBody).then(res => {
+      console.log(res);
+      commentRef.current.value = '';
+      setPageRefresher(Math.random());
+    });
+  };
   useEffect(async () => {
     await api.getSingleDiscussionThread(threadId).then(res => {
       setThread(res.data);
@@ -63,9 +107,10 @@ export default function FullThread() {
     });
     await api.getThreadComments(threadId).then(res => {
       console.log(res);
+      setThreadComments(res.data);
       setLoading(false);
     });
-  }, []);
+  }, [pageRefresher]);
   return (
     <>
       {loading ? (
@@ -73,7 +118,7 @@ export default function FullThread() {
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <Grid spacing={3} container justify="center">
+        <Grid container justify="center">
           <Grid item md={8} xs={12}>
             <Paper className={classes.paperStyle} variant="outlined" square>
               <Grid container style={{ borderRadius: '6px' }}>
@@ -126,6 +171,29 @@ export default function FullThread() {
                 <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
                   20 Comments
                 </Typography>
+              </div>
+
+              <div>
+                <Grid>
+                  <div className={classes.textFieldContainer}>
+                    <Avatar alt={user.name} src={user.avatar} />
+                    <TextField
+                      style={{ flexGrow: 1, borderRadius: '10px' }}
+                      multiline
+                      variant="outlined"
+                      inputRef={commentRef}
+                      InputProps={{
+                        classes: { notchedOutline: classes.input },
+                      }}
+                    />
+                  </div>
+                  <Grid container justify="flex-end">
+                    <Button onClick={handleSubmit}>Post</Button>
+                  </Grid>
+                </Grid>
+                {threadComments.map((el, index) => {
+                  return <Comment comment={el} key={index} />;
+                })}
               </div>
             </Paper>
           </Grid>

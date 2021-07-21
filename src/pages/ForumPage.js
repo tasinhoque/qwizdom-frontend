@@ -125,7 +125,7 @@ export default function ForumPage() {
       ) : (
         <div>
           <Header />
-          <Grid container justify="center" spacing={3}>
+          <Grid container justify="center">
             <Grid item md={8} sm={10}>
               <QuizHeader quiz={quizInfo} />
             </Grid>
