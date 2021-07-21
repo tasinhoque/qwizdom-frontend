@@ -44,3 +44,4 @@
 - []  Minimal Admin privelege
 - []  Forum pending task
 - []  Landing page
+- []  No point error handling

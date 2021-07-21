@@ -142,12 +142,14 @@ export default function QuizPlay(props) {
 
   const arrayShuffler = array => {
     if (array.length <= 2) {
-      return;
+      return array;
     }
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [array[i], array[j]] = [array[j], array[i]];
     }
+    console.log(array);
+    return array;
   };
   useEffect(async () => {
     if (previewState) {
@@ -191,7 +193,7 @@ export default function QuizPlay(props) {
               startTime.getTime() + res.data.duration * 60000
             );
             startTime.setMinutes(startTime.getMinutes + res.data.duration);
-            console.log(endTime);
+            // console.log(endTime);
 
             const diff = Math.round((endTime - time) / 1000);
             // // console.log(diff.getSeconds());
@@ -225,9 +227,22 @@ export default function QuizPlay(props) {
           });
 
           console.log(res.data.stages);
-          // res.data.stages = arrayShuffler(res.data.stages);
+          res.data.stages.map((e, i) => {
+            res.data.stages[i].questions = arrayShuffler(
+              res.data.stages[i].questions
+            );
+          });
 
-          // console.log(res.data.stages);
+          res.data.stages = arrayShuffler(res.data.stages);
+          let serialId = 0;
+          res.data.stages.map((e, i) => {
+            res.data.stages[i].questions.map((q, j) => {
+              res.data.stages[i].questions[j].serial = serialId;
+              serialId++;
+            });
+          });
+
+          console.log(res.data.stages);
 
           fullQuiz.current = res.data;
           currentStage.current = res.data.stages[0];
