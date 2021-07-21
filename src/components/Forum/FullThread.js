@@ -63,7 +63,7 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     borderColor: '#60519833 !important',
-    background: '#60519833',
+    // background: '#60519833',
     borderRadius: '10px',
   },
   footer: {
@@ -71,6 +71,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     cursor: 'pointer',
     alignItems: 'center',
+    marginBottom: '30px',
     '& > *': {
       marginRight: '4px',
     },
@@ -93,9 +94,9 @@ export default function FullThread() {
 
   console.log('quizId ,threadid', quizId, threadId);
   const handleSubmit = () => {
+    if (commentRef.current.value == '') return;
     const postBody = { text: commentRef.current.value };
     api.postComment(threadId, postBody).then(res => {
-      console.log(res);
       commentRef.current.value = '';
       setPageRefresher(Math.random());
     });
@@ -106,7 +107,6 @@ export default function FullThread() {
       console.log(res);
     });
     await api.getThreadComments(threadId).then(res => {
-      console.log(res);
       setThreadComments(res.data);
       setLoading(false);
     });
@@ -136,7 +136,7 @@ export default function FullThread() {
                       {thread.user.name}{' '}
                     </Typography>
                     <Typography style={{ fontWeight: '500' }}>
-                      {Moment(thread.createdAt).format('DD MMMM,YYYY')}
+                      {Moment(thread.createdAt).format('DD MMMM, YYYY')}
                     </Typography>
                   </div>
                 </div>
@@ -173,13 +173,27 @@ export default function FullThread() {
                 </Typography>
               </div>
 
-              <div>
-                <Grid>
+              <div
+                style={{
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  justifyContent: 'center',
+                }}
+              >
+                <Grid
+                  style={{
+                    width: '80%',
+                    display: 'flex',
+                    alignContent: 'center',
+                    flexDirection: 'column',
+                  }}
+                >
                   <div className={classes.textFieldContainer}>
                     <Avatar alt={user.name} src={user.avatar} />
                     <TextField
                       style={{ flexGrow: 1, borderRadius: '10px' }}
                       multiline
+                      rows={3}
                       variant="outlined"
                       inputRef={commentRef}
                       InputProps={{

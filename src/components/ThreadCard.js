@@ -76,7 +76,7 @@ export default function ThreadCard(props) {
               {thread.user.name}{' '}
             </Typography>
             <Typography style={{ fontWeight: '500' }}>
-              {Moment(thread.createdAt).format('DD MMMM,YYYY')}
+              {Moment(thread.createdAt).format('DD MMMM, YYYY')}
             </Typography>
           </div>
         </div>

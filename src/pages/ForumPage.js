@@ -47,7 +47,7 @@ const useStyles = makeStyles(theme => ({
   },
   dummyField: {
     width: '70px',
-    background: '#b2bb9d57',
+    background: 'white',
     borderRadius: '8px',
     flexGrow: 1,
     color: 'gray',
