@@ -253,7 +253,11 @@ export default function PlayQuestion(props) {
                 align="right"
                 style={{ fontWeight: '400', fontSize: '1.2rem' }}
               >
-                {element.points}/{question.points} points
+                {' '}
+                {question.type == 'text' && props.fullQuiz.isEvaluated == false
+                  ? 'Pending'
+                  : `${element.points}/${question.points} points`}
+                {/* {element.points}/{question.points} points */}
               </Typography>
             )}
           </div>

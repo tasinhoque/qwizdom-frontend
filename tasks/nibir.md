@@ -42,4 +42,5 @@
 - []  Task Page
 - []  Basic Info edit page
 - []  Minimal Admin privelege
-
+- []  Forum pending task
+- []  Landing page
