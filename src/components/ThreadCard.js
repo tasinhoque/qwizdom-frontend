@@ -7,6 +7,11 @@ import Moment from 'moment';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Edit } from '@material-ui/icons';
+import Delete from '@material-ui/icons/Delete';
+import CreationDialog from './Forum/CreationDialog';
+import EditDialog from './Forum/EditDialog';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -21,7 +26,6 @@ const useStyles = makeStyles(theme => ({
   headerContainer: {
     display: 'flex',
     flexGrow: '1',
-    cursor: 'pointer',
     justifyContent: 'center',
     '& > *': {
       margin: '5px',
@@ -53,6 +57,8 @@ export default function ThreadCard(props) {
   const thread = props.thread;
   console.log(props);
   const { id } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [open, setOpen] = useState(false);
 
   const routeFullThread = () => {
     history.push(`/quiz/${id}/forum-thread/${thread.id}`);
@@ -60,9 +66,16 @@ export default function ThreadCard(props) {
 
   return (
     <Paper className={classes.paperStyle} variant="outlined" square>
+      <EditDialog
+        thread={thread}
+        open={open}
+        setOpen={setOpen}
+        setPageRefresher={props.setPageRefresher}
+      />
+
       <Grid container style={{ borderRadius: '6px' }}>
         {/* <Paper style={{ flexGrow: 1, padding: '15px' }}> */}
-        <div className={classes.headerContainer} onClick={routeFullThread}>
+        <div className={classes.headerContainer}>
           <Avatar alt={thread.user.name} src={thread.user.avatar} />
           <div
             style={{
@@ -75,9 +88,21 @@ export default function ThreadCard(props) {
             <Typography style={{ fontWeight: '500' }}>
               {thread.user.name}{' '}
             </Typography>
-            <Typography style={{ fontWeight: '500' }}>
-              {Moment(thread.createdAt).format('DD MMMM, YYYY')}
-            </Typography>
+            <div style={{ display: 'inline-flex' }}>
+              {thread.user.id == user.id && (
+                <>
+                  <Edit
+                    onClick={() => setOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <Delete style={{ cursor: 'pointer' }} />
+                </>
+              )}
+
+              <Typography style={{ fontWeight: '500' }}>
+                {Moment(thread.createdAt).format('DD MMMM, YYYY')}
+              </Typography>
+            </div>
           </div>
         </div>
       </Grid>

@@ -181,6 +181,9 @@ const api = {
       body
     );
   },
+  patchDiscussionThread: (threadId, body) => {
+    return axios.patch(`${baseUrl}/discussion-threads/${threadId}`, body);
+  },
   getPieInfo: qid => {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },
