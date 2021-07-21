@@ -87,7 +87,7 @@
 - [ ] Show categories for quiz in quiz home.
 - [x] Rename: paragraph to descriptive (question type)
 - [ ] Add explanation text field in descriptive type question
-- [] Scheduled quiz should have some restrictions. 
+- [ ] Scheduled quiz should have some restrictions.
 - [x] Remove the remember me checkbox from sign in page
 - [ ] Show subscriber count in quiz home
 - [x] Remove the forgot password link (sign in)
@@ -113,37 +113,37 @@
 
 ## Backend check
 - [x]  After evaluation submit , still pending showing
-- []  IsPublished query not working for getting only pubished quizzes
-- []  Set a default  value for totalParticipant count for a quiz
-- []  Delete post
-- []  Delete comment 
-- []  Populate post creator info in forum APIs(username,id,avatar)
-- []  Task page APIs
-- []  Paginate all discussion thread api
+- [ ]  IsPublished query not working for getting only pubished quizzes
+- [ ]  Set a default  value for totalParticipant count for a quiz
+- [ ]  Delete post
+- [ ]  Delete comment
+- [ ]  Populate post creator info in forum APIs(username,id,avatar)
+- [ ]  Task page APIs
+- [ ]  Paginate all discussion thread api
 
 
 ## Forum Tasks
-- []  Paginate all discussion threads 
-- []  Post new discussion thread
-      - [] Thread Topic
-      - [] Thread Content
-      - [] Image ????
-- []  A single page for each discussion thread. In that page, comments will be visible and 
-      people can post comments
-      - []  Limited number of comments(suppose 5) will be shown at first
-      - []  Buttons to show more comments, hide all comments  
+- [ ] Paginate all discussion threads
+- [ ] Post new discussion thread
+  - [ ] Thread Topic
+  - [ ] Thread Content
+  - [ ] Image ????
+- [ ] A single page for each discussion thread. In that page, comments will be
+  visible and people can post comments
+  - [ ] Limited number of comments(suppose 5) will be shown at first
+  - [ ] Buttons to show more comments, hide all comments
 
 ## Meeting with Supervisor
 
 - Survey diagrams [Enan, 20 Nov]
   - Survey API [Tasin]
-- Landing page 
+- Landing page
 - Notification [Tasin, 20 Nov]
 - Stage shuffling
-- Forum [Nibir + Enan, 20 Nov]
+- Forum [Nibir, 20 Nov]
 - Global leaderboard
 - Rename stage to section
 - Single card refactoring in the dashboard: Make it small
 - Side panel refactoring: Redesign
 - Show pending instead of 0 points
-  - total points = pending 
+  - total points = pending
