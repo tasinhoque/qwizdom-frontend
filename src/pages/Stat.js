@@ -8,7 +8,7 @@ import React, {
 import { makeStyles } from '@material-ui/core/styles';
 import api from '../api';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import { Header, StatPie } from '../components';
+import { Header, StatPie, QuizHeader } from '../components';
 import { useParams } from 'react-router';
 import { useHistory } from 'react-router-dom';
 import Paper from '@material-ui/core/Paper';
@@ -118,46 +118,7 @@ export default function Stat(props) {
         </div>
       ) : (
         <div className={classes.root}>
-          <Paper className={classes.paper}>
-            <img
-              src={quiz.coverImage}
-              width="400px"
-              className={classes.coverImage}
-              alt=""
-            />
-            <Grid
-              container
-              justify="space-between"
-              alignItems="center"
-              className={classes.box}
-            >
-              <Grid
-                container
-                direction="column"
-                justify="flex-start"
-                item
-                md={6}
-              >
-                <Typography
-                  variant="h4"
-                  component="div"
-                  className={classes.quizTitle}
-                >
-                  {quiz.name}
-                </Typography>
-                <Typography className={classes.quizInfo}>
-                  Creator: {quiz.creator.name}
-                </Typography>
-              </Grid>
-              <Grid container direction="column" item md={6}>
-                <Grid container justify="flex-end" item>
-                  <Typography className={classes.quizInfo}>
-                    Total Participants: {quiz.totalParticipants || 0}
-                  </Typography>
-                </Grid>
-              </Grid>
-            </Grid>
-          </Paper>
+          <QuizHeader quiz={quiz} />
           <Grid container>
             {data.map((elem, idx) => {
               return (
