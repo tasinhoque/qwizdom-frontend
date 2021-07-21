@@ -13,7 +13,6 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
-import { Comments } from '../components';
 import { Grid } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
 import SubmissionDialog from '../components/SubmissionDialog';
