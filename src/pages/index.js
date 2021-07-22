@@ -12,3 +12,4 @@ export { default as AllSubmissions } from './AllSubmissions';
 export { default as ManualEvaluation } from './ManualEvaluation';
 export { default as ForumPage } from './ForumPage';
 export { default as Stat } from './Stat';
+export { default as LandingPage } from './LandingPage';
