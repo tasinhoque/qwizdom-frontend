@@ -23,6 +23,7 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '200px',
     flexGrow: 1,
     padding: '15px',
+    maxWidth: '100%',
   },
   headerContainer: {
     display: 'flex',
@@ -129,12 +130,15 @@ export default function ThreadCard(props) {
           margin: '15px 15px 25px 15px',
           whiteSpace: 'pre-line',
           cursor: 'default',
+          maxWidth: '100%',
         }}
       >
         <Typography style={{ marginBottom: '10px' }} variant="h6">
           {thread.title}
         </Typography>
-        {thread.text}
+        <Typography style={{ wordBreak: 'break-all' }}>
+          {thread.text}
+        </Typography>
       </Grid>
       <Divider
         classes={{

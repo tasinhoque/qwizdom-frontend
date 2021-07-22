@@ -41,7 +41,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     width: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     '& > *': {
       margin: '5px',
     },
@@ -63,6 +63,8 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     borderColor: '#60519833 !important',
+    backgroundColor: '#60519833',
+
     // background: '#60519833',
     borderRadius: '10px',
   },
@@ -72,6 +74,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     alignItems: 'center',
     marginBottom: '30px',
+
     '& > *': {
       marginRight: '4px',
     },
@@ -152,6 +155,7 @@ export default function FullThread() {
                   margin: '15px 15px 25px 15px',
                   whiteSpace: 'pre-line',
                   cursor: 'default',
+                  wordWrap: 'break-word',
                 }}
               >
                 <Typography style={{ marginBottom: '10px' }} variant="h6">
@@ -177,7 +181,8 @@ export default function FullThread() {
                 style={{
                   display: 'flex',
                   flexWrap: 'wrap',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
+                  marginLeft: '15px',
                 }}
               >
                 <Grid
@@ -190,18 +195,21 @@ export default function FullThread() {
                 >
                   <div className={classes.textFieldContainer}>
                     <Avatar alt={user.name} src={user.avatar} />
-                    <TextField
-                      style={{ flexGrow: 1, borderRadius: '10px' }}
-                      multiline
-                      rows={3}
-                      variant="outlined"
-                      inputRef={commentRef}
-                      InputProps={{
-                        classes: { notchedOutline: classes.input },
-                      }}
-                    />
+                    <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
+                      <TextField
+                        style={{ width: '100%', borderRadius: '10px' }}
+                        autoFocus
+                        multiline
+                        rows={3}
+                        variant="outlined"
+                        inputRef={commentRef}
+                        InputProps={{
+                          classes: { notchedOutline: classes.input },
+                        }}
+                      />
+                    </Grid>
                   </div>
-                  <Grid container justify="flex-end">
+                  <Grid item xs={12} sm={10} justify="flex-end">
                     <Button onClick={handleSubmit}>Post</Button>
                   </Grid>
                 </Grid>
