@@ -28,8 +28,9 @@ const dummy = createMuiTheme({
 
 const useStyles = makeStyles(theme => ({
   root: {
-    maxWidth: 350,
-    marginBottom: 30,
+    // width: '95%',
+    // maxWidth: 350,
+    marginBottom: 10,
   },
   media: {
     height: '180px',
@@ -74,6 +75,7 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
+    // padding: '0 2px 2px 0',
   },
   chipStyle: {
     display: 'flex',
@@ -84,7 +86,7 @@ const useStyles = makeStyles(theme => ({
   },
   [dummy.breakpoints.up('laptop')]: {
     root: {
-      minWidth: '450px',
+      // minWidth: '450px',
     },
   },
   // [dummy.breakpoints.between('tablet', 'laptop')]: {
@@ -126,16 +128,23 @@ export default withRouter(function SingleCard(props) {
         </CardActionArea>
       </div>
       <div style={{ paddingLeft: '8px' }}>
-        <div style={{ padding: '5px' }}>
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'space-between',
+            padding: '5px',
+          }}
+        >
           <Typography variant="h6" component="p">
             {props.name}
           </Typography>
+          <Box className={classes.chipStyle}>
+            <Chip color="primary" label={props.categories[0].name} />
+            {/* {props.categories.map((category, i) => ( */}
+            {/*   <Chip color="primary" label={category.name} key={i} /> */}
+            {/* ))} */}
+          </Box>
         </div>
-        <Box className={classes.chipStyle}>
-          {props.categories.map((category, i) => (
-            <Chip color="primary" label={category.name} key={i} />
-          ))}
-        </Box>
         <div className={classes.titleContainer}>
           <CardHeader
             avatar={
@@ -143,6 +152,7 @@ export default withRouter(function SingleCard(props) {
                 // src="assets/images/marcos.png"
                 src={props.creator.avatar}
                 className={classes.avatar}
+                size="small"
               ></Avatar>
             }
             title={props.creator.name}

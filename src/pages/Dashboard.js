@@ -37,13 +37,14 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'space-around',
     overflow: 'hidden',
     padding: theme.spacing(5, 10, 5, 10),
+    margin: theme.spacing(0, 2, 0, 2),
   },
   pageHeader: {
     width: '100%',
-    margin: theme.spacing(0, 9, 1, 9),
+    margin: theme.spacing(0, 0, 1, 0),
   },
   filterChipsContainer: {
-    margin: theme.spacing(0, 9, 5, 9),
+    margin: theme.spacing(0, 0, 8, 0),
   },
   chip: {
     marginRight: theme.spacing(1),
@@ -214,7 +215,7 @@ export default function Dashboard() {
   };
 
   const updateQueryString = () => {
-    let str = `page=${page}&limit=4&isPublished=true`;
+    let str = `page=${page}&limit=6&isPublished=true`;
 
     if (testSelected) {
       str += '&isTest=true';
@@ -255,7 +256,7 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      let response = await api.getQuizzes(`page=1&limit=4`);
+      let response = await api.getQuizzes(`page=1&limit=6`);
 
       setQuizzes(response.data.results);
       setTotalPages(response.data.totalPages);
@@ -410,14 +411,14 @@ export default function Dashboard() {
           </div>
         ) : (
           <Grid container direction="column" className={classes.pageContainer}>
-            <Grid container item className={classes.cardCotainer}>
+            <Grid container item className={classes.cardCotainer} spacing={2}>
               {quizzes.map(q => {
                 return (
                   <Grid
                     container
                     justify="center"
                     item
-                    md={6}
+                    md={4}
                     className={classes.cards}
                     key={q.id}
                   >
