@@ -18,7 +18,7 @@ const useStyles = makeStyles(theme => ({
     flexDirection: 'column',
     alignItems: 'center',
     backgroundColor: 'white',
-    padding: theme.spacing(2, 2, 2, 2),
+    padding: theme.spacing(6, 2, 3, 2),
     borderRadius: theme.spacing(1),
   },
   avatar: {
@@ -30,7 +30,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(1),
   },
   submit: {
-    margin: theme.spacing(3, 0, 2),
+    margin: theme.spacing(1, 0, 2),
   },
   errorStyle: {
     display: 'flex',
@@ -78,9 +78,6 @@ export default function SignUp(props) {
     <Container component="main" maxWidth="xs">
       <CssBaseline />
       <div className={classes.paper}>
-        <Avatar className={classes.avatar}>
-          <LockOutlinedIcon />
-        </Avatar>
         <Typography component="h1" variant="h5">
           Sign Up
         </Typography>
