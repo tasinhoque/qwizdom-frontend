@@ -45,18 +45,6 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     height: 'auto',
   },
-  subscribe: {
-    position: 'absolute',
-    top: '2%',
-    left: '2%',
-    backgroundColor: '#555',
-    color: 'white',
-    fontSize: '12px',
-    padding: '8px 12px',
-    border: 'none',
-    cursor: 'pointer',
-    borderRadius: '5px',
-  },
   expand: {
     transform: 'rotate(0deg)',
     marginLeft: 'auto',
@@ -97,24 +85,16 @@ const useStyles = makeStyles(theme => ({
 }));
 
 export default withRouter(function SingleCard(props) {
+  const classes = useStyles();
   const [loading, setLoading] = useState(true);
 
-  const classes = useStyles();
   const rerouteQuiz = () => {
     props.history.push(`/quiz-home/${props.id}`);
   };
 
-  const subscribe = async e => {
-    let res = await api
-      .subscribeQuiz(props.id)
-      .then(res => {
-        console.log(res);
-        // console.log(props.id);
-      })
-      .catch(error => {
-        console.log(error.response.data.message);
-      });
-  };
+  useEffect(async () => {
+    console.log(props.categories);
+  }, []);
 
   return (
     <Card className={classes.root}>

@@ -184,6 +184,7 @@ export default function Profile() {
       let response = await api.getSubbedQuizzes();
       setSubbedQuizzes(response.data.results);
       response = await api.getPublishedQuizzes();
+      console.log(response.data.results);
       setPublishedQuizzes(response.data.results);
       response = await api.getDraftQuizzes();
       setDraftQuizzes(response.data.results);
@@ -370,7 +371,7 @@ export default function Profile() {
                           width: '500px',
                         }}
                       >
-                        <SingleCard {...q} key={q.id} />
+                        <SingleCard {...q} />
                       </GridListTile>
                     );
                   })}
@@ -400,7 +401,7 @@ export default function Profile() {
                   Draft Quizzes
                 </Typography>
               </div>
-              <div className={classes.root}>
+              <div className={classes.root} style={{ width: '100%' }}>
                 <GridList cellHeight={320} className={classes.gridList}>
                   {draftQuizzes.map(q => {
                     return (
