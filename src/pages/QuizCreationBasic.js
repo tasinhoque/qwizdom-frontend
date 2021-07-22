@@ -17,6 +17,7 @@ import {
   Select,
   Input,
   MenuItem,
+  Box,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -27,7 +28,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
-import { Header } from '../components';
+import { Header, CustomTimePicker } from '../components';
 import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
@@ -74,6 +75,9 @@ const useStyles = makeStyles(theme => ({
     top: '50%',
     borderRadius: '100px',
   },
+  timeErr: {
+    color: 'red',
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -102,6 +106,7 @@ const QuizCreationBasic = () => {
   const [isScheduled, setScheduled] = useState(true);
   const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
+  const [doShuffle, setDoShuffle] = useState(true);
   const [name, setName] = useState('');
   const cover = useRef(null);
   const [description, setDescription] = useState('');
@@ -110,6 +115,7 @@ const QuizCreationBasic = () => {
 
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
+  const [timeErrMsg, setTimeErrMsg] = useState(null);
 
   const history = useHistory();
   const [names, setNames] = useState([]);
@@ -143,6 +149,7 @@ const QuizCreationBasic = () => {
       setScheduled(false);
       setTimebound(false);
       setAutoEvaluation(false);
+      setDoShuffle(false);
     }
   };
 
@@ -158,6 +165,10 @@ const QuizCreationBasic = () => {
     setAutoEvaluation(value === 'auto');
   };
 
+  const handleShuffleChange = ({ target: { value } }) => {
+    setDoShuffle(value === 'doShuffle');
+  };
+
   const handleImage = e => {
     if (e.target.files.length !== 0) {
       const file = e.target.files[0];
@@ -167,7 +178,14 @@ const QuizCreationBasic = () => {
   };
 
   const handleStartDate = date => {
-    setStartDate(date);
+    var now = new Date();
+    now.setHours(now.getHours(), now.getMinutes() + 5, 0, 0);
+    if (date < now) {
+      setTimeErrMsg('Set time at least 5 mins in the future');
+    } else {
+      setStartDate(date);
+      setTimeErrMsg('');
+    }
     console.log(date);
   };
 
@@ -176,6 +194,7 @@ const QuizCreationBasic = () => {
       const requestBody = {
         isTest,
         hasAutoEvaluation,
+        hasShuffle: doShuffle,
         isScheduled,
         name,
         description,
@@ -378,24 +397,48 @@ const QuizCreationBasic = () => {
             </Grid>
             <Grid item>
               {isTest ? (
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Evaluation</FormLabel>
-                  <RadioGroup
-                    value={hasAutoEvaluation ? 'auto' : 'manual'}
-                    onChange={handleEvaluationChange}
-                  >
-                    <FormControlLabel
-                      value="auto"
-                      control={<Radio />}
-                      label="Auto"
-                    />
-                    <FormControlLabel
-                      value="manual"
-                      control={<Radio />}
-                      label="Manual"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                <Grid container spacing={5}>
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Evaluation</FormLabel>
+                      <RadioGroup
+                        value={hasAutoEvaluation ? 'auto' : 'manual'}
+                        onChange={handleEvaluationChange}
+                      >
+                        <FormControlLabel
+                          value="auto"
+                          control={<Radio />}
+                          label="Auto"
+                        />
+                        <FormControlLabel
+                          value="manual"
+                          control={<Radio />}
+                          label="Manual"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Shuffle</FormLabel>
+                      <RadioGroup
+                        value={doShuffle ? 'doShuffle' : 'dontShuffle'}
+                        onChange={handleShuffleChange}
+                      >
+                        <FormControlLabel
+                          value="doShuffle"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="dontShuffle"
+                          control={<Radio />}
+                          label="No"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
               ) : (
                 <div></div>
               )}
@@ -430,6 +473,11 @@ const QuizCreationBasic = () => {
                             'aria-label': 'change time',
                           }}
                         />
+                      </Grid>
+                      <Grid item>
+                        <Box color="red" className="timeErr">
+                          {timeErrMsg}
+                        </Box>
                       </Grid>
                     </Grid>
                   </MuiPickersUtilsProvider>
