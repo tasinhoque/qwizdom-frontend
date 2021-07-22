@@ -14,6 +14,7 @@ import {
   ManualEvaluation,
   ForumPage,
   Stat,
+  LandingPage,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 import { FullThread } from './components';
@@ -43,6 +44,7 @@ const App = () => {
           path="/quiz/:id/user-submission/:userId"
           component={ResultPage}
         />
+        <Route path="/landing" component={LandingPage} />
         <Route path="/quiz/:id/forum" component={ForumPage} />
         <Route path="/quiz/:id/stat-data" component={Stat} />
         <Route
