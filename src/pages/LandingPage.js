@@ -1,5 +1,7 @@
 import api from '../api';
+import { SignIn } from '../components';
 import React from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import { CssBaseline } from '@material-ui/core';
 import Grid from '@material-ui/core/Grid';
@@ -10,7 +12,7 @@ const useStyles = makeStyles(theme => ({
     flexWrap: 'wrap',
     justifyContent: 'center',
     alignItems: 'center',
-    minHeight: '100vh',
+    height: '100vh',
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/bg.jpg'})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
@@ -23,6 +25,8 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Rammetto One',
     fontSize: theme.spacing(10),
     color: 'white',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   qwizdomDescription: {
     fontSize: theme.spacing(4),
@@ -32,8 +36,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function LandingPage() {
+export default function LandingPage(props) {
   const classes = useStyles();
+
+  useEffect(() => {
+    const signedIn = localStorage.getItem('refreshToken');
+    if (signedIn) {
+      props.history.push('/dashboard');
+    }
+  }, []);
 
   return (
     <>
@@ -52,12 +63,9 @@ export default function LandingPage() {
               All your quizzes in one unified platform
             </Grid>
           </Grid>
-          <Grid
-            container
-            item
-            md={6}
-            className={classes.qwizdomContainer}
-          ></Grid>
+          <Grid container item md={6} className={classes.signinContainer}>
+            <SignIn history={props.history} />
+          </Grid>
         </Grid>
       </div>
     </>
