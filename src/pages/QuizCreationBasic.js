@@ -17,6 +17,7 @@ import {
   Select,
   Input,
   MenuItem,
+  Box,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -27,7 +28,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
 import api from '../api';
-import { Header } from '../components';
+import { Header, CustomTimePicker } from '../components';
 import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 
@@ -74,6 +75,9 @@ const useStyles = makeStyles(theme => ({
     top: '50%',
     borderRadius: '100px',
   },
+  timeErr: {
+    color: 'red',
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -111,6 +115,7 @@ const QuizCreationBasic = () => {
 
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
+  const [timeErrMsg, setTimeErrMsg] = useState(null);
 
   const history = useHistory();
   const [names, setNames] = useState([]);
@@ -173,7 +178,14 @@ const QuizCreationBasic = () => {
   };
 
   const handleStartDate = date => {
-    setStartDate(date);
+    var now = new Date();
+    now.setHours(now.getHours(), now.getMinutes() + 5, 0, 0);
+    if (date < now) {
+      setTimeErrMsg('Set time at least 5 mins in the future');
+    } else {
+      setStartDate(date);
+      setTimeErrMsg('');
+    }
     console.log(date);
   };
 
@@ -460,6 +472,11 @@ const QuizCreationBasic = () => {
                             'aria-label': 'change time',
                           }}
                         />
+                      </Grid>
+                      <Grid item>
+                        <Box color="red" className="timeErr">
+                          {timeErrMsg}
+                        </Box>
                       </Grid>
                     </Grid>
                   </MuiPickersUtilsProvider>
