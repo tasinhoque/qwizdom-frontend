@@ -194,6 +194,7 @@ const QuizCreationBasic = () => {
       const requestBody = {
         isTest,
         hasAutoEvaluation,
+        hasShuffle: doShuffle,
         isScheduled,
         name,
         description,
