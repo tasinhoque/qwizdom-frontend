@@ -10,15 +10,17 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    justifyContent: 'center',
-    alignItems: 'center',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     height: '100vh',
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/bg.jpg'})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
     // filter: 'blur(3px)',
   },
-  container: {},
+  container: {
+    marginTop: theme.spacing(10),
+  },
   qwizdomContainer: {
     paddingLeft: theme.spacing(10),
   },
@@ -36,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     marginTop: theme.spacing(2),
   },
   signinContainer: {
+    height: '100%',
     // marginTop: theme.spacing(5),
   },
 }));
