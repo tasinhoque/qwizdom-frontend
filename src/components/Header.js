@@ -20,9 +20,12 @@ import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneO
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { withRouter } from 'react-router-dom';
-import { Grid } from '@material-ui/core';
+import { Divider } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
+  paper: {
+    width: '350px',
+  },
   grow: {
     flexGrow: 1,
     position: 'sticky',
@@ -111,6 +114,7 @@ const useStyles = makeStyles(theme => ({
 export default withRouter(function Header(props) {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorElement, setAnchorElement] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -150,6 +154,14 @@ export default withRouter(function Header(props) {
 
   const logout = event => {
     props.history.push('/');
+  };
+
+  const handleBellClick = event => {
+    setAnchorElement(event.currentTarget);
+  };
+
+  const handleClose = event => {
+    setAnchorElement(null);
   };
 
   const menuId = 'primary-search-account-menu';
@@ -237,11 +249,69 @@ export default withRouter(function Header(props) {
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
               Create Quiz
             </div>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
+            <IconButton
+              aria-label="show 17 new notifications"
+              color="inherit"
+              onClick={handleBellClick}
+            >
               <Badge badgeContent={17} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            <Menu
+              id="simple-menu"
+              anchorEl={anchorElement}
+              getContentAnchorEl={null}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'left' }}
+              transformOrigin={{ vertical: 'top', horizontal: 'center' }}
+              keepMounted
+              open={Boolean(anchorElement)}
+              onClose={handleClose}
+              style={{ width: '100%' }}
+              classes={{ paper: classes.paper }}
+            >
+              <MenuItem
+                onClick={handleClose}
+                style={{
+                  whiteSpace: 'normal',
+                  width: '100%',
+                }}
+              >
+                {/* <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    width: '100%',
+                  }}
+                > */}
+                <span>
+                  The quick brown fox jumped over the lazy dog. The quick brown
+                  fox jumped over the lazy dog dot dot.{' '}
+                  <span style={{ color: 'grey', fontSize: '12px' }}>
+                    1:27 PM, 10 July 2021
+                  </span>
+                </span>
+                {/* <Typography
+                  variant="caption"
+                  // align="right"
+                  // style={{ minWidth: '80px' }}
+                >
+                  {/* <div>19 Jul 2021</div> 
+                  1:27 PM
+                </Typography> */}
+                {/* </div> */}
+              </MenuItem>
+              <Divider style={{ height: '2px' }} />
+              <MenuItem
+                onClick={handleClose}
+                style={{ whiteSpace: 'normal', width: '100%' }}
+              >
+                My account
+                <Typography variant="caption" style={{ marginLeft: '8px' }}>
+                  1:27 PM
+                </Typography>
+              </MenuItem>
+            </Menu>
             <IconButton
               edge="end"
               aria-label="account of current user"
