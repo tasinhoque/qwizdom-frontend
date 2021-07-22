@@ -1,10 +1,31 @@
-import { useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { Grid } from '@material-ui/core';
+import { fade, makeStyles } from '@material-ui/core/styles';
+import { Typography, TextField, InputAdornment } from '@material-ui/core';
+import Pagination from '@material-ui/lab/Pagination';
+import SearchIcon from '@material-ui/icons/Search';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import api from '../api';
-import { Header, DashboardBody, DashboardSidebar } from '../components';
+import { Header, SingleCard } from '../components';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    flexWrap: 'wrap',
+    justifyContent: 'space-around',
+    overflow: 'hidden',
+    padding: theme.spacing(5, 10, 5, 10),
+  },
+  pageHeader: {
+    width: '100%',
+    margin: theme.spacing(0, 9, 5, 9),
+  },
+}));
 
 export default function Dashboard() {
+  const classes = useStyles();
+
   const [scheduledSelected, setScheduledSelected] = useState(false);
   const [unscheduledSelected, setUnscheduledSelected] = useState(false);
 
@@ -22,6 +43,18 @@ export default function Dashboard() {
   const [categoryIds, setCategoryIds] = useState([]);
 
   const [queryString, setQueryString] = useState('');
+
+  const [tempName, setTempName] = useState(name);
+
+  const pageChange = (_event, num) => {
+    setPage(num);
+  };
+
+  const keyPress = async e => {
+    if (e.keyCode === 13) {
+      setName(tempName);
+    }
+  };
 
   const dashboardBodyProps = {
     loading,
@@ -131,13 +164,68 @@ export default function Dashboard() {
   return (
     <>
       <Header />
-      <Grid container>
-        <DashboardSidebar {...dashboardSidebarProps} />
-
-        <Grid item sm={12} md={9}>
-          <DashboardBody {...dashboardBodyProps} />
+      <div className={classes.root}>
+        <Grid container justify="space-between" className={classes.pageHeader}>
+          <Grid item>
+            <Typography style={{ display: 'inline' }} variant="h4">
+              Quizzes
+            </Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              variant="outlined"
+              // style={{ position: 'absolute', minWidth: '300px', right: '100px' }}
+              value={tempName}
+              onKeyDown={keyPress}
+              onChange={e => setTempName(e.target.value)}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon style={{ fill: 'gray' }} />
+                  </InputAdornment>
+                ),
+              }}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+        {loading ? (
+          <div style={{ display: 'flex', justifyContent: 'center' }}>
+            <CircularProgress color="secondary" />
+          </div>
+        ) : (
+          <Grid container direction="column" className={classes.pageContainer}>
+            <Grid container item className={classes.cardCotainer}>
+              {quizzes.map(q => {
+                return (
+                  <Grid
+                    container
+                    justify="center"
+                    item
+                    md={6}
+                    className={classes.cards}
+                    key={q.id}
+                  >
+                    <SingleCard {...q} key={q.id} />;
+                  </Grid>
+                );
+              })}
+            </Grid>
+            <Grid
+              container
+              justify="center"
+              item
+              className={classes.paginateContainer}
+            >
+              <Pagination
+                count={totalPages}
+                onChange={pageChange}
+                page={page}
+                color="secondary"
+              />
+            </Grid>
+          </Grid>
+        )}
+      </div>
     </>
   );
 }
