@@ -150,7 +150,9 @@ export default function ThreadCard(props) {
       <div className={classes.footer} onClick={routeFullThread}>
         <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
         <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-          20 Comments
+          {thread.totalComments <= 1
+            ? `${thread.totalComments} Comment`
+            : `${thread.totalComments} Comments`}
         </Typography>
       </div>
     </Paper>

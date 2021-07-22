@@ -40,8 +40,12 @@ const useStyles = makeStyles(theme => ({
   textFieldContainer: {
     display: 'flex',
     width: '100%',
-    alignItems: 'center',
+    alignContent: 'center',
     justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexGrow: '1',
+    },
     '& > *': {
       margin: '5px',
     },
@@ -53,6 +57,12 @@ const useStyles = makeStyles(theme => ({
     justifyContent: 'center',
     '& > *': {
       margin: '5px',
+    },
+  },
+  innerContainer: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexGrow: '1',
     },
   },
   typoStyle: {
@@ -173,7 +183,9 @@ export default function FullThread() {
               <div className={classes.footer}>
                 <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
                 <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-                  20 Comments
+                  {thread.totalComments <= 1
+                    ? `${thread.totalComments} Comment`
+                    : `${thread.totalComments} Comments`}{' '}
                 </Typography>
               </div>
 
@@ -186,6 +198,7 @@ export default function FullThread() {
                 }}
               >
                 <Grid
+                  className={classes.innerContainer}
                   style={{
                     width: '80%',
                     display: 'flex',
@@ -197,24 +210,37 @@ export default function FullThread() {
                     <Avatar alt={user.name} src={user.avatar} />
                     <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
                       <TextField
-                        style={{ width: '100%', borderRadius: '10px' }}
+                        style={{
+                          width: '100%',
+                          borderRadius: '10px',
+                        }}
                         autoFocus
                         multiline
-                        rows={3}
                         variant="outlined"
                         inputRef={commentRef}
                         InputProps={{
                           classes: { notchedOutline: classes.input },
                         }}
                       />
+                      <Grid item container justify="flex-end">
+                        <Button
+                          style={{ paddingRight: '0px', marginRight: '0px' }}
+                          onClick={handleSubmit}
+                        >
+                          Post
+                        </Button>
+                      </Grid>
                     </Grid>
                   </div>
-                  <Grid item xs={12} sm={10} justify="flex-end">
-                    <Button onClick={handleSubmit}>Post</Button>
-                  </Grid>
                 </Grid>
                 {threadComments.map((el, index) => {
-                  return <Comment comment={el} key={index} />;
+                  return (
+                    <Comment
+                      comment={el}
+                      setPageRefresher={setPageRefresher}
+                      key={index}
+                    />
+                  );
                 })}
               </div>
             </Paper>
