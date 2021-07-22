@@ -1,5 +1,5 @@
 import api from '../api';
-import { SignIn } from '../components';
+import { SignIn, SignUp } from '../components';
 import React from 'react';
 import { useRef, useState, useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
@@ -42,6 +42,11 @@ const useStyles = makeStyles(theme => ({
 
 export default function LandingPage(props) {
   const classes = useStyles();
+  const [showSignUp, setShowSignUp] = useState(false);
+
+  const toggleSignUp = function () {
+    setShowSignUp(!showSignUp);
+  };
 
   useEffect(() => {
     const signedIn = localStorage.getItem('refreshToken');
@@ -68,7 +73,11 @@ export default function LandingPage(props) {
             </div>
           </Grid>
           <Grid item md={6} className={classes.signinContainer}>
-            <SignIn history={props.history} />
+            {!showSignUp ? (
+              <SignIn history={props.history} toggle={toggleSignUp} />
+            ) : (
+              <SignUp history={props.history} toggle={toggleSignUp} />
+            )}
           </Grid>
         </Grid>
       </div>

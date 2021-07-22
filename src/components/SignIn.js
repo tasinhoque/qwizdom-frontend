@@ -120,16 +120,15 @@ export default function SignIn(props) {
             Sign In
           </Button>
           <Grid container>
-            <Grid item xs>
-              {/* <Link href="#" variant="body2"> */}
-              {/*   Forgot password? */}
-              {/* </Link> */}
-            </Grid>
+            {/* <Grid item xs> */}
+            {/* <Link href="#" variant="body2"> */}
+            {/*   Forgot password? */}
+            {/* </Link> */}
+            {/* </Grid> */}
             <Grid item>
               Don't have an account?
-              <Link href="/signUp" variant="body2">
-                {' Sign up'}
-              </Link>
+              {/* <Link href="/signUp" variant="body2"> */}
+              <Button onClick={props.toggle}>{' Sign up'}</Button>
             </Grid>
           </Grid>
         </form>
