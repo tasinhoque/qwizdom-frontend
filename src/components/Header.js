@@ -5,26 +5,23 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
 import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import Avatar from '@material-ui/core/Avatar';
-import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
-import AccountCircle from '@material-ui/icons/AccountCircle';
 import AddBoxOutlinedIcon from '@material-ui/icons/AddBoxOutlined';
-import MailIcon from '@material-ui/icons/Mail';
 import NotificationsIcon from '@material-ui/icons/Notifications';
 import NotificationsNoneOutlinedIcon from '@material-ui/icons/NotificationsNoneOutlined';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import MoreIcon from '@material-ui/icons/MoreVert';
 import { withRouter } from 'react-router-dom';
 import { Divider } from '@material-ui/core';
+import api from '../api';
 
 const useStyles = makeStyles(theme => ({
   paper: {
     width: '350px',
+    maxHeight: '500px',
   },
   grow: {
     flexGrow: 1,
@@ -116,11 +113,36 @@ export default withRouter(function Header(props) {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [anchorElement, setAnchorElement] = React.useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
+  const [notifications, setNotifications] = useState([]);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
+  const onMenuItemClick = val => async e => {
+    if (!val.isRead) {
+      try {
+        console.log(val.id);
+        await api.markAsRead(val.id);
+      } catch (error) {}
+    }
+    props.history.push(val.link);
+    setAnchorElement(null);
+  };
+
   let user = JSON.parse(localStorage.getItem('user'));
+
+  useEffect(async () => {
+    try {
+      let response = await api.getNotifications();
+      setNotifications(response.data);
+
+      response = await api.getUnreadCount();
+      setUnreadCount(response.data.count);
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const handleProfileMenuOpen = event => {
     setAnchorEl(event.currentTarget);
@@ -227,13 +249,6 @@ export default withRouter(function Header(props) {
         style={{ background: '#2E3B55', color: '#f5f5f5' }}
       >
         <Toolbar>
-          {/* <IconButton */} {/*   edge="start" */}
-          {/*   className={classes.menuButton} */}
-          {/*   color="inherit" */}
-          {/*   aria-label="open drawer" */}
-          {/* > */}
-          {/*   <MenuIcon /> */}
-          {/* </IconButton> */}
           <div
             className={classes.logo}
             style={{ cursor: 'pointer' }}
@@ -254,7 +269,7 @@ export default withRouter(function Header(props) {
               color="inherit"
               onClick={handleBellClick}
             >
-              <Badge badgeContent={17} color="secondary">
+              <Badge badgeContent={unreadCount} color="secondary">
                 <NotificationsIcon />
               </Badge>
             </IconButton>
@@ -270,39 +285,51 @@ export default withRouter(function Header(props) {
               style={{ width: '100%' }}
               classes={{ paper: classes.paper }}
             >
-              <MenuItem
-                onClick={handleClose}
-                style={{
-                  whiteSpace: 'normal',
-                  width: '100%',
-                }}
-              >
-                {/* <div
-                  style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    width: '100%',
-                  }}
-                > */}
-                <span>
-                  The quick brown fox jumped over the lazy dog. The quick brown
-                  fox jumped over the lazy dog dot dot.{' '}
-                  <span style={{ color: 'grey', fontSize: '12px' }}>
-                    1:27 PM, 10 July 2021
-                  </span>
-                </span>
-                {/* <Typography
-                  variant="caption"
-                  // align="right"
-                  // style={{ minWidth: '80px' }}
-                >
-                  {/* <div>19 Jul 2021</div> 
-                  1:27 PM
-                </Typography> */}
-                {/* </div> */}
-              </MenuItem>
-              <Divider style={{ height: '2px' }} />
-              <MenuItem
+              {notifications.map((val, idx) => (
+                <>
+                  <MenuItem
+                    onClick={onMenuItemClick(val)}
+                    style={{
+                      whiteSpace: 'normal',
+                      width: '100%',
+                    }}
+                  >
+                    <span
+                      style={
+                        val.isRead
+                          ? { fontWeight: '300' }
+                          : { color: 'black', fontWeight: '400' }
+                      }
+                    >
+                      {val.text}{' '}
+                      <span
+                        style={
+                          val.isRead
+                            ? { fontSize: '12px' }
+                            : {
+                                color: 'grey',
+                                fontSize: '12px',
+                                fontWeight: '500',
+                              }
+                        }
+                      >
+                        {val.createdAt &&
+                          new Date(val.createdAt).toLocaleDateString('en-US', {
+                            minute: '2-digit',
+                            hour: 'numeric',
+                            day: 'numeric',
+                            month: 'long',
+                            year: 'numeric',
+                          })}
+                      </span>
+                    </span>
+                  </MenuItem>
+                  {idx < notifications.length - 1 && (
+                    <Divider style={{ height: '2px' }} />
+                  )}
+                </>
+              ))}
+              {/* <MenuItem
                 onClick={handleClose}
                 style={{ whiteSpace: 'normal', width: '100%' }}
               >
@@ -310,7 +337,7 @@ export default withRouter(function Header(props) {
                 <Typography variant="caption" style={{ marginLeft: '8px' }}>
                   1:27 PM
                 </Typography>
-              </MenuItem>
+              </MenuItem> */}
             </Menu>
             <IconButton
               edge="end"

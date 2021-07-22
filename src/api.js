@@ -161,6 +161,9 @@ const api = {
   },
   getLeaderboard: quizId =>
     axios.get(`${baseUrl}/quizzes/${quizId}/leaderboard`),
+  getNotifications: () => axios.get(`${baseUrl}/notifications`),
+  markAsRead: id => axios.post(`${baseUrl}/notifications/${id}/read`),
+  getUnreadCount: () => axios.get(`${baseUrl}/notifications/unread/count`),
 
   //forum APIs
   getAllDiscussionThread: quizId => {
