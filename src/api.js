@@ -181,6 +181,18 @@ const api = {
       body
     );
   },
+  deleteComment: commentId => {
+    return axios.delete(`${baseUrl}/comments/${commentId}`);
+  },
+  patchDiscussionThread: (threadId, body) => {
+    return axios.patch(`${baseUrl}/discussion-threads/${threadId}`, body);
+  },
+  deleteDiscussionThread: threadId => {
+    return axios.delete(`${baseUrl}/discussion-threads/${threadId}`);
+  },
+  updateComment: (commentId, body) => {
+    return axios.patch(`${baseUrl}/comments/${commentId}`, body);
+  },
   getPieInfo: qid => {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },

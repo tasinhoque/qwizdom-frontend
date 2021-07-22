@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '200px',
     flexGrow: 1,
     padding: '15px',
+    marginTop: '25px',
   },
   dummyContainer: {
     display: 'flex',
@@ -40,8 +41,12 @@ const useStyles = makeStyles(theme => ({
   textFieldContainer: {
     display: 'flex',
     width: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignContent: 'center',
+    justifyContent: 'flex-start',
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexGrow: '1',
+    },
     '& > *': {
       margin: '5px',
     },
@@ -55,6 +60,12 @@ const useStyles = makeStyles(theme => ({
       margin: '5px',
     },
   },
+  innerContainer: {
+    [theme.breakpoints.down('sm')]: {
+      width: '100%',
+      flexGrow: '1',
+    },
+  },
   typoStyle: {
     fontSize: '1.2rem',
     // paddingTop: '1.2rem',
@@ -63,6 +74,8 @@ const useStyles = makeStyles(theme => ({
   },
   input: {
     borderColor: '#60519833 !important',
+    backgroundColor: '#60519833',
+
     // background: '#60519833',
     borderRadius: '10px',
   },
@@ -72,6 +85,7 @@ const useStyles = makeStyles(theme => ({
     cursor: 'pointer',
     alignItems: 'center',
     marginBottom: '30px',
+
     '& > *': {
       marginRight: '4px',
     },
@@ -152,6 +166,7 @@ export default function FullThread() {
                   margin: '15px 15px 25px 15px',
                   whiteSpace: 'pre-line',
                   cursor: 'default',
+                  wordWrap: 'break-word',
                 }}
               >
                 <Typography style={{ marginBottom: '10px' }} variant="h6">
@@ -169,7 +184,9 @@ export default function FullThread() {
               <div className={classes.footer}>
                 <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
                 <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-                  20 Comments
+                  {thread.totalComments <= 1
+                    ? `${thread.totalComments} Comment`
+                    : `${thread.totalComments} Comments`}{' '}
                 </Typography>
               </div>
 
@@ -177,10 +194,12 @@ export default function FullThread() {
                 style={{
                   display: 'flex',
                   flexWrap: 'wrap',
-                  justifyContent: 'center',
+                  justifyContent: 'flex-start',
+                  marginLeft: '15px',
                 }}
               >
                 <Grid
+                  className={classes.innerContainer}
                   style={{
                     width: '80%',
                     display: 'flex',
@@ -190,23 +209,39 @@ export default function FullThread() {
                 >
                   <div className={classes.textFieldContainer}>
                     <Avatar alt={user.name} src={user.avatar} />
-                    <TextField
-                      style={{ flexGrow: 1, borderRadius: '10px' }}
-                      multiline
-                      rows={3}
-                      variant="outlined"
-                      inputRef={commentRef}
-                      InputProps={{
-                        classes: { notchedOutline: classes.input },
-                      }}
-                    />
+                    <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
+                      <TextField
+                        style={{
+                          width: '100%',
+                          borderRadius: '10px',
+                        }}
+                        autoFocus
+                        multiline
+                        variant="outlined"
+                        inputRef={commentRef}
+                        InputProps={{
+                          classes: { notchedOutline: classes.input },
+                        }}
+                      />
+                      <Grid item container justify="flex-end">
+                        <Button
+                          style={{ paddingRight: '0px', marginRight: '0px' }}
+                          onClick={handleSubmit}
+                        >
+                          Post
+                        </Button>
+                      </Grid>
+                    </Grid>
                   </div>
-                  <Grid container justify="flex-end">
-                    <Button onClick={handleSubmit}>Post</Button>
-                  </Grid>
                 </Grid>
                 {threadComments.map((el, index) => {
-                  return <Comment comment={el} key={index} />;
+                  return (
+                    <Comment
+                      comment={el}
+                      setPageRefresher={setPageRefresher}
+                      key={index}
+                    />
+                  );
                 })}
               </div>
             </Paper>

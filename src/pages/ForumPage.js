@@ -12,7 +12,9 @@ import { useHistory } from 'react-router-dom';
 import { makeStyles } from '@material-ui/core/styles';
 import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 import TextField from '@material-ui/core/TextField';
-
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 const useStyles = makeStyles(theme => ({
   root: {},
 
@@ -88,14 +90,6 @@ export default function ForumPage() {
   const textHandler = e => {
     console.log(postFieldRef.current.value);
   };
-  const handlePost = async () => {
-    const postBody = { text: postFieldRef.current.value };
-    await api.postDiscussionThread(id, postBody).then(res => {
-      console.log(res);
-      postFieldRef.current.value = '';
-      setPageRefresher(Math.random());
-    });
-  };
 
   useEffect(async () => {
     console.log('called');
@@ -115,7 +109,6 @@ export default function ForumPage() {
         console.log(err);
       });
   }, [pageRefresher]);
-  console.log('on forum page');
   return (
     <>
       {loading ? (
@@ -176,11 +169,13 @@ export default function ForumPage() {
               {allThread.map((th, index) => {
                 return (
                   <Grid item key={index}>
-                    <ThreadCard thread={th}></ThreadCard>
+                    <ThreadCard
+                      thread={th}
+                      setPageRefresher={setPageRefresher}
+                    ></ThreadCard>
                   </Grid>
                 );
               })}
-              forum page
             </Grid>
           </Grid>
 
