@@ -10,12 +10,11 @@ const useStyles = makeStyles(theme => ({
   root: {
     display: 'flex',
     flexWrap: 'wrap',
-    // justifyContent: 'center',
-    // alignItems: 'center',
     height: '100vh',
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/bg.jpg'})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
+    marginBottom: '-20px',
     // filter: 'blur(3px)',
   },
   container: {
@@ -37,10 +36,7 @@ const useStyles = makeStyles(theme => ({
     paddingLeft: theme.spacing(1),
     marginTop: theme.spacing(2),
   },
-  signinContainer: {
-    height: '100%',
-    // marginTop: theme.spacing(5),
-  },
+  signinContainer: {},
 }));
 
 export default function LandingPage(props) {
@@ -61,6 +57,7 @@ export default function LandingPage(props) {
   return (
     <>
       <div className={classes.root}>
+        <CssBaseline />
         <Grid
           container
           direction="row"
