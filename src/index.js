@@ -10,7 +10,6 @@ ReactDOM.render(
       <CssBaseline />
       <App />
     </div>
-    ,
   </BrowserRouter>,
 
   document.querySelector('#root')

@@ -14,8 +14,6 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/bg.jpg'})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
-    marginBottom: '-20px',
-    // filter: 'blur(3px)',
   },
   container: {
     marginTop: theme.spacing(10),
