@@ -7,6 +7,12 @@ import Moment from 'moment';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 import { useHistory, useLocation } from 'react-router-dom';
 import { useParams } from 'react-router';
+import MoreVertIcon from '@material-ui/icons/MoreVert';
+import { Edit } from '@material-ui/icons';
+import Delete from '@material-ui/icons/Delete';
+import CreationDialog from './Forum/CreationDialog';
+import EditDialog from './Forum/EditDialog';
+import DeleteDialog from './Forum/DeleteDialog';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -17,11 +23,11 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '200px',
     flexGrow: 1,
     padding: '15px',
+    maxWidth: '100%',
   },
   headerContainer: {
     display: 'flex',
     flexGrow: '1',
-    cursor: 'pointer',
     justifyContent: 'center',
     '& > *': {
       margin: '5px',
@@ -53,6 +59,9 @@ export default function ThreadCard(props) {
   const thread = props.thread;
   console.log(props);
   const { id } = useParams();
+  const user = JSON.parse(localStorage.getItem('user'));
+  const [open, setOpen] = useState(false);
+  const [delOpen, setDelOpen] = useState(false);
 
   const routeFullThread = () => {
     history.push(`/quiz/${id}/forum-thread/${thread.id}`);
@@ -60,9 +69,22 @@ export default function ThreadCard(props) {
 
   return (
     <Paper className={classes.paperStyle} variant="outlined" square>
+      <EditDialog
+        thread={thread}
+        open={open}
+        setOpen={setOpen}
+        setPageRefresher={props.setPageRefresher}
+      />
+      <DeleteDialog
+        delOpen={delOpen}
+        setDelOpen={setDelOpen}
+        threadId={thread.id}
+        setPageRefresher={props.setPageRefresher}
+      />
+
       <Grid container style={{ borderRadius: '6px' }}>
         {/* <Paper style={{ flexGrow: 1, padding: '15px' }}> */}
-        <div className={classes.headerContainer} onClick={routeFullThread}>
+        <div className={classes.headerContainer}>
           <Avatar alt={thread.user.name} src={thread.user.avatar} />
           <div
             style={{
@@ -75,9 +97,20 @@ export default function ThreadCard(props) {
             <Typography style={{ fontWeight: '500' }}>
               {thread.user.name}{' '}
             </Typography>
-            <Typography style={{ fontWeight: '500' }}>
-              {Moment(thread.createdAt).format('DD MMMM, YYYY')}
-            </Typography>
+            <div style={{ display: 'inline-flex' }}>
+              {thread.user.id == user.id && (
+                <>
+                  <Edit
+                    onClick={() => setOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                  <Delete
+                    onClick={() => setDelOpen(true)}
+                    style={{ cursor: 'pointer' }}
+                  />
+                </>
+              )}
+            </div>
           </div>
         </div>
       </Grid>
@@ -93,12 +126,25 @@ export default function ThreadCard(props) {
           margin: '15px 15px 25px 15px',
           whiteSpace: 'pre-line',
           cursor: 'default',
+          maxWidth: '100%',
         }}
       >
-        <Typography style={{ marginBottom: '10px' }} variant="h6">
-          {thread.title}
+        <div
+          style={{
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flxWrap: 'wrap',
+            fontSize: '17px',
+            fontWeight: '500',
+          }}
+        >
+          <div>{thread.title}</div>
+          <div>{Moment(thread.createdAt).format('DD MMMM, YYYY')}</div>
+        </div>
+        <Typography style={{ wordBreak: 'break-all' }}>
+          {thread.text}
         </Typography>
-        {thread.text}
       </Grid>
       <Divider
         classes={{
@@ -110,7 +156,9 @@ export default function ThreadCard(props) {
       <div className={classes.footer} onClick={routeFullThread}>
         <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
         <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-          20 Comments
+          {thread.totalComments <= 1
+            ? `${thread.totalComments} Comment`
+            : `${thread.totalComments} Comments`}
         </Typography>
       </div>
     </Paper>
