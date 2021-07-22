@@ -45,6 +45,19 @@ const useStyles = makeStyles(theme => ({
   filterChipsContainer: {
     margin: theme.spacing(0, 9, 5, 9),
   },
+  chip: {
+    marginRight: theme.spacing(1),
+  },
+  category: {
+    width: '100%',
+  },
+  chips: {
+    display: 'flex',
+    flexWrap: 'wrap',
+  },
+  muiChip: {
+    margin: 2,
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -242,7 +255,7 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      const response = await api.getQuizzes(`page=1&limit=4`);
+      let response = await api.getQuizzes(`page=1&limit=4`);
 
       setQuizzes(response.data.results);
       setTotalPages(response.data.totalPages);
@@ -356,7 +369,7 @@ export default function Dashboard() {
             md={4}
             className={classes.filterChips}
           >
-            <FormControl className={classes.formControl} variant="filled">
+            <FormControl className={classes.category} variant="filled">
               <Select
                 labelId="demo-mutiple-chip-filled-label"
                 id="demo-mutiple-chip"
@@ -390,6 +403,7 @@ export default function Dashboard() {
             </FormControl>
           </Grid>
         </Grid>
+
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center' }}>
             <CircularProgress color="secondary" />
