@@ -102,6 +102,7 @@ const QuizCreationBasic = () => {
   const [isScheduled, setScheduled] = useState(true);
   const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
+  const [doShuffle, setDoShuffle] = useState(true);
   const [name, setName] = useState('');
   const cover = useRef(null);
   const [description, setDescription] = useState('');
@@ -143,6 +144,7 @@ const QuizCreationBasic = () => {
       setScheduled(false);
       setTimebound(false);
       setAutoEvaluation(false);
+      setDoShuffle(false);
     }
   };
 
@@ -156,6 +158,10 @@ const QuizCreationBasic = () => {
 
   const handleEvaluationChange = ({ target: { value } }) => {
     setAutoEvaluation(value === 'auto');
+  };
+
+  const handleShuffleChange = ({ target: { value } }) => {
+    setDoShuffle(value === 'doShuffle');
   };
 
   const handleImage = e => {
@@ -378,24 +384,48 @@ const QuizCreationBasic = () => {
             </Grid>
             <Grid item>
               {isTest ? (
-                <FormControl component="fieldset">
-                  <FormLabel component="legend">Evaluation</FormLabel>
-                  <RadioGroup
-                    value={hasAutoEvaluation ? 'auto' : 'manual'}
-                    onChange={handleEvaluationChange}
-                  >
-                    <FormControlLabel
-                      value="auto"
-                      control={<Radio />}
-                      label="Auto"
-                    />
-                    <FormControlLabel
-                      value="manual"
-                      control={<Radio />}
-                      label="Manual"
-                    />
-                  </RadioGroup>
-                </FormControl>
+                <Grid container spacing={5}>
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Evaluation</FormLabel>
+                      <RadioGroup
+                        value={hasAutoEvaluation ? 'auto' : 'manual'}
+                        onChange={handleEvaluationChange}
+                      >
+                        <FormControlLabel
+                          value="auto"
+                          control={<Radio />}
+                          label="Auto"
+                        />
+                        <FormControlLabel
+                          value="manual"
+                          control={<Radio />}
+                          label="Manual"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                  <Grid item>
+                    <FormControl component="fieldset">
+                      <FormLabel component="legend">Shuffle</FormLabel>
+                      <RadioGroup
+                        value={doShuffle ? 'doShuffle' : 'dontShuffle'}
+                        onChange={handleShuffleChange}
+                      >
+                        <FormControlLabel
+                          value="doShuffle"
+                          control={<Radio />}
+                          label="Yes"
+                        />
+                        <FormControlLabel
+                          value="dontShuffle"
+                          control={<Radio />}
+                          label="No"
+                        />
+                      </RadioGroup>
+                    </FormControl>
+                  </Grid>
+                </Grid>
               ) : (
                 <div></div>
               )}
