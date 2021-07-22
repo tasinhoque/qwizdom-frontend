@@ -205,7 +205,7 @@ export default function Dashboard() {
                     className={classes.cards}
                     key={q.id}
                   >
-                    <SingleCard {...q} key={q.id} />;
+                    <SingleCard {...q} key={q.id} />
                   </Grid>
                 );
               })}
