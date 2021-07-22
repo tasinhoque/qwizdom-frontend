@@ -110,10 +110,6 @@ export default function ThreadCard(props) {
                   />
                 </>
               )}
-
-              <Typography style={{ fontWeight: '500' }}>
-                {Moment(thread.createdAt).format('DD MMMM, YYYY')}
-              </Typography>
             </div>
           </div>
         </div>
@@ -133,9 +129,19 @@ export default function ThreadCard(props) {
           maxWidth: '100%',
         }}
       >
-        <Typography style={{ marginBottom: '10px' }} variant="h6">
-          {thread.title}
-        </Typography>
+        <div
+          style={{
+            marginBottom: '10px',
+            display: 'flex',
+            justifyContent: 'space-between',
+            flxWrap: 'wrap',
+            fontSize: '17px',
+            fontWeight: '500',
+          }}
+        >
+          <div>{thread.title}</div>
+          <div>{Moment(thread.createdAt).format('DD MMMM, YYYY')}</div>
+        </div>
         <Typography style={{ wordBreak: 'break-all' }}>
           {thread.text}
         </Typography>

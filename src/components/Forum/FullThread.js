@@ -27,6 +27,7 @@ const useStyles = makeStyles(theme => ({
     // minHeight: '200px',
     flexGrow: 1,
     padding: '15px',
+    marginTop: '25px',
   },
   dummyContainer: {
     display: 'flex',
