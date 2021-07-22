@@ -16,6 +16,7 @@ const useStyles = makeStyles(theme => ({
     backgroundImage: `url(${process.env.PUBLIC_URL + '/assets/images/bg.jpg'})`,
     backgroundRepeat: 'no-repeat',
     backgroundSize: 'cover',
+    // filter: 'blur(3px)',
   },
   container: {},
   qwizdomContainer: {
@@ -25,14 +26,17 @@ const useStyles = makeStyles(theme => ({
     fontFamily: 'Rammetto One',
     fontSize: theme.spacing(10),
     color: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
+    // alignItems: 'center',
+    // justifyContent: 'center',
   },
   qwizdomDescription: {
     fontSize: theme.spacing(4),
     color: 'white',
     paddingLeft: theme.spacing(1),
     marginTop: theme.spacing(2),
+  },
+  signinContainer: {
+    // marginTop: theme.spacing(5),
   },
 }));
 
@@ -55,15 +59,15 @@ export default function LandingPage(props) {
           // justify="space-around"
           className={classes.container}
         >
-          <Grid container item md={6} className={classes.qwizdomContainer}>
-            <Grid item md={12} className={classes.qwizdomTitle}>
-              Qwizdom
-            </Grid>
-            <Grid item md={12} className={classes.qwizdomDescription}>
+          <Grid item md={6} className={classes.qwizdomContainer}>
+            <div className={classes.qwizdomTitle}>
+              <span style={{ color: 'white' }}>Q</span>wizdom
+            </div>
+            <div className={classes.qwizdomDescription}>
               All your quizzes in one unified platform
-            </Grid>
+            </div>
           </Grid>
-          <Grid container item md={6} className={classes.signinContainer}>
+          <Grid item md={6} className={classes.signinContainer}>
             <SignIn history={props.history} />
           </Grid>
         </Grid>
