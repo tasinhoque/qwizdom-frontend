@@ -17,6 +17,7 @@ import {
   Select,
   Input,
   MenuItem,
+  Box,
 } from '@material-ui/core';
 import {
   MuiPickersUtilsProvider,
@@ -112,18 +113,20 @@ const QuizEdit = () => {
   const [loading, setLoading] = useState(true);
   const [qid, setqid] = useState('60f54796ae87f5172830e0b0');
   const [quiz, setQuiz] = useState(null);
+  const [name, setName] = useState('');
+  const [img, setImg] = useState(null);
   const [isTest, setTest] = useState(true);
   const [isScheduled, setScheduled] = useState(true);
   const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
-  const [name, setName] = useState('');
+  const [doShuffle, setDoShuffle] = useState(true);
   const cover = useRef(null);
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
-  const [img, setImg] = useState(null);
 
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
+  const [timeErrMsg, setTimeErrMsg] = useState(null);
 
   const history = useHistory();
   const [names, setNames] = useState([]);
@@ -150,9 +153,27 @@ const QuizEdit = () => {
     setLoading(true);
     let res = await api.getCategories();
     setNames(res.data);
+
     res = await api.getQuiz(qid);
     setQuiz(res.data);
+    setName(res.data.name);
     setImg(res.data.coverImage);
+    setTest(res.data.isTest);
+    setScheduled(res.data.isScheduled);
+    setTimebound(res.data.isTimebound);
+    setAutoEvaluation(res.data.hasAutoEvaluation);
+    setDoShuffle(res.data.hasShuffle);
+    setDescription(res.data.description);
+    setDuration(res.data.duration);
+
+    const names = [];
+    const ids = [];
+    res.data.categories.map((e, i) => {
+      names.push(e.name);
+      ids.push(e.id);
+    });
+    setPersonName(names);
+    setCategoryIds(ids);
 
     console.log(res.data);
     setLoading(false);
@@ -164,6 +185,7 @@ const QuizEdit = () => {
       setScheduled(false);
       setTimebound(false);
       setAutoEvaluation(false);
+      setDoShuffle(false);
     }
   };
 
@@ -179,6 +201,10 @@ const QuizEdit = () => {
     setAutoEvaluation(value === 'auto');
   };
 
+  const handleShuffleChange = ({ target: { value } }) => {
+    setDoShuffle(value === 'doShuffle');
+  };
+
   const handleImage = e => {
     if (e.target.files.length !== 0) {
       const file = e.target.files[0];
@@ -188,7 +214,14 @@ const QuizEdit = () => {
   };
 
   const handleStartDate = date => {
-    setStartDate(date);
+    var now = new Date();
+    now.setHours(now.getHours(), now.getMinutes() + 5, 0, 0);
+    if (date < now) {
+      setTimeErrMsg('Set time at least 5 mins in the future');
+    } else {
+      setStartDate(date);
+      setTimeErrMsg('');
+    }
     console.log(date);
   };
 
@@ -209,7 +242,7 @@ const QuizEdit = () => {
 
       // console.log(requestBody);
 
-      const { data: quiz } = await api.postQuiz(requestBody);
+      const { data: quiz } = await api.patchQuiz(requestBody);
 
       if (img != null) {
         let formData = new FormData();
@@ -436,24 +469,48 @@ const QuizEdit = () => {
                 </Grid>
                 <Grid item>
                   {isTest ? (
-                    <FormControl component="fieldset">
-                      <FormLabel component="legend">Evaluation</FormLabel>
-                      <RadioGroup
-                        value={hasAutoEvaluation ? 'auto' : 'manual'}
-                        onChange={handleEvaluationChange}
-                      >
-                        <FormControlLabel
-                          value="auto"
-                          control={<Radio />}
-                          label="Auto"
-                        />
-                        <FormControlLabel
-                          value="manual"
-                          control={<Radio />}
-                          label="Manual"
-                        />
-                      </RadioGroup>
-                    </FormControl>
+                    <Grid container spacing={5}>
+                      <Grid item>
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">Evaluation</FormLabel>
+                          <RadioGroup
+                            value={hasAutoEvaluation ? 'auto' : 'manual'}
+                            onChange={handleEvaluationChange}
+                          >
+                            <FormControlLabel
+                              value="auto"
+                              control={<Radio />}
+                              label="Auto"
+                            />
+                            <FormControlLabel
+                              value="manual"
+                              control={<Radio />}
+                              label="Manual"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
+                      <Grid item>
+                        <FormControl component="fieldset">
+                          <FormLabel component="legend">Shuffle</FormLabel>
+                          <RadioGroup
+                            value={doShuffle ? 'doShuffle' : 'dontShuffle'}
+                            onChange={handleShuffleChange}
+                          >
+                            <FormControlLabel
+                              value="doShuffle"
+                              control={<Radio />}
+                              label="Yes"
+                            />
+                            <FormControlLabel
+                              value="dontShuffle"
+                              control={<Radio />}
+                              label="No"
+                            />
+                          </RadioGroup>
+                        </FormControl>
+                      </Grid>
+                    </Grid>
                   ) : (
                     <div></div>
                   )}
@@ -491,6 +548,11 @@ const QuizEdit = () => {
                                 'aria-label': 'change time',
                               }}
                             />
+                          </Grid>
+                          <Grid item>
+                            <Box color="red" className="timeErr">
+                              {timeErrMsg}
+                            </Box>
                           </Grid>
                         </Grid>
                       </MuiPickersUtilsProvider>
