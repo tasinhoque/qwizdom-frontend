@@ -286,7 +286,7 @@ export default function QuizHome(props) {
   };
 
   const allSubmissions = () => {
-    props.history.push(`/quiz/${quizId}/all-submissions`);
+    props.history.push(`/quiz/${quizId}/submissions`);
   };
 
   const quizCreationRerouting = () => {

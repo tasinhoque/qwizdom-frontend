@@ -64,7 +64,7 @@ export default function ThreadCard(props) {
   const [delOpen, setDelOpen] = useState(false);
 
   const routeFullThread = () => {
-    history.push(`/quiz/${id}/forum-thread/${thread.id}`);
+    history.push(`/quiz/${id}/forum/thread/${thread.id}`);
   };
 
   return (

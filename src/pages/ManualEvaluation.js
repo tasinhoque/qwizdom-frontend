@@ -79,7 +79,7 @@ export default function ManualEvaluation(props) {
       .submitEvaluation(fullQuiz.current.id, pointArray)
       .then(res => {
         console.log(res);
-        props.history.push(`/quiz/${quizId}/all-submissions`);
+        props.history.push(`/quiz/${quizId}/submissions`);
       })
       .catch(err => {
         console.log(err);

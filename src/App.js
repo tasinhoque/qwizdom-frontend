@@ -38,22 +38,19 @@ const App = () => {
         <Route path="/quiz/:qid/edit-base" component={QuizEdit} />
         <Route path="/quiz/:id/play" component={QuizPlay} />
         <Route
-          path="/:quizId/evaluate-quiz/:userId"
+          path="/quiz/:quizId/evaluate/:userId"
           component={ManualEvaluation}
         />
 
         <Route path="/quiz/:id/result" component={ResultPage} />
-        <Route
-          path="/quiz/:id/user-submission/:userId"
-          component={ResultPage}
-        />
+        <Route path="/quiz/:id/submission/:userId" component={ResultPage} />
         <Route path="/quiz/:id/leaderboard" component={Leaderboard} />
-        <Route path="/quiz/:id/all-submissions" component={AllSubmissions} />
-        <Route path="/quiz/:id/stat-data" component={Stat} />
+        <Route path="/quiz/:id/submissions" component={AllSubmissions} />
+        <Route path="/quiz/:id/stats" component={Stat} />
 
-        <Route path="/quiz/:id/forum" component={ForumPage} />
+        <Route path="/quiz/:id/forum" component={ForumPage} exact />
         <Route
-          path="/quiz/:quizId/forum-thread/:threadId"
+          path="/quiz/:quizId/forum/thread/:threadId"
           component={FullThread}
         />
       </Switch>

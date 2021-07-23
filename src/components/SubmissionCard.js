@@ -69,11 +69,11 @@ export default withRouter(function SubmissionCard(props) {
   const { id } = useParams();
 
   const handlePending = () => {
-    props.history.push(`/${props.quizid}/evaluate-quiz/${props.userid}`);
+    props.history.push(`/quiz/${props.quizid}/evaluate/${props.userid}`);
   };
 
   const handleDone = () => {
-    props.history.push(`/quiz/${props.quizid}/user-submission/${props.userid}`);
+    props.history.push(`/quiz/${props.quizid}/submission/${props.userid}`);
   };
 
   return (

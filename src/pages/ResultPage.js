@@ -68,7 +68,11 @@ export default function ResultPage() {
   const location = useLocation();
   const path = location.pathname;
   let sumbissionView = false;
-  if (path.includes('user-submission')) {
+  // NOTE: changer: enan -- reroute
+  // if (path.includes('user-submission')) {
+  //   sumbissionView = true;
+  // }
+  if (userId != null) {
     sumbissionView = true;
   }
   const [creatorViewState, setCreatorViewState] = useState(sumbissionView);
@@ -87,7 +91,8 @@ export default function ResultPage() {
     // console.log(fullQuiz.current.stages[num - 1]);
   };
   useEffect(async () => {
-    if (path.includes('user-submission')) {
+    // if (path.includes('user-submission')) {
+    if (userId != null) {
       api.getEvaluationScript(id, userId).then(res => {
         fullQuiz.current = res.data;
         console.log(fullQuiz.current);
