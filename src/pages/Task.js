@@ -1,7 +1,5 @@
 import {
-  Grid,
   Paper,
-  Typography,
   Button,
   TableContainer,
   Table,
@@ -13,19 +11,13 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React, { useEffect, useState } from 'react';
-import api from '../api';
 import { useHistory } from 'react-router';
+import api from '../api';
+import { Header } from '../components';
 
 const useStyles = makeStyles(theme => ({
-  upcomingQuizCard: {
-    padding: '32px',
-  },
-  quizName: {
-    cursor: 'pointer',
-    '&:hover': {
-      textDecoration: 'underline',
-      color: 'blue',
-    },
+  headerText: {
+    marginTop: '40px',
   },
 }));
 
@@ -47,10 +39,42 @@ const Task = () => {
 
   return (
     <>
-      <h1>Tasks</h1>
-      <p>{JSON.stringify(pendingCounts)}</p>
-      <h1>Participant</h1>
+      <Header />
       <Container maxWidth="md">
+        <h1 className={classes.headerText}>Pending Submissions</h1>
+        <Paper>
+          <TableContainer>
+            <Table stickyHeader>
+              <TableHead>
+                <TableRow>
+                  <TableCell align="center">Quiz Name</TableCell>
+                  <TableCell align="center">Pending Submission Count</TableCell>
+                  <TableCell align="center">Submissions Page</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {pendingCounts.map(({ quiz, count }) => (
+                  <TableRow>
+                    <TableCell align="center">{quiz.name}</TableCell>
+                    <TableCell align="center">{count}</TableCell>
+                    <TableCell align="center">
+                      <Button
+                        onClick={() =>
+                          history.push(`/quiz/${quiz.id}/submissions`)
+                        }
+                        variant="contained"
+                        color="primary"
+                      >
+                        visit
+                      </Button>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </Paper>
+        <h1 className={classes.headerText}>Upcoming Quizzes</h1>
         <Paper>
           <TableContainer>
             <Table stickyHeader>
@@ -58,7 +82,7 @@ const Task = () => {
                 <TableRow>
                   <TableCell align="center">Quiz Name</TableCell>
                   <TableCell align="center">Start Time</TableCell>
-                  <TableCell align="center">Link</TableCell>
+                  <TableCell align="center">Quiz Home Page</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

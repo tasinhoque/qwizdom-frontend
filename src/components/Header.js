@@ -261,6 +261,12 @@ export default withRouter(function Header(props) {
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <div
+              className={classes.createQuiz}
+              onClick={() => props.history.push('/tasks')}
+            >
+              Tasks
+            </div>
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
               Create Quiz
             </div>
