@@ -89,7 +89,7 @@ export default withRouter(function SingleCard(props) {
   const [loading, setLoading] = useState(true);
 
   const rerouteQuiz = () => {
-    props.history.push(`/quiz-home/${props.id}`);
+    props.history.push(`/quiz/${props.id}/home`);
   };
 
   useEffect(async () => {

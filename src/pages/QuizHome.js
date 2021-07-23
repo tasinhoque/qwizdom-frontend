@@ -263,15 +263,15 @@ export default function QuizHome(props) {
         return;
       }
     }
-    props.history.push(`/quiz-play/${id}`);
+    props.history.push(`/quiz/${id}/play`);
   };
 
   const quizResult = () => {
-    props.history.push(`/quiz-result/${id}`);
+    props.history.push(`/quiz/${id}/result`);
   };
 
   const allSubmissions = () => {
-    props.history.push(`/all-submissions/${id}`);
+    props.history.push(`/quiz/${quizId}/all-submissions`);
   };
 
   const quizCreationRerouting = () => {
@@ -580,11 +580,6 @@ export default function QuizHome(props) {
               color="secondary"
             />
           </Grid>
-          {/* <Grid container justify="center"> */}
-          {/*   <div style={{ width: '1000px' }}> */}
-          {/*     <Comments fullUrl={'localhost:3000/quiz-home/' + id} id={id} /> */}
-          {/*   </div> */}
-          {/* </Grid> */}
         </Grid>
       </>
     );

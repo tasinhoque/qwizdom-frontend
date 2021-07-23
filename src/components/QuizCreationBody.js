@@ -169,7 +169,7 @@ export default function QuizCreationBody(props) {
 
           fileUpload(id, formData);
         });
-        history.push(`/quiz-home/${id}`);
+        history.push(`/quiz/${id}/home`);
       })
       .catch(error => {
         console.log(error);

@@ -133,7 +133,6 @@ export default function QuizPlay(props) {
       .submitQuizPlay(id, postBody)
       .then(res => {
         console.log(res);
-        // history.push(`/quiz-home/${id}`);
       })
       .catch(error => {
         console.log(error);

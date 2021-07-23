@@ -79,7 +79,7 @@ export default function ManualEvaluation(props) {
       .submitEvaluation(fullQuiz.current.id, pointArray)
       .then(res => {
         console.log(res);
-        props.history.push(`/all-submissions/${quizId}`);
+        props.history.push(`/quiz/${quizId}/all-submissions`);
       })
       .catch(err => {
         console.log(err);
@@ -91,8 +91,9 @@ export default function ManualEvaluation(props) {
   };
   const allFunctions = {
     questionChange: (qId, point) => {
-      fullQuiz.current.stageResponses[currentPageNum].responses[qId].points =
-        Number(point);
+      fullQuiz.current.stageResponses[currentPageNum].responses[
+        qId
+      ].points = Number(point);
       console.log(fullQuiz.current);
     },
   };

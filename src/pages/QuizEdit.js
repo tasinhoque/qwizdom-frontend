@@ -259,7 +259,7 @@ const QuizEdit = () => {
         }
       }
 
-      history.push(`/creation/${quiz.id}`);
+      history.push(`/quiz/${quiz.id}/create`);
     } catch (error) {
       console.log('App crashed, error:', error);
     }
