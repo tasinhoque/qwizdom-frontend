@@ -27,14 +27,13 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import { Header } from '../components';
 import IconButton from '@material-ui/core/IconButton';
-import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
 
 import api from '../api';
+import { Header } from '../components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -62,9 +61,6 @@ const useStyles = makeStyles(theme => ({
   },
   imageContainer: {
     position: 'relative',
-    // margin: theme.spacing(5, 1, 5, 1),
-    // left: '0',
-    // bottom: '0',
   },
   category: {
     marginBottom: theme.spacing(4),
@@ -88,6 +84,12 @@ const useStyles = makeStyles(theme => ({
     minWidth: '80%',
     margin: theme.spacing(3, 0, 1, 0),
   },
+  timeErr: {
+    color: 'red',
+  },
+  buttons: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -110,7 +112,7 @@ function getStyles(name, personName, theme) {
   };
 }
 
-const QuizEdit = () => {
+const QuizEdit = props => {
   const classes = useStyles();
   const { qid } = useParams();
 
@@ -157,26 +159,30 @@ const QuizEdit = () => {
     let res = await api.getCategories();
     setNames(res.data);
 
-    res = await api.getQuiz(qid);
-    setQuiz(res.data);
-    setName(res.data.name);
-    setImg(res.data.coverImage);
-    setTest(res.data.isTest);
-    setScheduled(res.data.isScheduled);
-    setTimebound(res.data.isTimebound);
-    setAutoEvaluation(res.data.hasAutoEvaluation);
-    setDoShuffle(res.data.hasShuffle);
-    setDescription(res.data.description);
-    setDuration(res.data.duration);
+    if (qid != null) {
+      res = await api.getQuiz(qid);
+      setQuiz(res.data);
+      setName(res.data.name);
+      setImg(res.data.coverImage);
+      setTest(res.data.isTest);
+      setScheduled(res.data.isScheduled);
+      setTimebound(res.data.isTimebound);
+      setAutoEvaluation(res.data.hasAutoEvaluation);
+      setDoShuffle(res.data.hasShuffle);
+      setDescription(res.data.description);
+      setDuration(res.data.duration);
 
-    const names = [];
-    const ids = [];
-    res.data.categories.map((e, i) => {
-      names.push(e.name);
-      ids.push(e.id);
-    });
-    setPersonName(names);
-    setCategoryIds(ids);
+      const names = [];
+      const ids = [];
+      res.data.categories.map((e, i) => {
+        names.push(e.name);
+        ids.push(e.id);
+      });
+      setPersonName(names);
+      setCategoryIds(ids);
+    } else {
+      setImg('/assets/images/quiz.jpg');
+    }
 
     // console.log(res.data);
     setLoading(false);
@@ -225,7 +231,7 @@ const QuizEdit = () => {
       setStartDate(date);
       setTimeErrMsg('');
     }
-    console.log(date);
+    // console.log(date);
   };
 
   const handleSubmit = async () => {
@@ -233,6 +239,7 @@ const QuizEdit = () => {
       const requestBody = {
         isTest,
         hasAutoEvaluation,
+        hasShuffle: doShuffle,
         isScheduled,
         name,
         description,
@@ -245,9 +252,15 @@ const QuizEdit = () => {
 
       // console.log(requestBody);
 
-      const { data: quiz } = await api.patchQuiz(requestBody);
+      let res = null;
+      if (qid == null) {
+        res = await api.postQuiz(requestBody);
+      } else {
+        res = await api.patchQuiz(qid, requestBody);
+      }
+      setQuiz(res.data);
 
-      if (img != null) {
+      if (cover != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
@@ -264,6 +277,14 @@ const QuizEdit = () => {
       console.log('App crashed, error:', error);
     }
   };
+
+  function gotoDashboard() {
+    props.history.push('/');
+  }
+
+  function refreshPage() {
+    window.location.reload(false);
+  }
 
   return (
     <>
@@ -414,15 +435,25 @@ const QuizEdit = () => {
                 ) : (
                   <div></div>
                 )}
-                <Grid item>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    endIcon={<DoubleArrowIcon />}
-                    onClick={handleSubmit}
-                  >
-                    Proceed
-                  </Button>
+                <Grid container spacing={1} className={classes.buttons}>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={handleSubmit}
+                    >
+                      Proceed
+                    </Button>
+                  </Grid>
+                  <Grid item>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      onClick={qid == null ? gotoDashboard : refreshPage}
+                    >
+                      Cancel
+                    </Button>
+                  </Grid>
                 </Grid>
               </Grid>
 
@@ -553,7 +584,7 @@ const QuizEdit = () => {
                             />
                           </Grid>
                           <Grid item>
-                            <Box color="red" className="timeErr">
+                            <Box color="red" className={classes.timeErr}>
                               {timeErrMsg}
                             </Box>
                           </Grid>

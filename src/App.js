@@ -32,7 +32,7 @@ const App = () => {
         <Route path="/tasks" component={Task} />
 
         <Route path="/quiz/:id/home" component={QuizHome} />
-        <Route path="/create" component={QuizCreationBasic} />
+        <Route path="/create" component={QuizEdit} />
         <Route path="/quiz/:id/create" component={QuizCreation} />
         <Route path="/quiz/:id/edit-main" component={QuizCreation} />
         <Route path="/quiz/:qid/edit-base" component={QuizEdit} />

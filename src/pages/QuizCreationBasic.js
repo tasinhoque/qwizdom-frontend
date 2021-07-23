@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import 'date-fns';
 import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
 import {
   Grid,
   TextField,
@@ -26,11 +27,11 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import AddPhotoAlternateIcon from '@material-ui/icons/AddPhotoAlternate';
-import api from '../api';
-import { Header, CustomTimePicker } from '../components';
-import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
+import EditIcon from '@material-ui/icons/Edit';
+
+import api from '../api';
+import { Header } from '../components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -42,7 +43,9 @@ const useStyles = makeStyles(theme => ({
     margin: theme.spacing(6, 0, 0, 0),
   },
   addCover: {
-    marginTop: theme.spacing(5),
+    position: 'absolute',
+    top: theme.spacing(32),
+    right: theme.spacing(1),
   },
   cover: {
     height: theme.spacing(30),
@@ -54,16 +57,8 @@ const useStyles = makeStyles(theme => ({
   input: {
     display: 'none',
   },
-  editAvatar: {
-    position: 'absolute',
-    bottom: theme.spacing(8),
-    right: theme.spacing(2),
-  },
   imageContainer: {
     position: 'relative',
-    margin: theme.spacing(5, 1, 5, 1),
-    left: '0',
-    bottom: '0',
   },
   category: {
     marginBottom: theme.spacing(4),
@@ -74,6 +69,18 @@ const useStyles = makeStyles(theme => ({
     right: '5%',
     top: '50%',
     borderRadius: '100px',
+  },
+  coverImage: {
+    width: '100%',
+    height: '300px',
+    objectFit: 'cover',
+    borderRadius: '8px',
+    margin: theme.spacing(3, 0, 1, 0),
+  },
+  paper: {
+    height: '300px',
+    minWidth: '80%',
+    margin: theme.spacing(3, 0, 1, 0),
   },
   timeErr: {
     color: 'red',
@@ -102,16 +109,16 @@ function getStyles(name, personName, theme) {
 
 const QuizCreationBasic = () => {
   const classes = useStyles();
+  const [name, setName] = useState('');
+  const [img, setImg] = useState(null);
   const [isTest, setTest] = useState(true);
   const [isScheduled, setScheduled] = useState(true);
   const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
   const [doShuffle, setDoShuffle] = useState(true);
-  const [name, setName] = useState('');
   const cover = useRef(null);
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
-  const [img, setImg] = useState(null);
 
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
@@ -141,6 +148,8 @@ const QuizCreationBasic = () => {
   useEffect(async () => {
     const response = await api.getCategories();
     setNames(response.data);
+
+    setImg('/assets/images/quiz.jpg');
   }, []);
 
   const handleTypeChange = ({ target: { value } }) => {
@@ -209,7 +218,7 @@ const QuizCreationBasic = () => {
 
       const { data: quiz } = await api.postQuiz(requestBody);
 
-      if (img != null) {
+      if (cover != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
@@ -231,6 +240,25 @@ const QuizCreationBasic = () => {
     <div className={classes.root}>
       <Header style={{ width: '100%' }} />
       <Container>
+        <div className={classes.imageContainer}>
+          <input
+            accept="image/*"
+            className={classes.input}
+            id="coverPhoto"
+            multiple
+            type="file"
+            onChange={handleImage}
+            // disabled={formDisabled}
+          />
+          <div className={classes.addCover}>
+            <label htmlFor="coverPhoto">
+              <Fab component="span">
+                <EditIcon />
+              </Fab>
+            </label>
+          </div>
+          <img src={img} className={classes.coverImage} alt="" />
+        </div>
         <Grid container className={classes.main} justify="center">
           <Grid item xs={6}>
             <Grid container direction="column" spacing={3} justify="center">
@@ -475,7 +503,7 @@ const QuizCreationBasic = () => {
                         />
                       </Grid>
                       <Grid item>
-                        <Box color="red" className="timeErr">
+                        <Box color="red" className={classes.timeErr}>
                           {timeErrMsg}
                         </Box>
                       </Grid>
@@ -485,28 +513,6 @@ const QuizCreationBasic = () => {
               ) : (
                 <div></div>
               )}
-              <Grid item className={classes.imageContainer}>
-                <input
-                  accept="image/*"
-                  className={classes.input}
-                  id="coverPhoto"
-                  multiple
-                  type="file"
-                  onChange={handleImage}
-                  // disabled={formDisabled}
-                />
-                <Grid container direction="row" className={classes.addCover}>
-                  <Typography style={{ marginRight: '30px' }}>
-                    Upload cover photo
-                  </Typography>
-                  <label htmlFor="coverPhoto">
-                    <Fab component="span">
-                      <AddPhotoAlternateIcon />
-                    </Fab>
-                  </label>
-                </Grid>
-                {img && <img src={img} className={classes.cover} />}
-              </Grid>
             </Grid>
           </Grid>
         </Grid>
