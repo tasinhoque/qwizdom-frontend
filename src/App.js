@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  SignIn,
   SignUp,
   Dashboard,
   QuizHome,
@@ -16,6 +15,7 @@ import {
   ForumPage,
   Stat,
   LandingPage,
+  Task,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 import { FullThread } from './components';
@@ -24,12 +24,12 @@ const App = () => {
   return (
     <main>
       <Switch>
-        {/* <Route path="/" component={SignIn} exact /> */}
         <Route path="/" component={LandingPage} exact />
         <Route path="/landing" component={LandingPage} />
         <Route path="/signup" component={SignUp} />
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/profile" component={Profile} />
+        <Route path="/tasks" component={Task} />
 
         <Route path="/quiz/:id/home" component={QuizHome} />
         <Route path="/create" component={QuizCreationBasic} />

@@ -164,6 +164,8 @@ const api = {
   getNotifications: () => axios.get(`${baseUrl}/notifications`),
   markAsRead: id => axios.post(`${baseUrl}/notifications/${id}/read`),
   getUnreadCount: () => axios.get(`${baseUrl}/notifications/unread/count`),
+  getTasksForParticipant: () => axios.get(`${baseUrl}/users/tasks/participant`),
+  getTasksForCreator: () => axios.get(`${baseUrl}/users/tasks/creator`),
 
   //forum APIs
   getAllDiscussionThread: quizId => {
