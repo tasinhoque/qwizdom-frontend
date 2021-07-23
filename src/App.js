@@ -5,6 +5,7 @@ import {
   Dashboard,
   QuizHome,
   QuizCreation,
+  QuizEdit,
   AllSubmissions,
   Profile,
   QuizCreationBasic,
@@ -34,6 +35,7 @@ const App = () => {
         <Route path="/creation-basic" component={QuizCreationBasic} />
         <Route path="/creation/:id" component={QuizCreation} />
         <Route path="/quiz-edit/:id" component={QuizCreation} />
+        <Route path="/quiz/:qid/edit-basic" component={QuizEdit} />
         <Route path="/quiz-play/:id" component={QuizPlay} />
         <Route
           path="/:quizId/evaluate-quiz/:userId"

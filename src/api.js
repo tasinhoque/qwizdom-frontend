@@ -199,6 +199,9 @@ const api = {
   getPieInfo: qid => {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },
+  patchQuiz: (qid, body) => {
+    return axios.patch(`${baseUrl}/quizzes/${id}`, body);
+  },
 };
 
 export default api;
