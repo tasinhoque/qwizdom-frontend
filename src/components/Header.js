@@ -286,7 +286,7 @@ export default withRouter(function Header(props) {
               classes={{ paper: classes.paper }}
             >
               {notifications.map((val, idx) => (
-                <>
+                <div key={idx}>
                   <MenuItem
                     onClick={onMenuItemClick(val)}
                     style={{
@@ -327,7 +327,7 @@ export default withRouter(function Header(props) {
                   {idx < notifications.length - 1 && (
                     <Divider style={{ height: '2px' }} />
                   )}
-                </>
+                </div>
               ))}
               {/* <MenuItem
                 onClick={handleClose}
