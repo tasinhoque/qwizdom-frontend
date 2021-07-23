@@ -13,7 +13,7 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
-import { Grid } from '@material-ui/core';
+import { Grid, Chip } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
 import SubmissionDialog from '../components/SubmissionDialog';
 import Pagination from '@material-ui/lab/Pagination';
@@ -134,12 +134,19 @@ const useStyles = makeStyles(theme => ({
       marginBottom: theme.spacing(3),
     },
   },
+  chips: {
+    margin: '0px 0px 20px 20px',
+  },
+  chip: {
+    marginRight: theme.spacing(1),
+  },
 }));
 
 export default function QuizHome(props) {
   const classes = useStyles();
   const [loading, setLoading] = useState(true);
   const [quiz, setQuiz] = useState('');
+  const [categories, setCategories] = useState('');
   const [subbed, setSubbed] = useState(false);
   const [published, setPublished] = useState(false);
   const { id } = useParams();
@@ -175,11 +182,19 @@ export default function QuizHome(props) {
       console.log(quizData);
       quizData.startTime = new Date(quizData.startTime);
 
+      let cats = quizData.categories;
+      cats.splice(3);
+      setCategories(cats);
+
       setQuiz(quizData);
       setPublished(quizData.isPublished);
       setCreatorId(quizData.creator.id);
       setReviews(revs.data.results);
       setTotalPages(revs.data.totalPages);
+
+      quizData.categories.map((elem, idx) => {
+        console.log(elem.name);
+      });
 
       var now = new Date().getTime();
       var st = new Date(quizData.startTime).getTime();
@@ -477,6 +492,18 @@ export default function QuizHome(props) {
                 >
                   {quiz.name}
                 </Typography>
+              </Grid>
+              <Grid item className={classes.chips}>
+                {categories != '' &&
+                  categories.map((elem, idx) => {
+                    return (
+                      <Chip
+                        label={elem.name}
+                        className={classes.chip}
+                        key={idx}
+                      />
+                    );
+                  })}
               </Grid>
               <Grid container item>
                 <Grid item md={6} xs={12}>
