@@ -88,6 +88,9 @@ const useStyles = makeStyles(theme => ({
     minWidth: '80%',
     margin: theme.spacing(3, 0, 1, 0),
   },
+  timeErr: {
+    color: 'red',
+  },
 }));
 
 const ITEM_HEIGHT = 48;
@@ -553,7 +556,7 @@ const QuizEdit = () => {
                             />
                           </Grid>
                           <Grid item>
-                            <Box color="red" className="timeErr">
+                            <Box color="red" className={classes.timeErr}>
                               {timeErrMsg}
                             </Box>
                           </Grid>
