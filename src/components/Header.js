@@ -171,7 +171,7 @@ export default withRouter(function Header(props) {
   };
 
   const gotoQuizCreation = event => {
-    props.history.push('/creation-basic');
+    props.history.push('/create');
   };
 
   const logout = event => {

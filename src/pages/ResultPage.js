@@ -108,7 +108,7 @@ export default function ResultPage() {
           setLoading(false);
         })
         .catch(error => {
-          history.push(`/quiz-home/${id}`);
+          history.push(`/quiz/${id}/home`);
           console.log(error);
         });
     }

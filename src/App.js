@@ -31,24 +31,24 @@ const App = () => {
         <Route path="/dashboard" component={Dashboard} />
         <Route path="/profile" component={Profile} />
 
-        <Route path="/quiz-home/:id" component={QuizHome} />
-        <Route path="/creation-basic" component={QuizCreationBasic} />
-        <Route path="/creation/:id" component={QuizCreation} />
-        <Route path="/quiz-edit/:id" component={QuizCreation} />
-        <Route path="/quiz/:qid/edit-basic" component={QuizEdit} />
-        <Route path="/quiz-play/:id" component={QuizPlay} />
+        <Route path="/quiz/:id/home" component={QuizHome} />
+        <Route path="/create" component={QuizCreationBasic} />
+        <Route path="/quiz/:id/create" component={QuizCreation} />
+        <Route path="/quiz/:id/edit-main" component={QuizCreation} />
+        <Route path="/quiz/:qid/edit-base" component={QuizEdit} />
+        <Route path="/quiz/:id/play" component={QuizPlay} />
         <Route
           path="/:quizId/evaluate-quiz/:userId"
           component={ManualEvaluation}
         />
 
-        <Route path="/quiz-result/:id" component={ResultPage} />
+        <Route path="/quiz/:id/result" component={ResultPage} />
         <Route
           path="/quiz/:id/user-submission/:userId"
           component={ResultPage}
         />
         <Route path="/quiz/:id/leaderboard" component={Leaderboard} />
-        <Route path="/all-submissions/:id" component={AllSubmissions} />
+        <Route path="/quiz/:id/all-submissions" component={AllSubmissions} />
         <Route path="/quiz/:id/stat-data" component={Stat} />
 
         <Route path="/quiz/:id/forum" component={ForumPage} />

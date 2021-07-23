@@ -24,7 +24,7 @@ export default function SubmissionDialog({ id, open, setOpen, caller }) {
 
   const handleClose = () => {
     setOpen(false);
-    history.push(`/quiz-home/${id}`);
+    history.push(`/quiz/${id}/home`);
   };
   const ratingChange = e => {
     console.log(e.target.value);
@@ -43,7 +43,7 @@ export default function SubmissionDialog({ id, open, setOpen, caller }) {
       .then(res => {
         console.log('post done');
 
-        history.push(`/quiz-home/${id}`);
+        history.push(`/quiz/${id}/home`);
       })
       .catch(err => {
         console.log(err);
