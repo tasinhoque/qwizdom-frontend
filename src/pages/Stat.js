@@ -132,7 +132,7 @@ export default function Stat(props) {
                   >
                     <Grid item className={classes.questionTitle}>
                       <Typography variant="h5" component="div">
-                        {elem.question.title}
+                        {elem.question.serial + 1}. {elem.question.title}
                       </Typography>
                     </Grid>
                     <Grid
