@@ -147,6 +147,9 @@ const QuizCreationBasic = () => {
   useEffect(async () => {
     const response = await api.getCategories();
     setNames(response.data);
+
+    // setImg(URL.createObjectURL('/assets/images/quiz.jpg'));
+    setImg('/assets/images/quiz.jpg');
   }, []);
 
   const handleTypeChange = ({ target: { value } }) => {
@@ -215,7 +218,7 @@ const QuizCreationBasic = () => {
 
       const { data: quiz } = await api.postQuiz(requestBody);
 
-      if (img != null) {
+      if (cover != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
