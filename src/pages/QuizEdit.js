@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import 'date-fns';
 import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
 import {
   Grid,
   TextField,
@@ -26,13 +27,14 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import api from '../api';
 import { Header } from '../components';
 import IconButton from '@material-ui/core/IconButton';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Paper from '@material-ui/core/Paper';
 import EditIcon from '@material-ui/icons/Edit';
+
+import api from '../api';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -110,8 +112,9 @@ function getStyles(name, personName, theme) {
 
 const QuizEdit = () => {
   const classes = useStyles();
+  const { qid } = useParams();
+
   const [loading, setLoading] = useState(true);
-  const [qid, setqid] = useState('60f54796ae87f5172830e0b0');
   const [quiz, setQuiz] = useState(null);
   const [name, setName] = useState('');
   const [img, setImg] = useState(null);
@@ -175,7 +178,7 @@ const QuizEdit = () => {
     setPersonName(names);
     setCategoryIds(ids);
 
-    console.log(res.data);
+    // console.log(res.data);
     setLoading(false);
   }, []);
 
