@@ -200,7 +200,7 @@ const api = {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },
   patchQuiz: (qid, body) => {
-    return axios.patch(`${baseUrl}/quizzes/${id}`, body);
+    return axios.patch(`${baseUrl}/quizzes/${qid}`, body);
   },
 };
 

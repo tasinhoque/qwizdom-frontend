@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react';
 import 'date-fns';
 import { useHistory } from 'react-router-dom';
+import { useParams } from 'react-router';
 import {
   Grid,
   TextField,
@@ -26,10 +27,11 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import api from '../api';
-import { Header, CustomTimePicker } from '../components';
 import DoubleArrowIcon from '@material-ui/icons/DoubleArrow';
 import EditIcon from '@material-ui/icons/Edit';
+
+import api from '../api';
+import { Header } from '../components';
 
 const useStyles = makeStyles(theme => ({
   root: {},
@@ -42,7 +44,6 @@ const useStyles = makeStyles(theme => ({
   },
   addCover: {
     position: 'absolute',
-    // marginTop: theme.spacing(5),
     top: theme.spacing(32),
     right: theme.spacing(1),
   },
@@ -108,16 +109,16 @@ function getStyles(name, personName, theme) {
 
 const QuizCreationBasic = () => {
   const classes = useStyles();
+  const [name, setName] = useState('');
+  const [img, setImg] = useState(null);
   const [isTest, setTest] = useState(true);
   const [isScheduled, setScheduled] = useState(true);
   const [isTimebound, setTimebound] = useState(true);
   const [hasAutoEvaluation, setAutoEvaluation] = useState(true);
   const [doShuffle, setDoShuffle] = useState(true);
-  const [name, setName] = useState('');
   const cover = useRef(null);
   const [description, setDescription] = useState('');
   const [duration, setDuration] = useState('');
-  const [img, setImg] = useState(null);
 
   const today = new Date();
   const [startDate, setStartDate] = useState(today);
@@ -148,7 +149,6 @@ const QuizCreationBasic = () => {
     const response = await api.getCategories();
     setNames(response.data);
 
-    // setImg(URL.createObjectURL('/assets/images/quiz.jpg'));
     setImg('/assets/images/quiz.jpg');
   }, []);
 
