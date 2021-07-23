@@ -285,6 +285,9 @@ export default withRouter(function Header(props) {
               style={{ width: '100%' }}
               classes={{ paper: classes.paper }}
             >
+              {notifications.length === 0 && (
+                <MenuItem>You're All Caught Up For Now</MenuItem>
+              )}
               {notifications.map((val, idx) => (
                 <div key={idx}>
                   <MenuItem
