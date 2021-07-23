@@ -8,14 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 import Rating from '@material-ui/lab/Rating';
 import CircularProgress from '@material-ui/core/CircularProgress';
-import TextField from '@material-ui/core/TextField';
-import TextareaAutosize from '@material-ui/core/TextareaAutosize';
 
 import { Header } from '../components';
 import { QuizReviewCard } from '../components';
 import { Grid, Chip } from '@material-ui/core';
 import { useParams, useHistory } from 'react-router';
-import SubmissionDialog from '../components/SubmissionDialog';
 import Pagination from '@material-ui/lab/Pagination';
 import AlertDialog from '../components/QuizPlay/AlertDialog';
 
@@ -286,7 +283,7 @@ export default function QuizHome(props) {
   };
 
   const allSubmissions = () => {
-    props.history.push(`/quiz/${quizId}/submissions`);
+    props.history.push(`/quiz/${id}/submissions`);
   };
 
   const quizCreationRerouting = () => {
