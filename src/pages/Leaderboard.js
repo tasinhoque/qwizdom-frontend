@@ -41,6 +41,7 @@ function createData(rank, name, avatar, date, points) {
 const useStyles = makeStyles(theme => ({
   root: {
     width: '100%',
+    marginBottom: '24px',
   },
   container: {
     maxHeight: 440,
@@ -83,14 +84,26 @@ export default function Leaderboard() {
       let res = await api.getLeaderboard(id);
       let tempRows = [];
 
-      for (let i = 1; i <= res.data.length; i++) {
-        const { responder, totalPoints, createdAt } = res.data[i - 1];
+      for (let i = 1; i <= res.data.evaluated.length; i++) {
+        const { responder, totalPoints, createdAt } = res.data.evaluated[i - 1];
         const row = createData(
           i,
           responder.name,
           responder.avatar,
           new Date(createdAt),
           totalPoints
+        );
+        tempRows.push(row);
+      }
+
+      for (let i = 1; i <= res.data.pending.length; i++) {
+        const { responder, createdAt } = res.data.pending[i - 1];
+        const row = createData(
+          '-',
+          responder.name,
+          responder.avatar,
+          new Date(createdAt),
+          'Pending'
         );
         tempRows.push(row);
       }
@@ -147,14 +160,9 @@ export default function Leaderboard() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows.map(row => {
+                {rows.map((row, idx) => {
                   return (
-                    <TableRow
-                      hover
-                      role="checkbox"
-                      tabIndex={-1}
-                      key={row.rank}
-                    >
+                    <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
                       {columns.map(column => {
                         const value = row[column.id];
 
