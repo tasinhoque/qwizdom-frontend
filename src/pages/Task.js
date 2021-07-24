@@ -29,11 +29,11 @@ const Task = () => {
 
   useEffect(async () => {
     try {
-      let response = await api.getTasksForCreator();
-      setPendingCounts(response.data);
+      let creatorResponse = await api.getTasksForCreator();
+      let participantResponse = await api.getTasksForParticipant();
 
-      response = await api.getTasksForParticipant();
-      setUpcomingQuizzes(response.data);
+      setPendingCounts(creatorResponse.data);
+      setUpcomingQuizzes(participantResponse.data);
     } catch (error) {}
   }, []);
 
