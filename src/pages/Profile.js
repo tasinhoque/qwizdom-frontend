@@ -77,7 +77,7 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Profile() {
+export default function Profile(props) {
   const classes = useStyles();
   const nameRef = useRef('');
   const emailRef = useRef('');
