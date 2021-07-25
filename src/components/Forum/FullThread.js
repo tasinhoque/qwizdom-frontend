@@ -17,6 +17,7 @@ import api from '../../api';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 import TextField from '@material-ui/core/TextField';
 import Comment from './Comment';
+import Header from '../Header';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -132,121 +133,124 @@ export default function FullThread() {
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <Grid container justify="center">
-          <Grid item md={8} xs={12}>
-            <Paper className={classes.paperStyle} variant="outlined" square>
-              <Grid container style={{ borderRadius: '6px' }}>
-                <div className={classes.headerContainer}>
-                  <Avatar alt={thread.user.name} src={thread.user.avatar} />
-                  <div
-                    style={{
-                      flexGrow: 1,
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    <Typography style={{ fontWeight: '500' }}>
-                      {thread.user.name}{' '}
-                    </Typography>
-                    <Typography style={{ fontWeight: '500' }}>
-                      {Moment(thread.createdAt).format('DD MMMM, YYYY')}
-                    </Typography>
-                  </div>
-                </div>
-              </Grid>
-              <Divider
-                classes={{
-                  root: classes.rootDivider,
-                }}
-                variant="fullWidth"
-              />
-              <Grid
-                style={{
-                  margin: '15px 15px 25px 15px',
-                  whiteSpace: 'pre-line',
-                  cursor: 'default',
-                  wordWrap: 'break-word',
-                }}
-              >
-                <Typography style={{ marginBottom: '10px' }} variant="h6">
-                  {thread.title}
-                </Typography>
-                {thread.text}
-              </Grid>
-              <Divider
-                classes={{
-                  root: classes.rootDivider,
-                }}
-                style={{ marginBottom: '13px' }}
-                variant="fullWidth"
-              />
-              <div className={classes.footer}>
-                <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
-                <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-                  {thread.totalComments <= 1
-                    ? `${thread.totalComments} Comment`
-                    : `${thread.totalComments} Comments`}{' '}
-                </Typography>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'flex-start',
-                  marginLeft: '15px',
-                }}
-              >
-                <Grid
-                  className={classes.innerContainer}
-                  style={{
-                    width: '80%',
-                    display: 'flex',
-                    alignContent: 'center',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <div className={classes.textFieldContainer}>
-                    <Avatar alt={user.name} src={user.avatar} />
-                    <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
-                      <TextField
-                        style={{
-                          width: '100%',
-                          borderRadius: '10px',
-                        }}
-                        autoFocus
-                        multiline
-                        variant="outlined"
-                        inputRef={commentRef}
-                        InputProps={{
-                          classes: { notchedOutline: classes.input },
-                        }}
-                      />
-                      <Grid item container justify="flex-end">
-                        <Button
-                          style={{ paddingRight: '0px', marginRight: '0px' }}
-                          onClick={handleSubmit}
-                        >
-                          Post
-                        </Button>
-                      </Grid>
-                    </Grid>
+        <>
+          <Header />
+          <Grid container justify="center">
+            <Grid item md={8} xs={12}>
+              <Paper className={classes.paperStyle} variant="outlined" square>
+                <Grid container style={{ borderRadius: '6px' }}>
+                  <div className={classes.headerContainer}>
+                    <Avatar alt={thread.user.name} src={thread.user.avatar} />
+                    <div
+                      style={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      <Typography style={{ fontWeight: '500' }}>
+                        {thread.user.name}{' '}
+                      </Typography>
+                      <Typography style={{ fontWeight: '500' }}>
+                        {Moment(thread.createdAt).format('DD MMMM, YYYY')}
+                      </Typography>
+                    </div>
                   </div>
                 </Grid>
-                {threadComments.map((el, index) => {
-                  return (
-                    <Comment
-                      comment={el}
-                      setPageRefresher={setPageRefresher}
-                      key={index}
-                    />
-                  );
-                })}
-              </div>
-            </Paper>
+                <Divider
+                  classes={{
+                    root: classes.rootDivider,
+                  }}
+                  variant="fullWidth"
+                />
+                <Grid
+                  style={{
+                    margin: '15px 15px 25px 15px',
+                    whiteSpace: 'pre-line',
+                    cursor: 'default',
+                    wordWrap: 'break-word',
+                  }}
+                >
+                  <Typography style={{ marginBottom: '10px' }} variant="h6">
+                    {thread.title}
+                  </Typography>
+                  {thread.text}
+                </Grid>
+                <Divider
+                  classes={{
+                    root: classes.rootDivider,
+                  }}
+                  style={{ marginBottom: '13px' }}
+                  variant="fullWidth"
+                />
+                <div className={classes.footer}>
+                  <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
+                  <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
+                    {thread.totalComments <= 1
+                      ? `${thread.totalComments} Comment`
+                      : `${thread.totalComments} Comments`}{' '}
+                  </Typography>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start',
+                    marginLeft: '15px',
+                  }}
+                >
+                  <Grid
+                    className={classes.innerContainer}
+                    style={{
+                      width: '80%',
+                      display: 'flex',
+                      alignContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div className={classes.textFieldContainer}>
+                      <Avatar alt={user.name} src={user.avatar} />
+                      <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
+                        <TextField
+                          style={{
+                            width: '100%',
+                            borderRadius: '10px',
+                          }}
+                          autoFocus
+                          multiline
+                          variant="outlined"
+                          inputRef={commentRef}
+                          InputProps={{
+                            classes: { notchedOutline: classes.input },
+                          }}
+                        />
+                        <Grid item container justify="flex-end">
+                          <Button
+                            style={{ paddingRight: '0px', marginRight: '0px' }}
+                            onClick={handleSubmit}
+                          >
+                            Post
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Grid>
+                  {threadComments.map((el, index) => {
+                    return (
+                      <Comment
+                        comment={el}
+                        setPageRefresher={setPageRefresher}
+                        key={index}
+                      />
+                    );
+                  })}
+                </div>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
+        </>
       )}
     </>
   );
