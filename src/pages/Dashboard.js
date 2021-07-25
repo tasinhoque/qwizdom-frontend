@@ -11,6 +11,7 @@ import {
   FormControl,
   MenuItem,
 } from '@material-ui/core';
+import InputLabel from '@material-ui/core/InputLabel';
 
 import { useTheme, makeStyles } from '@material-ui/core/styles';
 import Pagination from '@material-ui/lab/Pagination';
@@ -374,6 +375,7 @@ export default function Dashboard() {
             className={classes.filterChips}
           >
             <FormControl className={classes.category} variant="filled">
+              <InputLabel id="demo-simple-select-label">Categories</InputLabel>
               <Select
                 labelId="demo-mutiple-chip-filled-label"
                 id="demo-mutiple-chip"
