@@ -287,7 +287,7 @@ export default function QuizHome(props) {
   };
 
   const quizCreationRerouting = () => {
-    props.history.push(`/edit-quiz/${id}`);
+    props.history.push(`/quiz/${id}/edit-main`);
   };
   const forumRoute = () => {
     history.push(`/quiz/${id}/forum`);
