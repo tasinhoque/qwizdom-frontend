@@ -55,7 +55,6 @@ const useStyles = makeStyles(theme => ({
   },
   imageContainer: {
     position: 'relative',
-    margin: theme.spacing(1),
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
   },
@@ -202,9 +201,9 @@ export default function Profile(props) {
       <Header />
 
       <div className={classes.root}>
-        <Grid container alignItems="center" justify="center" direction="column">
+        <Grid container alignItems="center" justify="center">
           <Grid item md={12} xs={12}>
-            <Grid container className={classes.imageContainer}>
+            <Grid container justify="center" className={classes.imageContainer}>
               {!img && (
                 <Avatar
                   alt="Remy Sharp"
@@ -237,7 +236,7 @@ export default function Profile(props) {
               )}
             </Grid>
           </Grid>
-          <Grid item md={12} xs={12}>
+          <Grid container justify="center" item md={12} xs={12}>
             <TextField
               defaultValue={user.name}
               disabled={formDisabled}
@@ -247,7 +246,7 @@ export default function Profile(props) {
               inputRef={nameRef}
             ></TextField>
           </Grid>
-          <Grid item md={12} xs={12}>
+          <Grid container justify="center" item md={12} xs={12}>
             <TextField
               label="Email"
               defaultValue={user.email}
