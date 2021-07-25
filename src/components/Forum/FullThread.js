@@ -304,8 +304,8 @@ export default function FullThread() {
                   <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
                   <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
                     {thread.totalComments <= 1
-                      ? `${thread.totalComments} Comment`
-                      : `${thread.totalComments} Comments`}{' '}
+                      ? `${thread.totalComments} Reply`
+                      : `${thread.totalComments} Replies`}{' '}
                   </Typography>
                 </div>
 
