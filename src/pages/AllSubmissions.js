@@ -228,13 +228,14 @@ export default function AllSubmissions() {
                   type="submit"
                   variant="outlined"
                   size="small"
-                  style={
-                    filter == 0
-                      ? { borderColor: 'gray' }
-                      : filter == 1
-                      ? { borderColor: '#f44336' }
-                      : { borderColor: '#4caf50' }
-                  }
+                  style={{
+                    borderColor:
+                      filter == 0
+                        ? 'gray'
+                        : filter == 1
+                        ? '#f44336'
+                        : '#4caf50',
+                  }}
                   onClick={handleFilter}
                 >
                   {filter == 0 ? 'All' : filter == 1 ? 'Pending' : 'Evaluated'}
