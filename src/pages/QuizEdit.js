@@ -260,7 +260,7 @@ const QuizEdit = props => {
       }
       setQuiz(res.data);
 
-      if (cover != null) {
+      if (cover.current != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
@@ -272,7 +272,7 @@ const QuizEdit = props => {
         }
       }
 
-      history.push(`/quiz/${quiz.id}/create`);
+      history.push(`/quiz/${res.data.id}/create`);
     } catch (error) {
       console.log('App crashed, error:', error);
     }
