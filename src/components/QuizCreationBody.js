@@ -103,6 +103,8 @@ export default function QuizCreationBody(props) {
             } else {
               store.current[i].questions[j].uncheckedError = false;
             }
+          } else {
+            checkVal = true;
           }
         }
         console.log(
