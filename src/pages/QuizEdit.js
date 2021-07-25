@@ -272,7 +272,11 @@ const QuizEdit = props => {
         }
       }
 
-      history.push(`/quiz/${res.data.id}/create`);
+      if (qid == null) {
+        history.push(`/quiz/${quiz.id}/create`);
+      } else {
+        history.push(`/quiz/${quiz.id}/edit-main`);
+      }
     } catch (error) {
       console.log('App crashed, error:', error);
     }
