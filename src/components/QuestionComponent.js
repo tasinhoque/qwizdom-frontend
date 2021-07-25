@@ -341,6 +341,8 @@ export default function QuestionComponent(props) {
                   onChange={e => {
                     editOption(e, i);
                   }}
+                  style={{ width: '50%' }}
+                  multiline
                   className={classes.textFieldStyle}
                   defaultValue={r.text}
                   // inputRef={el => {
@@ -400,6 +402,8 @@ export default function QuestionComponent(props) {
                   }}
                   className={classes.textFieldStyle}
                   defaultValue={r.text}
+                  style={{ width: '50%' }}
+                  multiline
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}
@@ -459,6 +463,8 @@ export default function QuestionComponent(props) {
                   }}
                   className={classes.textFieldStyle}
                   defaultValue={r.text}
+                  style={{ width: '50%' }}
+                  multiline
                   // inputRef={el => {
                   //   allValueRef.current[i] = el;
                   // }}

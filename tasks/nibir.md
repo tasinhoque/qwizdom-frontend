@@ -39,15 +39,11 @@
 - []  Duplicate in option Error
 - [x]  no point in survey
 - [x]  Shuffle
-- []  Task Page
-- []  Quiz Basic Info edit page
-- []  Minimal Admin privelege
 - []  Forum pending task
-- []  Landing page
-- []  No point error handling
-- []  Categories not viewable in profile page cards
 - []  patch in edit quiz
 - []  Front page quiz logic
 - []  Forget password
+- []  Shuffle boolean integration
+- 
 
 
