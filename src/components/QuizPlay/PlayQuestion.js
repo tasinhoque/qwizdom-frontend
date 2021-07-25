@@ -249,6 +249,7 @@ export default function PlayQuestion(props) {
             marginTop: '10px',
             border: '2px solid black',
           }}
+          defaultValue={question.text}
           disabled={previewState}
           aria-label="minimum height"
           onChange={textHandler}
