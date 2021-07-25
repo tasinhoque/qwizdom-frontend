@@ -246,7 +246,8 @@ export default function PlayQuestion(props) {
                 fontSize: '1.4rem',
               }}
             >
-              Question {element.question.serial + 1}
+              {/* Question {element.question.serial + 1} */}
+              Question {props.qId + 1}
             </Typography>
             {props.fullQuiz.quiz.isTest && (
               <Typography

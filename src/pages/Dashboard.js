@@ -156,7 +156,9 @@ export default function Dashboard() {
   const [name, setName] = useState('');
   const [categoryIds, setCategoryIds] = useState([]);
 
-  const [queryString, setQueryString] = useState('');
+  const [queryString, setQueryString] = useState(
+    'page=1&limit=6&isPublished=true'
+  );
 
   const [tempName, setTempName] = useState(name);
 
@@ -256,7 +258,8 @@ export default function Dashboard() {
 
     try {
       setLoading(true);
-      let response = await api.getQuizzes(`page=1&limit=6`);
+      let response = await api.getQuizzes(`${queryString}`);
+      console.log(response);
 
       setQuizzes(response.data.results);
       setTotalPages(response.data.totalPages);
@@ -268,20 +271,20 @@ export default function Dashboard() {
     } catch (error) {
       console.log(error);
     }
-  }, []);
-
-  useEffect(async () => {
-    try {
-      setLoading(true);
-      const response = await api.getQuizzes(queryString);
-
-      setQuizzes(response.data.results);
-      setTotalPages(response.data.totalPages);
-      setLoading(false);
-    } catch (error) {
-      console.log(error);
-    }
   }, [queryString]);
+
+  // useEffect(async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await api.getQuizzes(queryString);
+
+  //     setQuizzes(response.data.results);
+  //     setTotalPages(response.data.totalPages);
+  //     setLoading(false);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // }, [queryString]);
 
   useEffect(() => {
     updateQueryString();

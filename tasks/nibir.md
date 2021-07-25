@@ -44,6 +44,7 @@
 - []  Front page quiz logic
 - []  Forget password
 - []  Shuffle boolean integration
-- 
+- []  Dashboard pagination not working
+- []  Tasin Hoque login one quiz only
 
 
