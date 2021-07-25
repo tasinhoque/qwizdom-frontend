@@ -19,6 +19,7 @@ import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Divider from '@material-ui/core/Divider';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import api from '../api';
 import { Header } from '../components';
@@ -65,6 +66,7 @@ const useStyles = makeStyles(theme => ({
 const Task = () => {
   const history = useHistory();
   const classes = useStyles();
+  const [loading, setLoading] = useState(true);
   const [pendingCounts, setPendingCounts] = useState([]);
   const [upcomingQuizzes, setUpcomingQuizzes] = useState([]);
 
@@ -75,6 +77,7 @@ const Task = () => {
   };
 
   useEffect(async () => {
+    setLoading(true);
     try {
       let creatorResponse = await api.getTasksForCreator();
       let participantResponse = await api.getTasksForParticipant();
@@ -82,6 +85,7 @@ const Task = () => {
       setPendingCounts(creatorResponse.data);
       setUpcomingQuizzes(participantResponse.data);
     } catch (error) {}
+    setLoading(false);
   }, []);
 
   return (
@@ -100,82 +104,114 @@ const Task = () => {
             <Tab label="Upcoming Quizzes" {...a11yProps(1)} />
           </Tabs>
         </Paper>
-        <TabPanel value={value} index={0}>
-          <Paper>
-            <TableContainer>
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Quiz Name</TableCell>
-                    <TableCell align="center">
-                      Pending Submission Count
-                    </TableCell>
-                    <TableCell align="center">Submissions Page</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {pendingCounts.map(({ quiz, count }) => (
-                    <TableRow>
-                      <TableCell align="center">{quiz.name}</TableCell>
-                      <TableCell align="center">{count}</TableCell>
-                      <TableCell align="center">
-                        <Button
-                          onClick={() =>
-                            history.push(`/quiz/${quiz.id}/submissions`)
-                          }
-                          variant="contained"
-                          color="primary"
-                        >
-                          visit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </TabPanel>
-        <TabPanel value={value} index={1}>
-          <Paper>
-            <TableContainer>
-              <Table stickyHeader>
-                <TableHead>
-                  <TableRow>
-                    <TableCell align="center">Quiz Name</TableCell>
-                    <TableCell align="center">Start Time</TableCell>
-                    <TableCell align="center">Quiz Home Page</TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  {upcomingQuizzes.map(quiz => (
-                    <TableRow>
-                      <TableCell align="center">{quiz.name}</TableCell>
-                      <TableCell align="center">
-                        {new Date(quiz.startTime).toLocaleDateString('en-US', {
-                          minute: '2-digit',
-                          hour: 'numeric',
-                          day: 'numeric',
-                          month: 'long',
-                          year: 'numeric',
-                        })}
-                      </TableCell>
-                      <TableCell align="center">
-                        <Button
-                          onClick={() => history.push(`/quiz/${quiz.id}/home`)}
-                          variant="contained"
-                          color="primary"
-                        >
-                          visit
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Paper>
-        </TabPanel>
+        {loading ? (
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              paddingTop: '20px',
+            }}
+          >
+            <CircularProgress color="secondary" />
+          </div>
+        ) : (
+          <div>
+            <TabPanel value={value} index={0}>
+              <Paper>
+                <TableContainer>
+                  <Table stickyHeader>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Quiz Name</TableCell>
+                        <TableCell align="center">
+                          Pending Submission Count
+                        </TableCell>
+                        <TableCell align="center">Submissions Page</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {pendingCounts.map(({ quiz, count }) => (
+                        <TableRow>
+                          <TableCell align="center">{quiz.name}</TableCell>
+                          <TableCell align="center">{count}</TableCell>
+                          <TableCell align="center">
+                            <Button
+                              onClick={() =>
+                                history.push(`/quiz/${quiz.id}/submissions`)
+                              }
+                              variant="contained"
+                              color="primary"
+                            >
+                              visit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+            </TabPanel>
+            <TabPanel value={value} index={1}>
+              <Paper>
+                <TableContainer>
+                  <Table stickyHeader>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell align="center">Quiz Name</TableCell>
+                        <TableCell align="center">Start Time</TableCell>
+                        <TableCell align="center">Quiz Home Page</TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      {upcomingQuizzes.map(quiz => (
+                        <TableRow>
+                          <TableCell align="center">{quiz.name}</TableCell>
+                          <TableCell align="center">
+                            {new Date(quiz.startTime).toLocaleDateString(
+                              'en-US',
+                              {
+                                minute: '2-digit',
+                                hour: 'numeric',
+                                day: 'numeric',
+                                month: 'long',
+                                year: 'numeric',
+                              }
+                            )}
+                          </TableCell>
+                          <TableCell align="center">
+                            <Button
+                              onClick={() =>
+                                history.push(`/quiz/${quiz.id}/home`)
+                              }
+                              variant="contained"
+                              color="primary"
+                            >
+                              visit
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </Paper>
+              {!upcomingQuizzes.length ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '40px',
+                    fontWeight: '300',
+                    fontSize: '20px',
+                  }}
+                >
+                  No data available
+                </div>
+              ) : null}
+            </TabPanel>
+          </div>
+        )}
       </Container>
     </>
   );
