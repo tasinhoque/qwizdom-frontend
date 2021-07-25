@@ -26,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: '15px',
     maxWidth: '100%',
+    wordBreak: 'break-word',
   },
   headerContainer: {
     display: 'flex',
@@ -235,7 +236,14 @@ export default function ThreadCard(props) {
             style={downUser == true ? { color: 'red' } : { color: 'black' }}
           />
         </div>
-        <div style={{ display: 'flex', flex: '1', flexDirection: 'column' }}>
+        <div
+          style={{
+            display: 'flex',
+            flex: '1',
+            flexDirection: 'column',
+            whiteSpace: 'pre-line',
+          }}
+        >
           <div
             style={{
               marginBottom: '10px',
@@ -249,9 +257,16 @@ export default function ThreadCard(props) {
             <div>{thread.title}</div>
             <div>{Moment(thread.createdAt).format('DD MMMM, YYYY')}</div>
           </div>
-          <Typography style={{ wordBreak: 'break-all' }}>
+          <div
+            style={{
+              // wordBreak: 'break-all',
+              whiteSpace: 'pre-line',
+              fontSize: '16px',
+              fontWeight: '400',
+            }}
+          >
             {thread.text}
-          </Typography>
+          </div>
         </div>
       </Grid>
       <Divider

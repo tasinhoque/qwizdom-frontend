@@ -18,6 +18,8 @@ import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 import TextField from '@material-ui/core/TextField';
 import Comment from './Comment';
 import Header from '../Header';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -29,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: '15px',
     marginTop: '25px',
+    wordBreak: 'break-word',
   },
   dummyContainer: {
     display: 'flex',
@@ -73,6 +76,10 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '5px',
     // fontWeight: '500',
   },
+  arrowStyle: {
+    fontSize: '35px',
+    cursor: 'pointer',
+  },
   input: {
     borderColor: '#60519833 !important',
     backgroundColor: '#60519833',
@@ -107,6 +114,66 @@ export default function FullThread() {
 
   const commentRef = useRef('');
 
+  const [upUser, setUpUser] = useState(false);
+  const [downUser, setDownUser] = useState(false);
+
+  const [voteCount, setVoteCount] = useState('');
+  const handleUpVote = () => {
+    if (upUser) return;
+    if (downUser) {
+      setVoteCount(prev => {
+        prev++;
+        setDownUser(false);
+
+        return prev;
+      });
+      api
+        .downVoteFlip(thread.id)
+        .then(res => {})
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    setUpUser(true);
+
+    setVoteCount(prev => {
+      prev++;
+      return prev;
+    });
+    api
+      .upVoteFlip(thread.id)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleDownVote = () => {
+    if (downUser) return;
+    if (upUser) {
+      setVoteCount(prev => {
+        prev--;
+        setUpUser(false);
+
+        return prev;
+      });
+      api.upVoteFlip(thread.id);
+    }
+    setDownUser(true);
+    setVoteCount(prev => {
+      prev--;
+      return prev;
+    });
+    api
+      .downVoteFlip(thread.id)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   console.log('quizId ,threadid', quizId, threadId);
   const handleSubmit = () => {
     if (commentRef.current.value == '') return;
@@ -119,6 +186,14 @@ export default function FullThread() {
   useEffect(async () => {
     await api.getSingleDiscussionThread(threadId).then(res => {
       setThread(res.data);
+      if (res.data.upvotes.includes(user.id)) {
+        setUpUser(true);
+      }
+      if (res.data.downvotes.includes(user.id)) {
+        setDownUser(true);
+      }
+      setVoteCount(res.data.upvotes.length - res.data.downvotes.length);
+
       console.log(res);
     });
     await api.getThreadComments(threadId).then(res => {
@@ -166,16 +241,57 @@ export default function FullThread() {
                 />
                 <Grid
                   style={{
-                    margin: '15px 15px 25px 15px',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '15px 15px 25px 0px',
                     whiteSpace: 'pre-line',
                     cursor: 'default',
                     wordWrap: 'break-word',
+                    alignItems: 'center',
                   }}
                 >
-                  <Typography style={{ marginBottom: '10px' }} variant="h6">
-                    {thread.title}
-                  </Typography>
-                  {thread.text}
+                  <div
+                    direction="column"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyItems: 'center',
+                      alignItems: 'center',
+                      width: '30px',
+                      marginRight: '10px',
+                    }}
+                  >
+                    <ArrowDropUpIcon
+                      onClick={handleUpVote}
+                      className={classes.arrowStyle}
+                      style={
+                        upUser == true ? { color: 'green' } : { color: 'black' }
+                      }
+                    />
+                    <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                      {' '}
+                      {voteCount}
+                    </span>
+                    <ArrowDropDownIcon
+                      className={classes.arrowStyle}
+                      onClick={handleDownVote}
+                      style={
+                        downUser == true ? { color: 'red' } : { color: 'black' }
+                      }
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flex: '1',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography style={{ marginBottom: '10px' }} variant="h6">
+                      {thread.title}
+                    </Typography>
+                    <Typography>{thread.text}</Typography>
+                  </div>
                 </Grid>
                 <Divider
                   classes={{

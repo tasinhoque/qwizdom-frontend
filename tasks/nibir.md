@@ -39,11 +39,12 @@
 - []  Duplicate in option Error
 - [x]  no point in survey
 - [x]  Shuffle
-- []  Forum pending task
+- []  Forum edit delete
 - []  patch in edit quiz
 - [x]  Front page quiz logic
 - []  Forget password
 - []  Shuffle boolean integration
 - []  Upvote downvote
 - []  Delete quiz,stage
+- []  Clear textfield after post
 
