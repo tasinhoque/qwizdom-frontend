@@ -235,6 +235,7 @@ const QuizEdit = props => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const requestBody = {
         isTest,
@@ -260,10 +261,13 @@ const QuizEdit = props => {
       }
       setQuiz(res.data);
 
+      let _qid = res.data.id;
+
       if (cover.current != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
+        console.log(formData);
 
         try {
           await api.updateCover(quiz.id, formData);
@@ -273,13 +277,14 @@ const QuizEdit = props => {
       }
 
       if (qid == null) {
-        history.push(`/quiz/${quiz.id}/create`);
+        history.push(`/quiz/${_qid}/create`);
       } else {
-        history.push(`/quiz/${quiz.id}/edit-main`);
+        history.push(`/quiz/${qid}/edit-main`);
       }
     } catch (error) {
       console.log('App crashed, error:', error);
     }
+    setLoading(false);
   };
 
   function gotoDashboard() {
