@@ -76,7 +76,7 @@ const useStyles = makeStyles(theme => ({
 export default function QuizStage(props) {
   const classes = useStyles();
 
-  console.log(props);
+  // console.log(props);
   const deleteStage = () => {
     props.bodySetter.deleteStage(props.stageId);
   };

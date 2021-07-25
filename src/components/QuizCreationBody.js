@@ -152,28 +152,53 @@ export default function QuizCreationBody(props) {
     });
     console.log('postbody is ', postBody);
 
-    api
-      .postCompleteQuiz(id, postBody)
-      .then(res => {
-        console.log('postbody response', res);
-        const responseQuiz = res.data;
+    if (editMode) {
+      api
+        .patchCompleteQuiz(id, postBody)
+        .then(res => {
+          console.log('patchbody response', res);
+          const responseQuiz = res.data;
 
-        fileStorage.map((element, index) => {
-          console.log(element);
-          let formData = new FormData();
-          formData.append('image', element.image);
-          formData.append('fileUpload', true);
-          const id =
-            responseQuiz.stages[element.stageId].questions[element.questionId]
-              .id;
+          fileStorage.map((element, index) => {
+            console.log(element);
+            let formData = new FormData();
+            formData.append('image', element.image);
+            formData.append('fileUpload', true);
+            const id =
+              responseQuiz.stages[element.stageId].questions[element.questionId]
+                .id;
 
-          fileUpload(id, formData);
+            fileUpload(id, formData);
+          });
+          history.push(`/quiz/${id}/home`);
+        })
+        .catch(error => {
+          console.log(error);
         });
-        history.push(`/quiz/${id}/home`);
-      })
-      .catch(error => {
-        console.log(error);
-      });
+    } else {
+      api
+        .postCompleteQuiz(id, postBody)
+        .then(res => {
+          console.log('postbody response', res);
+          const responseQuiz = res.data;
+
+          fileStorage.map((element, index) => {
+            console.log(element);
+            let formData = new FormData();
+            formData.append('image', element.image);
+            formData.append('fileUpload', true);
+            const id =
+              responseQuiz.stages[element.stageId].questions[element.questionId]
+                .id;
+
+            fileUpload(id, formData);
+          });
+          history.push(`/quiz/${id}/home`);
+        })
+        .catch(error => {
+          console.log(error);
+        });
+    }
   };
   const fileUpload = async (id, formData) => {
     await api
@@ -199,18 +224,18 @@ export default function QuizCreationBody(props) {
     if (location.pathname.includes('edit')) {
       // console.log('edit');
       api.getCompleteQuiz(id).then(res => {
-        // console.log('completeQuiz', res);
+        console.log('completeQuiz', res.data.stages);
         const useTemp = [];
         const temp = res.data.stages;
         temp.map((t, i) => {
           useTemp.push({ stageId: i, questions: [] });
-          delete temp[i].id;
-          delete temp[i].quiz;
-          delete temp[i].stage;
+          temp[i].id = temp[i].stage.id;
+          // delete temp[i].quiz;
+          // delete temp[i].stage;
           temp[i].stageId = i;
           t.questions.map((q, j) => {
             temp[i].questions[j].questionId = j;
-            delete temp[i].questions[j].id;
+            // delete temp[i].questions[j].id;
             delete temp[i].questions[j].stage;
             delete temp[i].questions[j].serial;
             q.options.map((o, k) => {
@@ -221,7 +246,7 @@ export default function QuizCreationBody(props) {
         });
         if (dataFetch.current == false) {
           store.current = temp;
-          // console.log('current is', store.current);
+          console.log('current is', store.current);
           dataFetch.current = true;
           setQuizBody(useTemp);
         }
@@ -387,7 +412,7 @@ export default function QuizCreationBody(props) {
           )}
         </Grid>
 
-        <Grid container justify="center">
+        <Grid container style={{ paddingBottom: '15px' }} justify="center">
           <Grid item>
             {preview ? (
               <Button
@@ -413,28 +438,32 @@ export default function QuizCreationBody(props) {
               </Grid>
             )}
           </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              classes={{
-                contained: classes.buttonStyle,
-              }}
-              onClick={e => handleSubmit(true)}
-            >
-              PUBLISH
-            </Button>
-          </Grid>
-          <Grid item>
-            <Button
-              variant="contained"
-              classes={{
-                contained: classes.buttonStyle,
-              }}
-              onClick={e => handleSubmit('false')}
-            >
-              save as draft
-            </Button>
-          </Grid>
+          {preview == false && (
+            <>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  classes={{
+                    contained: classes.buttonStyle,
+                  }}
+                  onClick={e => handleSubmit(true)}
+                >
+                  PUBLISH
+                </Button>
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="contained"
+                  classes={{
+                    contained: classes.buttonStyle,
+                  }}
+                  onClick={e => handleSubmit('false')}
+                >
+                  save as draft
+                </Button>
+              </Grid>
+            </>
+          )}
         </Grid>
       </Grid>
     );

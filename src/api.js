@@ -96,6 +96,9 @@ const api = {
   postCompleteQuiz: (quizId, quizBody) => {
     return axios.post(`${baseUrl}/quizzes/${quizId}/complete`, quizBody);
   },
+  patchCompleteQuiz: (quizId, quizBody) => {
+    return axios.patch(`${baseUrl}/quizzes/${quizId}/complete`, quizBody);
+  },
   uploadQuestionImage: (id, body) => {
     return axios.patch(`${baseUrl}/questions/${id}/image`, body);
   },

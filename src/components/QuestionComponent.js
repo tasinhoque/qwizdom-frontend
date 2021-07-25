@@ -128,14 +128,14 @@ export default function QuestionComponent(props) {
   for (let i = 0; i < pos; i++) {
     count += props.fullQues[i].questions.length;
 
-    console.log('length is', props.fullQues[i].questions.length);
+    // console.log('length is', props.fullQues[i].questions.length);
   }
-  console.log('pos quesPos', pos, quesPos);
+  // console.log('pos quesPos', pos, quesPos);
   count += quesPos;
   let full = props.fullQues[pos].questions[quesPos];
   const classes = useStyles();
   const [selectType, setType] = useState(full.type ? full.type : '');
-  console.log('full is ', full);
+  // console.log('full is ', full);
 
   let errorMessage = '';
   if (full.noTitleError) {
@@ -148,7 +148,7 @@ export default function QuestionComponent(props) {
     errorMessage = 'Please add more options';
   } else if (full.uncheckedError) {
     errorMessage = ' Please pick the correct option ';
-    console.log(errorMessage);
+    // console.log(errorMessage);
   }
 
   const questionBody = useRef({
@@ -159,6 +159,7 @@ export default function QuestionComponent(props) {
     options: full.options,
     image: full.image,
     type: full.type,
+    id: full.id,
   });
   let im = '';
   if (full.image) {
