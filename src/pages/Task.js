@@ -130,8 +130,8 @@ const Task = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {pendingCounts.map(({ quiz, count }) => (
-                        <TableRow>
+                      {pendingCounts.map(({ quiz, count }, idx) => (
+                        <TableRow key={idx}>
                           <TableCell align="center">{quiz.name}</TableCell>
                           <TableCell align="center">{count}</TableCell>
                           <TableCell align="center">
@@ -164,8 +164,8 @@ const Task = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {upcomingQuizzes.map(quiz => (
-                        <TableRow>
+                      {upcomingQuizzes.map((quiz, idx) => (
+                        <TableRow key={idx}>
                           <TableCell align="center">{quiz.name}</TableCell>
                           <TableCell align="center">
                             {new Date(quiz.startTime).toLocaleDateString(
