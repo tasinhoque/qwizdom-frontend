@@ -226,13 +226,15 @@ export default function QuizPlay(props) {
           });
 
           console.log(res.data.stages);
-          res.data.stages.map((e, i) => {
-            res.data.stages[i].questions = arrayShuffler(
-              res.data.stages[i].questions
-            );
-          });
+          if (res.data.hasShuffle) {
+            res.data.stages.map((e, i) => {
+              res.data.stages[i].questions = arrayShuffler(
+                res.data.stages[i].questions
+              );
+            });
 
-          res.data.stages = arrayShuffler(res.data.stages);
+            res.data.stages = arrayShuffler(res.data.stages);
+          }
           let serialId = 0;
           res.data.stages.map((e, i) => {
             res.data.stages[i].questions.map((q, j) => {
