@@ -201,6 +201,15 @@ const api = {
   updateComment: (commentId, body) => {
     return axios.patch(`${baseUrl}/comments/${commentId}`, body);
   },
+  upVoteFlip: threadId => {
+    return axios.post(`${baseUrl}/discussion-threads/${threadId}/upvote/flip`);
+  },
+  downVoteFlip: threadId => {
+    return axios.post(
+      `${baseUrl}/discussion-threads/${threadId}/downvote/flip`
+    );
+  },
+
   getPieInfo: qid => {
     return axios.get(`${baseUrl}/quizzes/${qid}/pie-chart`);
   },

@@ -41,7 +41,7 @@
 - [x]  Shuffle
 - []  Forum pending task
 - []  patch in edit quiz
-- []  Front page quiz logic
+- [x]  Front page quiz logic
 - []  Forget password
 - []  Shuffle boolean integration
 - []  Upvote downvote
