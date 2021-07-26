@@ -171,6 +171,7 @@ const QuizEdit = props => {
       setDoShuffle(res.data.hasShuffle);
       setDescription(res.data.description);
       setDuration(res.data.duration);
+      setStartDate(res.data.startTime);
 
       const names = [];
       const ids = [];
