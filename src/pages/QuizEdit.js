@@ -281,7 +281,7 @@ const QuizEdit = props => {
         try {
           await api.updateCover(quiz.id, formData);
         } catch (error) {
-          console.log(error.response.data.message);
+          console.log(error);
         }
       }
 
