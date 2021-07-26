@@ -238,33 +238,41 @@ const QuizEdit = props => {
   const handleSubmit = async () => {
     setLoading(true);
     try {
-      const requestBody = {
-        isTest,
-        hasAutoEvaluation,
-        hasShuffle: doShuffle,
-        isScheduled,
-        name,
-        description,
-        duration,
-        categories: categoryIds,
-        startTime: startDate,
-        coverImage:
-          'https://user-images.githubusercontent.com/27550808/126111179-865576f5-5754-4403-87bb-2afc3f936aea.jpg',
-      };
-
-      // console.log(requestBody);
-
       let res = null;
       if (qid == null) {
+        const requestBody = {
+          isTest,
+          hasAutoEvaluation,
+          hasShuffle: doShuffle,
+          isScheduled,
+          name,
+          description,
+          duration,
+          categories: categoryIds,
+          startTime: startDate,
+          coverImage:
+            'https://user-images.githubusercontent.com/27550808/126111179-865576f5-5754-4403-87bb-2afc3f936aea.jpg',
+        };
         res = await api.postQuiz(requestBody);
       } else {
+        const requestBody = {
+          isTest,
+          hasAutoEvaluation,
+          hasShuffle: doShuffle,
+          isScheduled,
+          name,
+          description,
+          duration,
+          categories: categoryIds,
+          startTime: startDate,
+        };
         res = await api.patchQuiz(qid, requestBody);
       }
       setQuiz(res.data);
 
       let _qid = res.data.id;
 
-      if (cover.current != null) {
+      if (cover != null && cover.current != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
