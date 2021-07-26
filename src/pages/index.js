@@ -15,3 +15,4 @@ export { default as ForumPage } from './ForumPage';
 export { default as Stat } from './Stat';
 export { default as LandingPage } from './LandingPage';
 export { default as Task } from './Task';
+export { default as MyQuiz } from './MyQuiz';

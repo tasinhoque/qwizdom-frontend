@@ -16,6 +16,7 @@ import {
   Stat,
   LandingPage,
   Task,
+  MyQuiz,
 } from './pages';
 import { Route, Switch } from 'react-router-dom';
 import { FullThread } from './components';
@@ -47,12 +48,12 @@ const App = () => {
         <Route path="/quiz/:id/leaderboard" component={Leaderboard} />
         <Route path="/quiz/:id/submissions" component={AllSubmissions} />
         <Route path="/quiz/:id/stats" component={Stat} />
-
         <Route path="/quiz/:id/forum" component={ForumPage} exact />
         <Route
           path="/quiz/:quizId/forum/thread/:threadId"
           component={FullThread}
         />
+        <Route path="/my-quiz" component={MyQuiz} />
       </Switch>
     </main>
   );

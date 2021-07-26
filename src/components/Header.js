@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     position: 'sticky',
     top: 0,
-    zIndex: 1,
+    zIndex: 50,
   },
   createQuiz: {
     marginTop: theme.spacing(2.5),

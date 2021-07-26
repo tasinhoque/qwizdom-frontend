@@ -30,6 +30,7 @@ const useStyles = makeStyles(theme => ({
   root: {
     // width: '95%',
     // maxWidth: 350,
+
     marginBottom: 10,
   },
   media: {
