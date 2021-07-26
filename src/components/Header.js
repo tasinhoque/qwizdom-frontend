@@ -283,7 +283,7 @@ export default withRouter(function Header(props) {
               Tasks
             </div>
             <div className={classes.createQuiz} onClick={gotoMyQuizzes}>
-              My quizzes
+              My Quizzes
             </div>
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
               Create Quiz

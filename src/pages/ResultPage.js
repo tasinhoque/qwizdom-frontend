@@ -199,7 +199,7 @@ export default function ResultPage() {
                 className={classes.stageTitle}
                 align="center"
               >
-                Stage {currentPageNum + 1} of {totalPages}
+                Section {currentPageNum + 1} of {totalPages}
               </Typography>
             </div>
             {fullQuiz.current.stageResponses[currentPageNum].responses.map(

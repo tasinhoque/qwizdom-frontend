@@ -113,7 +113,7 @@ export default function QuizStage(props) {
                 }}
               >
                 <Typography className={classes.typoStyle}>
-                  Stage {props.arrayIndex + 1}
+                  Section {props.arrayIndex + 1}
                 </Typography>
               </div>
 
