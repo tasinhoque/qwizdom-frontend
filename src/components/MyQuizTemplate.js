@@ -85,7 +85,7 @@ export default function MyQuizTemplate(props) {
                   <TableBody>
                     {quizzes.map((quiz, idx) => (
                       <TableRow key={idx}>
-                        <TableCell align="center">
+                        <TableCell style={{ paddingLeft: '50px' }} align="left">
                           <span
                             style={{
                               display: 'inline-flex',
@@ -94,7 +94,7 @@ export default function MyQuizTemplate(props) {
                           >
                             <img
                               style={{
-                                marginRight: '10px',
+                                marginRight: '20px',
                                 height: '40px',
                                 width: '60px',
                               }}
