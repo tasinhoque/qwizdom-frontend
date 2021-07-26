@@ -40,8 +40,8 @@ const useStyles = makeStyles(theme => ({
     marginRight: theme.spacing(1),
   },
   avatar: {
-    width: theme.spacing(30),
-    height: theme.spacing(30),
+    width: theme.spacing(20),
+    height: theme.spacing(20),
     marginTop: theme.spacing(5),
     marginBottom: theme.spacing(5),
   },
@@ -101,6 +101,7 @@ export default function Profile(props) {
   // console.log(user.name);
 
   const saveProfile = async event => {
+    setLoading(true);
     let res;
     disableForm(true);
 
@@ -142,6 +143,7 @@ export default function Profile(props) {
           console.log(error.response.data.message);
         });
     }
+    setLoading(false);
   };
 
   // const handleTextField = e => {
@@ -200,273 +202,125 @@ export default function Profile(props) {
     <>
       <Header />
 
-      <div className={classes.root}>
-        <Grid container alignItems="center" justify="center">
-          <Grid item md={12} xs={12}>
-            <Grid container justify="center" className={classes.imageContainer}>
-              {!img && (
-                <Avatar
-                  alt="Remy Sharp"
-                  src={user.avatar}
-                  className={classes.avatar}
+      {loading ? (
+        <div
+          style={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginTop: '100px',
+          }}
+        >
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <div className={classes.root}>
+          <Grid container alignItems="center" justify="center">
+            <Grid item md={12} xs={12}>
+              <Grid
+                container
+                justify="center"
+                className={classes.imageContainer}
+              >
+                {!img && (
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={user.avatar}
+                    className={classes.avatar}
+                  />
+                )}
+                {img && (
+                  <Avatar
+                    alt="Remy Sharp"
+                    src={img}
+                    className={classes.avatar}
+                  />
+                )}
+                <input
+                  accept="image/*"
+                  className={classes.input}
+                  id="avatarImg"
+                  multiple
+                  type="file"
+                  onChange={handleImage}
+                  disabled={formDisabled}
                 />
-              )}
-              {img && (
-                <Avatar alt="Remy Sharp" src={img} className={classes.avatar} />
-              )}
-              <input
-                accept="image/*"
-                className={classes.input}
-                id="avatarImg"
-                multiple
-                type="file"
-                onChange={handleImage}
+                {!formDisabled ? (
+                  <div className={classes.editAvatar}>
+                    <label htmlFor="avatarImg">
+                      <Fab component="span">
+                        <EditIcon />
+                      </Fab>
+                    </label>
+                  </div>
+                ) : (
+                  <div className={classes.editAvatar}></div>
+                )}
+              </Grid>
+            </Grid>
+            <Grid container justify="center" item md={12} xs={12}>
+              <TextField
+                defaultValue={user.name}
                 disabled={formDisabled}
-              />
-              {!formDisabled ? (
-                <div className={classes.editAvatar}>
-                  <label htmlFor="avatarImg">
-                    <Fab component="span">
-                      <EditIcon />
-                    </Fab>
-                  </label>
-                </div>
-              ) : (
-                <div className={classes.editAvatar}></div>
-              )}
+                label="Name"
+                className={classes.textField}
+                inputProps={{ min: 0, style: { textAlign: 'center' } }}
+                inputRef={nameRef}
+              ></TextField>
+            </Grid>
+            <Grid container justify="center" item md={12} xs={12}>
+              <TextField
+                label="Email"
+                defaultValue={user.email}
+                disabled={formDisabled}
+                className={classes.textField}
+                inputProps={{ min: 0, style: { textAlign: 'center' } }}
+                inputRef={emailRef}
+              ></TextField>
+              <div style={{ display: 'flex', justifyContent: 'center' }}>
+                <p style={{ color: 'red' }}>{errMsg.toString()}</p>
+              </div>
             </Grid>
           </Grid>
-          <Grid container justify="center" item md={12} xs={12}>
-            <TextField
-              defaultValue={user.name}
-              disabled={formDisabled}
-              label="Name"
-              className={classes.textField}
-              inputProps={{ min: 0, style: { textAlign: 'center' } }}
-              inputRef={nameRef}
-            ></TextField>
-          </Grid>
-          <Grid container justify="center" item md={12} xs={12}>
-            <TextField
-              label="Email"
-              defaultValue={user.email}
-              disabled={formDisabled}
-              className={classes.textField}
-              inputProps={{ min: 0, style: { textAlign: 'center' } }}
-              inputRef={emailRef}
-            ></TextField>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <p style={{ color: 'red' }}>{errMsg.toString()}</p>
-            </div>
-          </Grid>
-        </Grid>
-        <Grid container justify="center">
-          {formDisabled && (
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              className={classes.editButton}
-              onClick={() => disableForm(false)}
-              disabled={!formDisabled}
-            >
-              Edit
-            </Button>
-          )}
-          {!formDisabled && (
-            <div>
+          <Grid container justify="center">
+            {formDisabled && (
               <Button
                 type="submit"
                 variant="contained"
                 color="primary"
                 className={classes.editButton}
-                onClick={saveProfile}
-                disabled={formDisabled}
+                onClick={() => disableForm(false)}
+                disabled={!formDisabled}
               >
-                Save
+                Edit
               </Button>
-              <Button
-                type="submit"
-                variant="contained"
-                color="primary"
-                className={classes.editButton}
-                onClick={cancelEdit}
-                disabled={formDisabled}
-              >
-                Cancel
-              </Button>
-            </div>
-          )}
-        </Grid>
-        <div className={classes.root} style={{ width: '100%' }}>
-          {subbedQuizzes.length != 0 ? (
-            <div className={classes.root}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: '100px',
-                  width: '100%',
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  style={{ marginLeft: 10, marginBottom: 50 }}
+            )}
+            {!formDisabled && (
+              <div>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.editButton}
+                  onClick={saveProfile}
+                  disabled={formDisabled}
                 >
-                  Subscribed Quizzes
-                </Typography>
-              </div>
-              <div className={classes.root}>
-                <GridList cellHeight={320} className={classes.gridList}>
-                  {subbedQuizzes.map(q => {
-                    return (
-                      <GridListTile
-                        key={q.id}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          width: '500px',
-                        }}
-                      >
-                        <SingleCard {...q} key={q.id} />
-                      </GridListTile>
-                    );
-                  })}
-                  ;
-                </GridList>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.root}></div>
-          )}
-        </div>
-        <div className={classes.root} style={{ width: '100%' }}>
-          {publishedQuizzes.length != 0 ? (
-            <div className={classes.root}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: '100px',
-                  width: '100%',
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  style={{ marginLeft: 10, marginBottom: 50 }}
+                  Save
+                </Button>
+                <Button
+                  type="submit"
+                  variant="contained"
+                  color="primary"
+                  className={classes.editButton}
+                  onClick={cancelEdit}
+                  disabled={formDisabled}
                 >
-                  Published Quizzes
-                </Typography>
+                  Cancel
+                </Button>
               </div>
-              <div className={classes.root}>
-                <GridList cellHeight={320} className={classes.gridList}>
-                  {publishedQuizzes.map(q => {
-                    return (
-                      <GridListTile
-                        key={q.id}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          width: '500px',
-                        }}
-                      >
-                        <SingleCard {...q} />
-                      </GridListTile>
-                    );
-                  })}
-                  ;
-                </GridList>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.root}></div>
-          )}
+            )}
+          </Grid>
         </div>
-        <div className={classes.root} style={{ width: '100%' }}>
-          {draftQuizzes.length != 0 ? (
-            <div className={classes.root}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: '100px',
-                  width: '100%',
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  style={{ marginLeft: 10, marginBottom: 50 }}
-                >
-                  Draft Quizzes
-                </Typography>
-              </div>
-              <div className={classes.root} style={{ width: '100%' }}>
-                <GridList cellHeight={320} className={classes.gridList}>
-                  {draftQuizzes.map(q => {
-                    return (
-                      <GridListTile
-                        key={q.id}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          width: '500px',
-                        }}
-                      >
-                        <SingleCard {...q} key={q.id} />
-                      </GridListTile>
-                    );
-                  })}
-                  ;
-                </GridList>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.root}></div>
-          )}
-        </div>
-        <div className={classes.root} style={{ width: '100%' }}>
-          {doneQuizzes.length != 0 ? (
-            <div className={classes.root}>
-              <div
-                style={{
-                  display: 'flex',
-                  justifyContent: 'center',
-                  marginTop: '100px',
-                  width: '100%',
-                }}
-              >
-                <Typography
-                  variant="h4"
-                  style={{ marginLeft: 10, marginBottom: 50 }}
-                >
-                  Participated Quizzes
-                </Typography>
-              </div>
-              <div className={classes.root}>
-                <GridList cellHeight={320} className={classes.gridList}>
-                  {doneQuizzes.map((q, k) => {
-                    return (
-                      <GridListTile
-                        key={k}
-                        style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          width: '500px',
-                        }}
-                      >
-                        <SingleCard {...q} key={q.id} />
-                      </GridListTile>
-                    );
-                  })}
-                  ;
-                </GridList>
-              </div>
-            </div>
-          ) : (
-            <div className={classes.root}></div>
-          )}
-        </div>
-      </div>
+      )}
     </>
   );
 }
