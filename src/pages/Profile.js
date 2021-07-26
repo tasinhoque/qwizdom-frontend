@@ -61,7 +61,7 @@ const useStyles = makeStyles(theme => ({
   editAvatar: {
     position: 'absolute',
     bottom: theme.spacing(8),
-    right: theme.spacing(2),
+    right: theme.spacing(70),
   },
   input: {
     display: 'none',
