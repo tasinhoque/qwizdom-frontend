@@ -62,7 +62,7 @@ export default function SignIn(props) {
         props.history.push('/dashboard');
       })
       .catch(error => {
-        // setErrorValue(error.response.data.message);
+        setErrorValue(error.response.data.message);
         // console.log(error.response.data.message);
       });
   };
