@@ -179,7 +179,13 @@ export default function ForumPage() {
             </Grid>
           </Grid>
 
-          <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <div
+            style={{
+              margin: '20px 0px 50px 0px',
+              display: 'flex',
+              justifyContent: 'center',
+            }}
+          >
             <Pagination
               style={{ display: 'flex', justifyContent: 'center' }}
               count={totalPages}

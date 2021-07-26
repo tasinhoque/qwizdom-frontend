@@ -74,7 +74,7 @@ function DashboardBody({
           </div>
           <div
             style={{
-              marginTop: '20px',
+              margin: '20px 0px 20px 0px',
               display: 'flex',
               justifyContent: 'center',
             }}

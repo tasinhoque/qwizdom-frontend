@@ -218,7 +218,11 @@ export default function ResultPage() {
             )}
 
             <Pagination
-              style={{ display: 'flex', justifyContent: 'center' }}
+              style={{
+                margin: '20px 0px 50px 0px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
               count={totalPages}
               onChange={pageChange}
               page={currentPageNum + 1}
