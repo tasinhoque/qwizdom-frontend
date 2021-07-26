@@ -119,7 +119,22 @@ export default function FullThread() {
 
   const [voteCount, setVoteCount] = useState('');
   const handleUpVote = () => {
-    if (upUser) return;
+    if (upUser) {
+      setVoteCount(prev => {
+        prev--;
+        return prev;
+      });
+      api
+        .upVoteFlip(thread.id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      setUpUser(false);
+      return;
+    }
     if (downUser) {
       setVoteCount(prev => {
         prev++;
@@ -151,7 +166,22 @@ export default function FullThread() {
   };
 
   const handleDownVote = () => {
-    if (downUser) return;
+    if (downUser) {
+      setVoteCount(prev => {
+        prev++;
+        return prev;
+      });
+      api
+        .downVoteFlip(thread.id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      setDownUser(false);
+      return;
+    }
     if (upUser) {
       setVoteCount(prev => {
         prev--;

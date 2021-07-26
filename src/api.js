@@ -169,6 +169,9 @@ const api = {
   getUnreadCount: () => axios.get(`${baseUrl}/notifications/unread/count`),
   getTasksForParticipant: () => axios.get(`${baseUrl}/users/tasks/participant`),
   getTasksForCreator: () => axios.get(`${baseUrl}/users/tasks/creator`),
+  // deleteQuestion : (id)=>{
+  //   axios.delete
+  // },
 
   //forum APIs
   getAllDiscussionThread: quizId => {

@@ -82,15 +82,33 @@ export default function ThreadCard(props) {
   }
   const [upUser, setUpUser] = useState(up);
   const [downUser, setDownUser] = useState(down);
-
   const [voteCount, setVoteCount] = useState(
     thread.upvotes.length - thread.downvotes.length
   );
   const routeFullThread = () => {
     history.push(`/quiz/${id}/forum/thread/${thread.id}`);
   };
+  useEffect(() => {
+    setVoteCount(thread.upvotes.length - thread.downvotes.length);
+  }, [props.thread]);
+
   const handleUpVote = () => {
-    if (upUser) return;
+    if (upUser) {
+      setVoteCount(prev => {
+        prev--;
+        return prev;
+      });
+      api
+        .upVoteFlip(thread.id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      setUpUser(false);
+      return;
+    }
     if (downUser) {
       setVoteCount(prev => {
         prev++;
@@ -122,7 +140,22 @@ export default function ThreadCard(props) {
   };
 
   const handleDownVote = () => {
-    if (downUser) return;
+    if (downUser) {
+      setVoteCount(prev => {
+        prev++;
+        return prev;
+      });
+      api
+        .downVoteFlip(thread.id)
+        .then(res => {
+          console.log(res);
+        })
+        .catch(err => {
+          console.log(err);
+        });
+      setDownUser(false);
+      return;
+    }
     if (upUser) {
       setVoteCount(prev => {
         prev--;
