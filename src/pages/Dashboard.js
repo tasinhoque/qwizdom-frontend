@@ -448,7 +448,11 @@ export default function Dashboard() {
               container
               justify="center"
               item
-              className={classes.paginateContainer}
+              style={{
+                margin: '20px 0px 20px 0px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
             >
               <Pagination
                 count={totalPages}

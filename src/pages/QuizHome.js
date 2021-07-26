@@ -617,12 +617,20 @@ export default function QuizHome(props) {
                 })
               )}
             </Grid>
-            <Pagination
-              count={totalPages}
-              onChange={pageChange}
-              page={revPage}
-              color="secondary"
-            />
+            <div
+              style={{
+                margin: '20px 0px 50px 0px',
+                display: 'flex',
+                justifyContent: 'center',
+              }}
+            >
+              <Pagination
+                count={totalPages}
+                onChange={pageChange}
+                page={revPage}
+                color="secondary"
+              />
+            </div>
           </Grid>
         </Grid>
       </>
