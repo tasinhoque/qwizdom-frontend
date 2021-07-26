@@ -151,6 +151,19 @@ const Task = () => {
                   </Table>
                 </TableContainer>
               </Paper>
+              {!pendingCounts.length ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    marginTop: '40px',
+                    fontWeight: '300',
+                    fontSize: '20px',
+                  }}
+                >
+                  No data available
+                </div>
+              ) : null}
             </TabPanel>
             <TabPanel value={value} index={1}>
               <Paper>
