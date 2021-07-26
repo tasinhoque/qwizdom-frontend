@@ -76,10 +76,12 @@ export default function MyQuizTemplate(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">Quiz Name</TableCell>
-                      <TableCell align="center" style={{ minWidth: '370px' }}>
+                      <TableCell align="center" style={{ minWidth: '670px' }}>
                         Category
                       </TableCell>
-                      <TableCell align="center">Home Page</TableCell>
+                      <TableCell align="center" style={{ minWidth: '200px' }}>
+                        Home Page
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
