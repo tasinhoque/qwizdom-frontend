@@ -14,6 +14,7 @@ import Box from '@material-ui/core/Box';
 import { Header } from '../components';
 import { useParams } from 'react-router';
 import api from '../api';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 const columns = [
   { id: 'rank', label: 'Rank' },
@@ -77,6 +78,8 @@ export default function Leaderboard() {
   const classes = useStyles();
   const [rows, setRows] = useState([]);
   const [quiz, setQuiz] = useState({});
+  const [loading, setLoading] = useState(true);
+
   const { id } = useParams();
 
   useEffect(async () => {
@@ -112,6 +115,7 @@ export default function Leaderboard() {
 
       res = await api.getQuiz(id);
       setQuiz(res.data);
+      setLoading(false);
     } catch (error) {
       console.log(error);
     }
@@ -120,83 +124,89 @@ export default function Leaderboard() {
   return (
     <>
       <Header />
-      <Container maxWidth="md">
-        <Paper className={classes.paper}>
-          <img
-            src={quiz.coverImage}
-            width="400px"
-            className={classes.coverImage}
-            alt=""
-          />
-          <div className={classes.box}>
-            <Typography variant="h4" className={classes.leaderboard}>
-              Leaderboard,
-              <Typography variant="h5" className={classes.quizName}>
-                {quiz.name}
+      {loading ? (
+        <div style={{ display: 'flex', justifyContent: 'center' }}>
+          <CircularProgress color="secondary" />
+        </div>
+      ) : (
+        <Container maxWidth="md">
+          <Paper className={classes.paper}>
+            <img
+              src={quiz.coverImage}
+              width="400px"
+              className={classes.coverImage}
+              alt=""
+            />
+            <div className={classes.box}>
+              <Typography variant="h4" className={classes.leaderboard}>
+                Leaderboard,
+                <Typography variant="h5" className={classes.quizName}>
+                  {quiz.name}
+                </Typography>
               </Typography>
-            </Typography>
-            <Typography className={classes.quizInfo}>
-              Total Points: {quiz.totalPoints}
-            </Typography>
-            <Typography className={classes.quizInfo}>
-              Total Participants: {quiz.totalParticipants || 0}
-            </Typography>
-          </div>
-        </Paper>
-        <Paper className={classes.root}>
-          <TableContainer className={classes.container}>
-            <Table stickyHeader aria-label="sticky table">
-              <TableHead>
-                <TableRow>
-                  {columns.map(column => (
-                    <TableCell
-                      key={column.id}
-                      align={column.align}
-                      style={{ minWidth: column.minWidth }}
-                    >
-                      {column.label}
-                    </TableCell>
-                  ))}
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                {rows.map((row, idx) => {
-                  return (
-                    <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
-                      {columns.map(column => {
-                        const value = row[column.id];
+              <Typography className={classes.quizInfo}>
+                Total Points: {quiz.totalPoints}
+              </Typography>
+              <Typography className={classes.quizInfo}>
+                Total Participants: {quiz.totalParticipants || 0}
+              </Typography>
+            </div>
+          </Paper>
+          <Paper className={classes.root}>
+            <TableContainer className={classes.container}>
+              <Table stickyHeader aria-label="sticky table">
+                <TableHead>
+                  <TableRow>
+                    {columns.map(column => (
+                      <TableCell
+                        key={column.id}
+                        align={column.align}
+                        style={{ minWidth: column.minWidth }}
+                      >
+                        {column.label}
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {rows.map((row, idx) => {
+                    return (
+                      <TableRow hover role="checkbox" tabIndex={-1} key={idx}>
+                        {columns.map(column => {
+                          const value = row[column.id];
 
-                        return (
-                          <TableCell key={column.id} align={column.align}>
-                            {column.id === 'participant' ? (
-                              <Grid container alignItems="center">
-                                <Grid item>
-                                  <Box mr={2}>
-                                    <img
-                                      src={value.avatar}
-                                      width="40"
-                                      height="40"
-                                      alt=""
-                                      className={classes.image}
-                                    />
-                                  </Box>
+                          return (
+                            <TableCell key={column.id} align={column.align}>
+                              {column.id === 'participant' ? (
+                                <Grid container alignItems="center">
+                                  <Grid item>
+                                    <Box mr={2}>
+                                      <img
+                                        src={value.avatar}
+                                        width="40"
+                                        height="40"
+                                        alt=""
+                                        className={classes.image}
+                                      />
+                                    </Box>
+                                  </Grid>
+                                  <Grid item>{value.name}</Grid>
                                 </Grid>
-                                <Grid item>{value.name}</Grid>
-                              </Grid>
-                            ) : (
-                              value
-                            )}
-                          </TableCell>
-                        );
-                      })}
-                    </TableRow>
-                  );
-                })}
-              </TableBody>
-            </Table>
-          </TableContainer>
-        </Paper>
-      </Container>
+                              ) : (
+                                value
+                              )}
+                            </TableCell>
+                          );
+                        })}
+                      </TableRow>
+                    );
+                  })}
+                </TableBody>
+              </Table>
+            </TableContainer>
+          </Paper>
+        </Container>
+      )}
     </>
   );
 }
