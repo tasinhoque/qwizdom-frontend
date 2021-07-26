@@ -17,3 +17,4 @@ export { default as QuizHeader } from './QuizHeader';
 export { default as FullThread } from './Forum/FullThread';
 export { default as SignIn } from './SignIn';
 export { default as SignUp } from './SignUp';
+export { default as MyQuizTemplate } from './MyQuizTemplate';

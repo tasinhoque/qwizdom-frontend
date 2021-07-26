@@ -17,6 +17,9 @@ import api from '../../api';
 import ModeCommentOutlinedIcon from '@material-ui/icons/ModeCommentOutlined';
 import TextField from '@material-ui/core/TextField';
 import Comment from './Comment';
+import Header from '../Header';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -28,6 +31,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: '15px',
     marginTop: '25px',
+    wordBreak: 'break-word',
   },
   dummyContainer: {
     display: 'flex',
@@ -72,6 +76,10 @@ const useStyles = makeStyles(theme => ({
     marginBottom: '5px',
     // fontWeight: '500',
   },
+  arrowStyle: {
+    fontSize: '35px',
+    cursor: 'pointer',
+  },
   input: {
     borderColor: '#60519833 !important',
     backgroundColor: '#60519833',
@@ -106,6 +114,66 @@ export default function FullThread() {
 
   const commentRef = useRef('');
 
+  const [upUser, setUpUser] = useState(false);
+  const [downUser, setDownUser] = useState(false);
+
+  const [voteCount, setVoteCount] = useState('');
+  const handleUpVote = () => {
+    if (upUser) return;
+    if (downUser) {
+      setVoteCount(prev => {
+        prev++;
+        setDownUser(false);
+
+        return prev;
+      });
+      api
+        .downVoteFlip(thread.id)
+        .then(res => {})
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    setUpUser(true);
+
+    setVoteCount(prev => {
+      prev++;
+      return prev;
+    });
+    api
+      .upVoteFlip(thread.id)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleDownVote = () => {
+    if (downUser) return;
+    if (upUser) {
+      setVoteCount(prev => {
+        prev--;
+        setUpUser(false);
+
+        return prev;
+      });
+      api.upVoteFlip(thread.id);
+    }
+    setDownUser(true);
+    setVoteCount(prev => {
+      prev--;
+      return prev;
+    });
+    api
+      .downVoteFlip(thread.id)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   console.log('quizId ,threadid', quizId, threadId);
   const handleSubmit = () => {
     if (commentRef.current.value == '') return;
@@ -118,6 +186,14 @@ export default function FullThread() {
   useEffect(async () => {
     await api.getSingleDiscussionThread(threadId).then(res => {
       setThread(res.data);
+      if (res.data.upvotes.includes(user.id)) {
+        setUpUser(true);
+      }
+      if (res.data.downvotes.includes(user.id)) {
+        setDownUser(true);
+      }
+      setVoteCount(res.data.upvotes.length - res.data.downvotes.length);
+
       console.log(res);
     });
     await api.getThreadComments(threadId).then(res => {
@@ -132,121 +208,165 @@ export default function FullThread() {
           <CircularProgress color="secondary" />
         </div>
       ) : (
-        <Grid container justify="center">
-          <Grid item md={8} xs={12}>
-            <Paper className={classes.paperStyle} variant="outlined" square>
-              <Grid container style={{ borderRadius: '6px' }}>
-                <div className={classes.headerContainer}>
-                  <Avatar alt={thread.user.name} src={thread.user.avatar} />
-                  <div
-                    style={{
-                      flexGrow: 1,
-                      display: 'flex',
-                      justifyContent: 'space-between',
-                      alignSelf: 'center',
-                    }}
-                  >
-                    <Typography style={{ fontWeight: '500' }}>
-                      {thread.user.name}{' '}
-                    </Typography>
-                    <Typography style={{ fontWeight: '500' }}>
-                      {Moment(thread.createdAt).format('DD MMMM, YYYY')}
-                    </Typography>
-                  </div>
-                </div>
-              </Grid>
-              <Divider
-                classes={{
-                  root: classes.rootDivider,
-                }}
-                variant="fullWidth"
-              />
-              <Grid
-                style={{
-                  margin: '15px 15px 25px 15px',
-                  whiteSpace: 'pre-line',
-                  cursor: 'default',
-                  wordWrap: 'break-word',
-                }}
-              >
-                <Typography style={{ marginBottom: '10px' }} variant="h6">
-                  {thread.title}
-                </Typography>
-                {thread.text}
-              </Grid>
-              <Divider
-                classes={{
-                  root: classes.rootDivider,
-                }}
-                style={{ marginBottom: '13px' }}
-                variant="fullWidth"
-              />
-              <div className={classes.footer}>
-                <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
-                <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
-                  {thread.totalComments <= 1
-                    ? `${thread.totalComments} Comment`
-                    : `${thread.totalComments} Comments`}{' '}
-                </Typography>
-              </div>
-
-              <div
-                style={{
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  justifyContent: 'flex-start',
-                  marginLeft: '15px',
-                }}
-              >
-                <Grid
-                  className={classes.innerContainer}
-                  style={{
-                    width: '80%',
-                    display: 'flex',
-                    alignContent: 'center',
-                    flexDirection: 'column',
-                  }}
-                >
-                  <div className={classes.textFieldContainer}>
-                    <Avatar alt={user.name} src={user.avatar} />
-                    <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
-                      <TextField
-                        style={{
-                          width: '100%',
-                          borderRadius: '10px',
-                        }}
-                        autoFocus
-                        multiline
-                        variant="outlined"
-                        inputRef={commentRef}
-                        InputProps={{
-                          classes: { notchedOutline: classes.input },
-                        }}
-                      />
-                      <Grid item container justify="flex-end">
-                        <Button
-                          style={{ paddingRight: '0px', marginRight: '0px' }}
-                          onClick={handleSubmit}
-                        >
-                          Post
-                        </Button>
-                      </Grid>
-                    </Grid>
+        <>
+          <Header />
+          <Grid container justify="center">
+            <Grid item md={8} xs={12}>
+              <Paper className={classes.paperStyle} variant="outlined" square>
+                <Grid container style={{ borderRadius: '6px' }}>
+                  <div className={classes.headerContainer}>
+                    <Avatar alt={thread.user.name} src={thread.user.avatar} />
+                    <div
+                      style={{
+                        flexGrow: 1,
+                        display: 'flex',
+                        justifyContent: 'space-between',
+                        alignSelf: 'center',
+                      }}
+                    >
+                      <Typography style={{ fontWeight: '500' }}>
+                        {thread.user.name}{' '}
+                      </Typography>
+                      <Typography style={{ fontWeight: '500' }}>
+                        {Moment(thread.createdAt).format('DD MMMM, YYYY')}
+                      </Typography>
+                    </div>
                   </div>
                 </Grid>
-                {threadComments.map((el, index) => {
-                  return (
-                    <Comment
-                      comment={el}
-                      setPageRefresher={setPageRefresher}
-                      key={index}
+                <Divider
+                  classes={{
+                    root: classes.rootDivider,
+                  }}
+                  variant="fullWidth"
+                />
+                <Grid
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    margin: '15px 15px 25px 0px',
+                    whiteSpace: 'pre-line',
+                    cursor: 'default',
+                    wordWrap: 'break-word',
+                    alignItems: 'center',
+                  }}
+                >
+                  <div
+                    direction="column"
+                    style={{
+                      display: 'flex',
+                      flexDirection: 'column',
+                      justifyItems: 'center',
+                      alignItems: 'center',
+                      width: '30px',
+                      marginRight: '10px',
+                    }}
+                  >
+                    <ArrowDropUpIcon
+                      onClick={handleUpVote}
+                      className={classes.arrowStyle}
+                      style={
+                        upUser == true ? { color: 'green' } : { color: 'black' }
+                      }
                     />
-                  );
-                })}
-              </div>
-            </Paper>
+                    <span style={{ fontSize: '14px', fontWeight: '500' }}>
+                      {' '}
+                      {voteCount}
+                    </span>
+                    <ArrowDropDownIcon
+                      className={classes.arrowStyle}
+                      onClick={handleDownVote}
+                      style={
+                        downUser == true ? { color: 'red' } : { color: 'black' }
+                      }
+                    />
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      flex: '1',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <Typography style={{ marginBottom: '10px' }} variant="h6">
+                      {thread.title}
+                    </Typography>
+                    <Typography>{thread.text}</Typography>
+                  </div>
+                </Grid>
+                <Divider
+                  classes={{
+                    root: classes.rootDivider,
+                  }}
+                  style={{ marginBottom: '13px' }}
+                  variant="fullWidth"
+                />
+                <div className={classes.footer}>
+                  <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
+                  <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
+                    {thread.totalComments <= 1
+                      ? `${thread.totalComments} Reply`
+                      : `${thread.totalComments} Replies`}{' '}
+                  </Typography>
+                </div>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    justifyContent: 'flex-start',
+                    marginLeft: '15px',
+                  }}
+                >
+                  <Grid
+                    className={classes.innerContainer}
+                    style={{
+                      width: '80%',
+                      display: 'flex',
+                      alignContent: 'center',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div className={classes.textFieldContainer}>
+                      <Avatar alt={user.name} src={user.avatar} />
+                      <Grid item xs={12} sm={10} style={{ flexGrow: 1 }}>
+                        <TextField
+                          style={{
+                            width: '100%',
+                            borderRadius: '10px',
+                          }}
+                          autoFocus
+                          multiline
+                          variant="outlined"
+                          inputRef={commentRef}
+                          InputProps={{
+                            classes: { notchedOutline: classes.input },
+                          }}
+                        />
+                        <Grid item container justify="flex-end">
+                          <Button
+                            style={{ paddingRight: '0px', marginRight: '0px' }}
+                            onClick={handleSubmit}
+                          >
+                            Post
+                          </Button>
+                        </Grid>
+                      </Grid>
+                    </div>
+                  </Grid>
+                  {threadComments.map((el, index) => {
+                    return (
+                      <Comment
+                        comment={el}
+                        setPageRefresher={setPageRefresher}
+                        key={index}
+                      />
+                    );
+                  })}
+                </div>
+              </Paper>
+            </Grid>
           </Grid>
-        </Grid>
+        </>
       )}
     </>
   );

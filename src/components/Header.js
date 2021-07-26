@@ -27,7 +27,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     position: 'sticky',
     top: 0,
-    zIndex: 1,
+    zIndex: 50,
   },
   createQuiz: {
     marginTop: theme.spacing(2.5),
@@ -173,6 +173,9 @@ export default withRouter(function Header(props) {
   const gotoQuizCreation = event => {
     props.history.push('/create');
   };
+  const gotoMyQuizzes = event => {
+    props.history.push('/my-quiz');
+  };
 
   const logout = event => {
     props.history.push('/');
@@ -209,6 +212,18 @@ export default withRouter(function Header(props) {
         </IconButton>
         <p>Profile</p>
       </MenuItem>
+      <MenuItem onClick={gotoMyQuizzes}>
+        <IconButton
+          aria-label="account of current user"
+          aria-controls="primary-search-account-menu"
+          aria-haspopup="true"
+          color="inherit"
+        >
+          <AddBoxOutlinedIcon />
+        </IconButton>
+        <p>My Quizzes</p>
+      </MenuItem>
+
       <MenuItem onClick={gotoQuizCreation}>
         <IconButton
           aria-label="account of current user"
@@ -266,6 +281,9 @@ export default withRouter(function Header(props) {
               onClick={() => props.history.push('/tasks')}
             >
               Tasks
+            </div>
+            <div className={classes.createQuiz} onClick={gotoMyQuizzes}>
+              My quizzes
             </div>
             <div className={classes.createQuiz} onClick={gotoQuizCreation}>
               Create Quiz

@@ -408,7 +408,7 @@ export default function QuizHome(props) {
                     </Button>
                   </Grid>
                 )}
-                {quiz.isTest && (
+                {quiz.isTest ? (
                   <Grid
                     container
                     item
@@ -426,6 +426,26 @@ export default function QuizHome(props) {
                       }}
                     >
                       Leaderboard
+                    </Button>
+                  </Grid>
+                ) : (
+                  <Grid
+                    container
+                    item
+                    md={3}
+                    xs={3}
+                    className={classes.buttons}
+                  >
+                    <Button
+                      type="submit"
+                      variant="contained"
+                      color="primary"
+                      className={classes.buttons}
+                      onClick={() => {
+                        history.push(`/quiz/${id}/stats`);
+                      }}
+                    >
+                      Statistics
                     </Button>
                   </Grid>
                 )}
@@ -574,7 +594,7 @@ export default function QuizHome(props) {
           >
             <Grid container item spacing={3}>
               {reviews.length == 1 ? (
-                <Grid item md={12} xs={12}>
+                <Grid item md={6} xs={12}>
                   <QuizReviewCard
                     name={reviews[0].user.name}
                     avatar={reviews[0].user.avatar}

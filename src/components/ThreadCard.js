@@ -13,6 +13,8 @@ import Delete from '@material-ui/icons/Delete';
 import CreationDialog from './Forum/CreationDialog';
 import EditDialog from './Forum/EditDialog';
 import DeleteDialog from './Forum/DeleteDialog';
+import ArrowDropUpIcon from '@material-ui/icons/ArrowDropUp';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 
 const useStyles = makeStyles(theme => ({
   rootDivider: {
@@ -24,6 +26,7 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: '15px',
     maxWidth: '100%',
+    wordBreak: 'break-word',
   },
   headerContainer: {
     display: 'flex',
@@ -32,6 +35,10 @@ const useStyles = makeStyles(theme => ({
     '& > *': {
       margin: '5px',
     },
+  },
+  arrowStyle: {
+    fontSize: '35px',
+    cursor: 'pointer',
   },
   typoStyle: {
     fontSize: '1.2rem',
@@ -63,8 +70,79 @@ export default function ThreadCard(props) {
   const [open, setOpen] = useState(false);
   const [delOpen, setDelOpen] = useState(false);
 
+  let up = false,
+    down = false;
+  if (thread.upvotes.includes(user.id)) {
+    console.log('already upvoted');
+    up = true;
+  }
+  if (thread.downvotes.includes(user.id)) {
+    down = true;
+    console.log('already downVoted');
+  }
+  const [upUser, setUpUser] = useState(up);
+  const [downUser, setDownUser] = useState(down);
+
+  const [voteCount, setVoteCount] = useState(
+    thread.upvotes.length - thread.downvotes.length
+  );
   const routeFullThread = () => {
     history.push(`/quiz/${id}/forum/thread/${thread.id}`);
+  };
+  const handleUpVote = () => {
+    if (upUser) return;
+    if (downUser) {
+      setVoteCount(prev => {
+        prev++;
+        setDownUser(false);
+
+        return prev;
+      });
+      api
+        .downVoteFlip(thread.id)
+        .then(res => {})
+        .catch(err => {
+          console.log(err);
+        });
+    }
+    setUpUser(true);
+
+    setVoteCount(prev => {
+      prev++;
+      return prev;
+    });
+    api
+      .upVoteFlip(thread.id)
+      .then(res => {
+        console.log(res);
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
+  const handleDownVote = () => {
+    if (downUser) return;
+    if (upUser) {
+      setVoteCount(prev => {
+        prev--;
+        setUpUser(false);
+
+        return prev;
+      });
+      api.upVoteFlip(thread.id);
+    }
+    setDownUser(true);
+    setVoteCount(prev => {
+      prev--;
+      return prev;
+    });
+    api
+      .downVoteFlip(thread.id)
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   return (
@@ -123,28 +201,73 @@ export default function ThreadCard(props) {
 
       <Grid
         style={{
-          margin: '15px 15px 25px 15px',
+          display: 'flex',
+          flexDirection: 'row',
+          margin: '15px 15px 25px 0px',
           whiteSpace: 'pre-line',
           cursor: 'default',
           maxWidth: '100%',
+          alignItems: 'center',
         }}
       >
         <div
+          direction="column"
           style={{
-            marginBottom: '10px',
             display: 'flex',
-            justifyContent: 'space-between',
-            flxWrap: 'wrap',
-            fontSize: '17px',
-            fontWeight: '500',
+            flexDirection: 'column',
+            justifyItems: 'center',
+            alignItems: 'center',
+            width: '30px',
+            marginRight: '10px',
           }}
         >
-          <div>{thread.title}</div>
-          <div>{Moment(thread.createdAt).format('DD MMMM, YYYY')}</div>
+          <ArrowDropUpIcon
+            onClick={handleUpVote}
+            className={classes.arrowStyle}
+            style={upUser == true ? { color: 'green' } : { color: 'black' }}
+          />
+          <span style={{ fontSize: '14px', fontWeight: '500' }}>
+            {' '}
+            {voteCount}
+          </span>
+          <ArrowDropDownIcon
+            className={classes.arrowStyle}
+            onClick={handleDownVote}
+            style={downUser == true ? { color: 'red' } : { color: 'black' }}
+          />
         </div>
-        <Typography style={{ wordBreak: 'break-all' }}>
-          {thread.text}
-        </Typography>
+        <div
+          style={{
+            display: 'flex',
+            flex: '1',
+            flexDirection: 'column',
+            whiteSpace: 'pre-line',
+          }}
+        >
+          <div
+            style={{
+              marginBottom: '10px',
+              display: 'flex',
+              justifyContent: 'space-between',
+              flxWrap: 'wrap',
+              fontSize: '17px',
+              fontWeight: '500',
+            }}
+          >
+            <div>{thread.title}</div>
+            <div>{Moment(thread.createdAt).format('DD MMMM, YYYY')}</div>
+          </div>
+          <div
+            style={{
+              // wordBreak: 'break-all',
+              whiteSpace: 'pre-line',
+              fontSize: '16px',
+              fontWeight: '400',
+            }}
+          >
+            {thread.text}
+          </div>
+        </div>
       </Grid>
       <Divider
         classes={{
@@ -157,8 +280,8 @@ export default function ThreadCard(props) {
         <ModeCommentOutlinedIcon style={{ fontSize: '30' }} />
         <Typography style={{ fontWeight: '400', fontSize: '16px' }}>
           {thread.totalComments <= 1
-            ? `${thread.totalComments} Comment`
-            : `${thread.totalComments} Comments`}
+            ? `${thread.totalComments} Reply`
+            : `${thread.totalComments} Replies`}
         </Typography>
       </div>
     </Paper>
