@@ -39,6 +39,9 @@ const useStyles = makeStyles(theme => ({
     overflow: 'hidden',
     padding: theme.spacing(5, 10, 5, 10),
     margin: theme.spacing(0, 2, 0, 2),
+    [theme.breakpoints.down('sm')]: {
+      padding: '0px',
+    },
   },
   pageHeader: {
     width: '100%',
@@ -46,6 +49,14 @@ const useStyles = makeStyles(theme => ({
   },
   filterChipsContainer: {
     margin: theme.spacing(0, 0, 8, 0),
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
+  },
+  searchFieldStyle: {
+    [theme.breakpoints.down('sm')]: {
+      display: 'none',
+    },
   },
   chip: {
     marginRight: theme.spacing(1),
@@ -313,6 +324,7 @@ export default function Dashboard() {
           </Grid>
           <Grid item>
             <TextField
+              className={classes.searchFieldStyle}
               variant="outlined"
               // style={{ position: 'absolute', minWidth: '300px', right: '100px' }}
               value={tempName}
@@ -427,7 +439,7 @@ export default function Dashboard() {
                     className={classes.cards}
                     key={q.id}
                   >
-                    <SingleCard {...q} key={q.id} />
+                    <SingleCard style={{ width: '320px' }} {...q} key={q.id} />
                   </Grid>
                 );
               })}
