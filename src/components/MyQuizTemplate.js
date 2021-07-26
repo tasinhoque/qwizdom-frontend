@@ -23,6 +23,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Avatar from '@material-ui/core/Avatar';
+import { useHistory, useLocation } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -44,6 +45,8 @@ const useStyles = makeStyles(theme => ({
 export default function MyQuizTemplate(props) {
   const classes = useStyles();
   const quizzes = props.quizzes;
+  const history = useHistory();
+
   return (
     <>
       {' '}
@@ -105,7 +108,7 @@ export default function MyQuizTemplate(props) {
                         <TableCell align="center">
                           <Button
                             onClick={() =>
-                              history.push(`/quiz/${quiz.id}/submissions`)
+                              history.push(`/quiz/${quiz.id}/home`)
                             }
                             variant="contained"
                             color="primary"
