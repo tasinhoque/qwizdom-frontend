@@ -272,14 +272,14 @@ const QuizEdit = props => {
 
       let _qid = res.data.id;
 
-      if (cover != null && cover.current != null) {
+      if (cover.current != null) {
         let formData = new FormData();
         formData.append('cover', cover.current);
         formData.append('fileUpload', true);
         console.log(formData);
 
         try {
-          await api.updateCover(quiz.id, formData);
+          await api.updateCover(_qid, formData);
         } catch (error) {
           console.log(error);
         }
