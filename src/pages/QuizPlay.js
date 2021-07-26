@@ -206,7 +206,7 @@ export default function QuizPlay(props) {
             setDuration(time);
           }
 
-          console.log('quiz info', res);
+          // console.log('quiz info', res);
         })
         .catch(err => {
           console.log(err);
@@ -243,7 +243,7 @@ export default function QuizPlay(props) {
             });
           });
 
-          console.log(res.data.stages);
+          // console.log(res.data.stages);
 
           fullQuiz.current = res.data;
           currentStage.current = res.data.stages[0];
@@ -346,7 +346,7 @@ export default function QuizPlay(props) {
                 className={classes.stageTitle}
                 align="center"
               >
-                Stage {currentPageNum + 1} of {totalPages}
+                Section {currentPageNum + 1} of {totalPages}
               </Typography>
             </div>
 
