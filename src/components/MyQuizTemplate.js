@@ -76,14 +76,18 @@ export default function MyQuizTemplate(props) {
                   <TableHead>
                     <TableRow>
                       <TableCell align="center">Quiz Name</TableCell>
-                      <TableCell align="center">Category </TableCell>
-                      <TableCell align="center">Home Page</TableCell>
+                      <TableCell align="center" style={{ minWidth: '670px' }}>
+                        Category
+                      </TableCell>
+                      <TableCell align="center" style={{ minWidth: '200px' }}>
+                        Home Page
+                      </TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {quizzes.map((quiz, idx) => (
                       <TableRow key={idx}>
-                        <TableCell align="center">
+                        <TableCell style={{ paddingLeft: '50px' }} align="left">
                           <span
                             style={{
                               display: 'inline-flex',
@@ -92,7 +96,7 @@ export default function MyQuizTemplate(props) {
                           >
                             <img
                               style={{
-                                marginRight: '10px',
+                                marginRight: '20px',
                                 height: '40px',
                                 width: '60px',
                               }}
